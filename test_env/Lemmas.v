@@ -10,7 +10,8 @@ Assume H : (A /\ B -> C).
 Assume H1: A.
 Assume H2: B.
 Let's apply our hypothesis H.
-Let's prove the conjonction by splitting : (A \/ B).
+Let's prove the conjonction by splitting : (A /\ B). (* error work with "\/" for some reason ...*)
+
 Let's apply our hypothesis H1.
 Let's apply our hypothesis H2.
 Assume H : (A -> B -> C ).
@@ -20,3 +21,4 @@ Let's apply our hypothesis H.
 Let's apply our hypothesis H0.
 Let's apply our hypothesis H1.
 Qed.
+
