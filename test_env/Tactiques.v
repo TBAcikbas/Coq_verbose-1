@@ -64,7 +64,7 @@ Ltac equiva stmt :=
   match goal with
     |- ?P /\ ?Q => fail 1 "Not a A /\ A statement but a (-> and <-) statment"
  |  |- ?P \/ ?Q => fail 1 "Not a A \/ B statement but a (-> and <-) statment"
- |  |- ?P <-> ?Q => split
+ |  |- _ <->  _ => split
  |  |- ?P => fail 1 "error" 
 end.
 
@@ -76,20 +76,30 @@ equiva stmt.
 Tactic Notation "Let's" "prove" "the" "equivalance" ":" constr(stmt) :=
 equiva stmt.
 
-(*montrons que / AND* [disjonction*)
+(*montrons que / AND* conjonction*)
 
-Ltac disj_hyp stmt:= destruct stmt. 
-
-Tactic Notation "Let's" "break" "down" "the" "hypothetic" "disjonction" constr(stmt):=
-disj_hyp stmt.
-
-
-
-Ltac letsprove_left stmt :=
+Ltac conj_hyp stmt:= 
  match goal with
- |  |- stmt /\ ?Q => split
- |  |- _ => fail 1 " roor test"
- end.
+  |-  _ /\ _ => destruct stmt
+| |- _=> fail 1 "stmt is" stmt
+end.
+
+Ltac conj_proof stmt:=
+  match goal with
+ |  |- stmt \/ ?Q  => left
+ |  |- ?P \/ stmt  => right
+  |- _ => fail 1 " To prove a conjuntion A /\ B, you need to first prove A then B or vise versa" 
+
+  |    |- _ /\ _ => split
+end.
+
+Tactic Notation "Let's" "break" "down" "the" "hypothetic" "conjonction" constr(stmt):=
+conj_hyp stmt.
+
+
+Tactic Notation "Let's" "prove" "the" "conjonction"  "by" "splitting" ":" constr(stmt):=
+conj_proof stmt.
+
 
 
 (*by cases *) 
@@ -117,6 +127,17 @@ reverse stmt.
 (*On conclut que*)
 Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) := apply hyp.
 
+
+Lemma exercice_27 : forall A B C: Prop, (((A /\ B) -> C) <-> ( A -> (B -> C))).
+Proof.
+Let's fix values : A,B,C.
+Let's prove the equivalance : (((A /\ B) -> C) <-> ( A -> (B -> C))).
+Assume H : (A /\ B -> C).
+Assume H1: A.
+Assume H2: B.
+Let's apply our hypothesis H.
+
+Let's prove the conjonction by splitting : (A /\ B).
 
 
 
