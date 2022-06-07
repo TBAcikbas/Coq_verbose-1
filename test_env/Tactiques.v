@@ -64,7 +64,7 @@ Ltac equiva stmt :=
   match goal with
     |- ?P /\ ?Q => fail 1 "Not a A /\ A statement but a (-> and <-) statment"
  |  |- ?P \/ ?Q => fail 1 "Not a A \/ B statement but a (-> and <-) statment"
- |  |- _ <->  _ => split
+ |  |- ?Q <->  ?P => split
  |  |- ?P => fail 1 "error" 
 end.
 
@@ -80,20 +80,20 @@ equiva stmt.
 
 Ltac conj_hyp stmt:= 
  match goal with
-  |-  _ /\ _ => destruct stmt
-| |- _=> fail 1 "stmt is" stmt
+ 
+ | [ H : _ /\ _|- _] => destruct H 
+ | |- _ => fail 1 "stmt is" stmt
 end.
 
 Ltac conj_proof stmt:=
-  match goal with
- |  |- stmt \/ ?Q  => left
- |  |- ?P \/ stmt  => right
-  |- _ => fail 1 " To prove a conjuntion A /\ B, you need to first prove A then B or vise versa" 
+  match goal with 
+   | [ |- _ /\ _ ] => constructor
+   | |- _ => fail 1 " To prove the conjuntion A /\ B, you need to first prove A then B or vise versa" 
+ 
 
-  |    |- _ /\ _ => split
-end.
+end.  
 
-Tactic Notation "Let's" "break" "down" "the" "hypothetic" "conjonction" constr(stmt):=
+Tactic Notation "Let's" "break" "down" "the" "hypothetic" "conjonction" simple_intropattern (stmt):=
 conj_hyp stmt.
 
 
@@ -117,7 +117,7 @@ Tactic Notation "By" "cases" "on" constr(t) :=
 
 Ltac reverse stmt :=
  match goal with 
-  |- _=> intro stmt
+  | _=> intro stmt
 end.
 
 
@@ -125,8 +125,12 @@ Tactic Notation "Not" constr(stmt):=
 reverse stmt.
 
 (*On conclut que*)
-Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) := apply hyp.
 
+Ltac  Applying_hypothesis hyp :=
+tryif apply hyp then idtac else fail 1 "The hypothesis used isn't:" hyp.
+
+Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) :=
+Applying_hypothesis hyp.
 
 Lemma exercice_27 : forall A B C: Prop, (((A /\ B) -> C) <-> ( A -> (B -> C))).
 Proof.
@@ -136,8 +140,16 @@ Assume H : (A /\ B -> C).
 Assume H1: A.
 Assume H2: B.
 Let's apply our hypothesis H.
-
-Let's prove the conjonction by splitting : (A /\ B).
+Let's prove the conjonction by splitting : (A \/ B).
+Let's apply our hypothesis H1.
+Let's apply our hypothesis H2.
+Assume H : (A -> B -> C ).
+Assume H1: (A /\ B).
+Let's break down the hypothetic conjonction H1.
+Let's apply our hypothesis H.
+Let's apply our hypothesis H0.
+Let's apply our hypothesis H1.
+Qed.
 
 
 
