@@ -1,0 +1,5 @@
+-R . Coqverbose
+Tactiques.v
+Lemmas.v
+
+

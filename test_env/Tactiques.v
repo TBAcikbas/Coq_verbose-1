@@ -1,6 +1,7 @@
 Require Import Classical.
 Require Import Bool.
 
+
 (* repetition verbose/idtac*)
 
 Ltac letsprove_repetition stmt :=
@@ -83,6 +84,14 @@ Tactic Notation "Let's" "break" "down" "the" "hypothetic" "disjonction" constr(s
 disj_hyp stmt.
 
 
+
+Ltac letsprove_left stmt :=
+ match goal with
+ |  |- stmt /\ ?Q => split
+ |  |- _ => fail 1 " roor test"
+ end.
+
+
 (*by cases *) 
 
 
@@ -108,12 +117,6 @@ reverse stmt.
 (*On conclut que*)
 Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) := apply hyp.
 
-
-Lemma test: forall A B:Prop, A -> B -> (A /\ B).
-Let's fix values: A,B.
-Assume H1: A.
-Assume H2: B.
-Not (A /\B).
 
 
 
