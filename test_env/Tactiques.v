@@ -1,9 +1,15 @@
 
 Require Import Classical.
 Require Import Bool.
+From CoqVerbose Require Import Concepts.
 
 
-(* repetition verbose/idtac*)
+(*Commun definition that can be used*)
+
+
+
+
+(*Tactic used for repeting the current objective without causing an error*)
 
 Ltac letsprove_repetition stmt :=
   match goal with
@@ -14,7 +20,7 @@ Ltac letsprove_repetition stmt :=
 Tactic Notation "Let's" "prove" ":" constr(stmt):=
 letsprove_repetition stmt.
 
-(* Pour tout/Fix*)
+(*Fix used for "forall" statements *)
 
 Ltac Fix name :=
  match goal with
@@ -33,13 +39,24 @@ Fix X;Fix Y;Fix Z.
 
 Tactic Notation "Let's" "fix"  "values" ":" simple_intropattern(X) "," simple_intropattern(Y) "," simple_intropattern(Z) "," simple_intropattern(T) := Fix X;Fix Y;Fix Z;Fix T.
 
-(*Il existe/Ext*)
+
+Tactic Notation "Let's" "fix"  "values" ":" simple_intropattern(X) "," simple_intropattern(Y) "," simple_intropattern(Z) "," simple_intropattern(T)"," simple_intropattern(A):= Fix X;Fix Y;Fix Z;Fix T;Fix A.
+
+Tactic Notation "Let's" "fix"  "values" ":" simple_intropattern(X) "," simple_intropattern(Y) "," simple_intropattern(Z) "," simple_intropattern(T)"," simple_intropattern(A)"," simple_intropattern(M) := Fix X;Fix Y;Fix Z;Fix T;Fix A; Fix M.
+
+
+Tactic Notation "Let's" "fix"  "values" ":" simple_intropattern(X) "," simple_intropattern(Y) "," simple_intropattern(Z) "," simple_intropattern(T)"," simple_intropattern(A)"," simple_intropattern(M) "," simple_intropattern(R) := Fix X;Fix Y;Fix Z;Fix T;Fix A; Fix M; Fix R.
+
+
+
+
+(*Tactic used for "exists" statements*)
 
 
 Tactic Notation  "Let's" "show" "that " constr(stmt) "fit" :=
 exists stmt.
 
-(*supposons / assume*)
+(*Tactic used for implications statements *)
 
 Ltac check_hyp_is h stmt :=
  let Hf:=fresh in 
@@ -59,47 +76,37 @@ Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) :=
  assume_tac I H.
 
 
-(* Equivalance/ double implication*)
+(* Tactic used for equivalance statements *)
+(* /\ is not triggered due the existance of <-> statement ...*)
 
-Ltac equiva stmt :=
+Ltac equiva_proof stmt :=
   match goal with
-    |- ?P /\ ?Q => fail 1 "Not a A /\ A statement but a (-> and <-) statment"
- |  |- ?P \/ ?Q => fail 1 "Not a A \/ B statement but a (-> and <-) statment"
+    |- ?P /\ ?Q => fail 1 "The equivalance is a disjunction of statement with the form of (A -> B) /\ (B -> A),However for conjunction cases we will use 'Let's apply our hypothesis [hypothesis]' " 
+ |  |- ?P \/ ?Q => fail 1 "Not a disjunction Statements the equivalance is a conjunction case with the form of (A -> B) /\ (B -> A) it can also be written as <->"   
  |  |- ?Q <->  ?P => split
- |  |- ?P => fail 1 "error" 
+ |  |- ?P => fail 1 "error" (* message ??? *)  
 end.
 
-
-
-Tactic Notation "Let's" "prove" "a" "double" "implication" "of" ":" constr(stmt) :=
-equiva stmt. 
 
 Tactic Notation "Let's" "prove" "the" "equivalance" ":" constr(stmt) :=
-equiva stmt.
+equiva_proof stmt.
 
-(*montrons que / AND* conjonction*)
+(*Tactics used for conjonction statements *)
 
-Ltac conj_hyp stmt:= 
- match goal with
- 
- | [ H : _ /\ _|- _] => destruct H 
- | |- _ => fail 1 "stmt is" stmt
-end.
 
-Ltac conj_proof stmt:=
-  match goal with 
-   | [ |- _ /\ _ ] => constructor
-   | |- _ => fail 1 " To prove the conjuntion A /\ B, you need to first prove A then B or vise versa" 
- 
-
+Ltac spliter := repeat
+match goal with
+   | H:(?X1 /\ ?X2) |- _ => induction H
 end.  
 
-Tactic Notation "Let's" "break" "down" "the" "hypothetic" "conjonction" simple_intropattern (stmt):=
-conj_hyp stmt.
+Ltac splits :=
+ repeat
+ match goal with
+  | |- ?x /\ ?y => split
+end.
 
-
-Tactic Notation "Let's" "prove" "the" "conjonction"  "by" "splitting" ":" constr(stmt):=
-conj_proof stmt.
+Tactic Notation "By" "the" "definition" "of" "disjonction" :=
+splits.
 
 
 
@@ -125,18 +132,51 @@ end.
 Tactic Notation "Not" constr(stmt):=
 reverse stmt.
 
-(*On conclut que*)
+(*Conclusion using the definitions and hypothesis deduce*)
 
 Ltac  Applying_hypothesis hyp :=
-tryif apply hyp then idtac else fail 1 "The hypothesis used isn't:" hyp.
+tryif apply hyp then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
 
 Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) :=
 Applying_hypothesis hyp.
 
+(*Inversion statement*)
+
+Ltac Inverting stmt := tryif inversion stmt then idtac else fail 1 "Not an induction or Coinduction".
+
+Tactic Notation "Let's" "inverse" constr(stmt) "in" "order" "to" "induce" "properties" :=
+Inverting stmt.
+
+(*Intersection statement*)
+Tactic Notation "Let's" "prove" "the" "intersection" constr(stmt)"by" "proving" constr(A) "and" constr(B):= split.
+
+
+(*Union Statement*)
+
+Tactic Notation "Let's" "prove" "the" "left" "side" "of" "the" "union" ":" constr(stmt):=
+apply union_left.
+
+Tactic Notation "Let's" "prove" "the" "right" "side" "of" "the" "union" ":" constr(stmt):=
+apply union_right.
+
+(*Miscelinious/Unknown categorie*)
+
+Tactic Notation "Let's" "prove" "that" constr(stmt1) "and" constr (stmt2) "is" "equal" := split.
 
 
 
+(* test area
+Parameter X Y:Set.
+Definition f:= X -> Y.
 
 
+Definition Injective {A B} (f : A->B) :=
+ forall x y, f x = f y -> x = y.
+
+Check Injective.
+
+Lemma Exercice_17 : Injective f <-> forall A B, f(inter A B) = inter f(A) f(B).
+
+*)
 
 
