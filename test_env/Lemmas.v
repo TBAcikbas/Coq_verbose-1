@@ -1,5 +1,7 @@
 Require Import CoqVerbose.Concepts.
 Require Import CoqVerbose.Tactiques.
+Require Import Utf8.
+
 
 (* Exercices logiques*)
 
@@ -21,19 +23,22 @@ Let's apply our hypothesis H0.
 Let's apply our hypothesis H1.
 Qed.
  
-Lemma Exercice_1 :forall A B,equal (inter A (union A B)) A.
-Let's fix values: A,B.
-Let's prove that (A) and (inter A (union A B)) is equal.                     (*No Idea how to rephrase this...*)
-Assume H : (inter A (union A B) x y).
-Let's inverse H in order to induce properties.
-Let's apply our hypothesis H0.
-Assume H : (A x y).
-Let's prove the intersection (inter A (union A B) x y) by proving(A x y) and ((union A B) x y).
-Let's apply our hypothesis H.
-Let's prove the left side of the union : (union A B x y).
-Let's apply our hypothesis H.
-Qed.
 
+
+Theorem direct_Inclusion_verbose:
+forall {E F: Type} (f: E → F),∀ A, A ⊆ pre f (im f A).
+Let's fix values:A,B,C,D.
+By definition of Inclusion : (D ⊆ pre C (im C D)).
+Let's fix :H.
+Assume H1 : (H ∈ D).
+By definition of reverse inverse applied to :( H ∈ pre C (im C D)).
+By definition of In applied to :(H ∈ (λ x : A, C x ∈ im C D)).
+By definition of Im applied to :(im C D (C H)).
+Let's show that H fit.
+By the definition of disjonction.
+Let's apply our hypothesis H1.
+It is trivial.
+Qed.
 
 
 

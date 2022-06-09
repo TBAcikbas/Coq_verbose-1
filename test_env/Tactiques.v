@@ -1,4 +1,4 @@
-
+Require Import Utf8.
 Require Import Classical.
 Require Import Bool.
 Require Import CoqVerbose.Concepts.
@@ -139,21 +139,64 @@ Ltac Inverting stmt := tryif inversion stmt then idtac else fail 1 "Not an induc
 Tactic Notation "Let's" "inverse" constr(stmt) "in" "order" "to" "induce" "properties" :=
 Inverting stmt.
 
-(*Intersection statement*)
-Tactic Notation "Let's" "prove" "the" "intersection" constr(stmt)"by" "proving" constr(A) "and" constr(B):= split.
+
+(*By definition ... *)
+
+Ltac definition_unfold stmt:=
+ match goal with
+   |- (Incl _ _)  => unfold Incl
+ | |- (In _ _) => unfold In
+end.
+
+Tactic Notation "By" "definition" "of" "Inclusion" "applied" "to" ":" constr(stmt):=
+definition_unfold stmt.
+
+Tactic Notation "By" "definition" "of" "everse image" "applied" "to" ":" constr(stmt):=
+unfold pre.
+
+Tactic Notation "By" "definition" "of" "In" "applied" "to" ":" constr(stmt):=
+definition_unfold stmt.
+
+Tactic Notation "By" "definition" "of" "Image" "applied" "to" ":" constr(stmt):=
+unfold im.
 
 
-(*Union Statement*)
+Tactic Notation "It" "is" "trivial":=
+trivial.
 
-Tactic Notation "Let's" "prove" "the" "left" "side" "of" "the" "union" ":" constr(stmt):=
-apply union_left.
 
-Tactic Notation "Let's" "prove" "the" "right" "side" "of" "the" "union" ":" constr(stmt):=
-apply union_right.
 
-(*Miscelinious/Unknown categorie*)
+Theorem reverse_Inclusion :
+  forall {E F: Type} (f: E -> F),
+    injective f -> 
+      forall A, Incl (pre f (im f A)) A.
+Proof.
+  intros.                     (* introduction of universal quantifiers and of implication *)
+  unfold Incl.                (* unfolding the definition of Inclusion *)
+  intros.                     (* introduction of universal quantifiers and of implication *)
+  unfold pre, In in H0.       (* unfolding the definition of Preimage in hypothesis H0 *)
+  unfold im in H0.            (* unfolding the definition of Image in hypothesis H0 *)
+  destruct H0 as [x1 [Hx1 Heq]].      (* elimination of conjuction and of existential quantifier in H0 *)
+  apply H in Heq.              (* unfolding the definition of injectivity in hypothesis H3 *)
+  rewrite Heq.                 (* rewrite H3 in the conclusion *)
+  assumption.                 (* resolve a trivial goal *)
+Qed.
 
-Tactic Notation "Let's" "prove" "that" constr(stmt1) "and" constr (stmt2) "is" "equal" := split.
+
+Theorem reverse_inclusion_verbose :
+  forall {E F: Type} (f: E -> F),
+    injective f -> 
+      forall A, Incl (pre f (im f A)) A.
+Let's fix values: A,B,C.
+Assume H : (injective C → ∀ A0 : Ens, pre C (im C A0) ⊆ A0).
+By definition of Inclusion applied to : (injective C → ∀ A0 : Ens, pre C (im C A0) ⊆ A0).
+
+
+
+
+
+
+
 
 
 
