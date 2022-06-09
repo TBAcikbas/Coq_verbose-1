@@ -1,7 +1,7 @@
 
 Require Import Classical.
 Require Import Bool.
-From CoqVerbose Require Import Concepts.
+Require Import CoqVerbose.Concepts.
 
 
 (*Commun definition that can be used*)
@@ -13,8 +13,9 @@ From CoqVerbose Require Import Concepts.
 
 Ltac letsprove_repetition stmt :=
   match goal with
-    |- stmt => idtac
-  end.
+  |- stmt => idtac
+| |- _  => fail 2 "This is not what that we need to prove !!!"
+end.
 
 
 Tactic Notation "Let's" "prove" ":" constr(stmt):=
@@ -25,7 +26,7 @@ letsprove_repetition stmt.
 Ltac Fix name :=
  match goal with
    |- ?P -> ?Q => fail 1 "Not a forall statement"
-|  |- forall x, ?P => intro name
+ |  |- forall x, ?P => intro name
 end.
 
 
@@ -109,7 +110,7 @@ Tactic Notation "By" "the" "definition" "of" "disjonction" :=
 splits.
 
 
-
+ 
 (*by cases *) 
 
 
@@ -121,16 +122,7 @@ Ltac hyp_of_type t :=
 Tactic Notation "By" "cases" "on" constr(t) :=
 (let H := hyp_of_type t in elim H).
 
-(*Not*)
 
-Ltac reverse stmt :=
- match goal with 
-  | _=> intro stmt
-end.
-
-
-Tactic Notation "Not" constr(stmt):=
-reverse stmt.
 
 (*Conclusion using the definitions and hypothesis deduce*)
 
@@ -165,18 +157,7 @@ Tactic Notation "Let's" "prove" "that" constr(stmt1) "and" constr (stmt2) "is" "
 
 
 
-(* test area
-Parameter X Y:Set.
-Definition f:= X -> Y.
 
 
-Definition Injective {A B} (f : A->B) :=
- forall x y, f x = f y -> x = y.
-
-Check Injective.
-
-Lemma Exercice_17 : Injective f <-> forall A B, f(inter A B) = inter f(A) f(B).
-
-*)
 
 

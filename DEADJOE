@@ -1,0 +1,32 @@
+
+*** These modified files were found in JOE when it aborted on Thu Jun  9 18:22:14 2022
+*** JOE was aborted because the terminal closed
+
+*** Fichier '(Sans nom)'
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+
+*** Fichier '/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG'
+working compilation
+
+
+# Veuillez saisir le message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Validateur : tacikbas <tacikbas@pcc307.psi.ad.unistra.fr>
+#
+# Sur la branche main
+# Votre branche est à jour avec 'origin/main'.
+#
+# Modifications qui seront validées :
+#	nouveau fichier : CoqMakefile.conf
+#	modifié :         Lemmas.v
+#	supprimé :        Makefile
+#	modifié :         Tactiques.v
+#	modifié :         _CoqProject
+#	nouveau fichier : makefile
+#	nouveau fichier : makefile.conf
+#
+
+*** Fichier '* Startup Log *'
+Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc

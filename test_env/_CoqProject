@@ -1,4 +1,4 @@
--R . CoqVerbose
+-Q . CoqVerbose
 Concepts.v
 Tactiques.v
 Lemmas.v
