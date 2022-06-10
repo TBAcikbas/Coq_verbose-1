@@ -21,7 +21,8 @@ Definition Inter {E:Type} (A B: Ens) :=
   fun x:E => x ∈ A /\ x ∈ B.
 Notation "A ∩ B" := (Inter A B) (at level 90). 
 
-Definition set_eq {E: Type} (A B: @Ens E) := A ⊆ B /\ B ⊆ A.
+Definition Set_eq {E: Type} (A B: @Ens E) := A ⊆ B /\ B ⊆ A.
+Notation "A == B" := (Set_eq A B) (at level 90).
 
 (* Image of a set by a function *)
 Definition Im {E F: Type} (f: E → F) (A: Ens): Ens :=
@@ -33,10 +34,23 @@ Definition Pre {E F: Type} (f: E → F) (B: Ens): Ens :=
 
 (* Injective function *)
 Definition Injective {E F: Type} (f: E -> F) :=
-  ∀ (x x': E), f x = f x' → x = x'.
+  ∀ (x x0: E), f x = f x0 → x = x0.
 
 Definition Surjective {E F: Type} (f:E -> F) :=
   ∀ (y:F),∃ x:E, f x = y.
+
+Theorem exercise_inj_inter : forall  {E F: Type} (f: E -> F) (A B:Ens),
+    Injective f -> 
+   (Im f (A ∩ B)) == ((Im f A) ∩ (Im f B)).
+Proof.
+intros.
+unfold Set_eq.
+split.
+intros x Hx.
+unfold Im in Hx.
+simpl in Hx.
+Abort.
+
 
 
 (*
@@ -73,16 +87,5 @@ Qed.
 
 
 
-Theorem exercise_inj_inter : forall  {E F: Type} (f: E -> F) (A B:Ens),
-    injective f -> 
-    set_eq (Im f (inter A B))  (inter (Im f A) (Im f B)).
-Proof.
-intros.
-unfold set_eq.
-split.
-intros x Hx.
-unfold Im in Hx.
-simpl in Hx.
-Abort.
 
 *)

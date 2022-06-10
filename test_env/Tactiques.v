@@ -6,11 +6,13 @@ Require Import CoqVerbose.Concepts.
 
 
 
-
-
 (*Tactic used to rewrite *)
-Tactic Notation "Let's" "rewrite" ":" constr(H) :=
-rewrite H || fail 1 "No hypothesis that can be used to rewrite" H.
+Tactic Notation "Let's" "rewrite" ":" constr(H) "as" constr(H1):=
+tryif (rewrite H in H1)then idtac else fail 1 "No hypothesis that can't be used to rewrite" H "as" H1.
+
+Tactic Notation "Let's" "rewrite" ":" constr(H):=
+tryif (rewrite H )then idtac else fail 1 "hypothesis" H "cannot be used to rewrite".
+
 
 (*Tactic used to prove trivial cases such as 1=1 or f x = f x*)
 
@@ -147,14 +149,14 @@ end.
 Ltac  Applying_hypothesis hyp :=
 tryif apply hyp then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
 
-Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) :=
+Tactic Notation "Let's" "apply" "our" "hypothesis" ":" constr(hyp) :=
 Applying_hypothesis hyp.
 
 Tactic Notation "Let's" "simplify" "our" "hypothesis" ":" constr(stmt) :=
 simpl_hyp stmt.
 
 Ltac  Applying_hyp_on_hyp hyp  H :=
-tryif (apply hyp in H) then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
+tryif (apply hyp in H) then (tryif spliter || splits then idtac else idtac ) else fail 1 "Wrong hypothesis :" hyp.  (* automatically use split on an hypothesis we apply *)
 
 Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) "on" "the" "hypothesis" constr(H):=
 Applying_hyp_on_hyp hyp H.
@@ -173,42 +175,44 @@ Ltac definition_unfold stmt:=
  match goal with
    |- (Incl _ _)  => unfold Incl
  | |- (In _ _) => unfold In
+ | |- (Set_eq _ _) => unfold Set_eq 
 end.
 
 
 
 (*definitions applied to goals and subgoals*)
 Tactic Notation "By" "definition" "of" "Inclusion" "applied" "to" ":" constr(stmt):=
-definition_unfold stmt.
+tryif (unfold Incl) then idtac else fail 1 "Not an Inclusion statement".
 
 Tactic Notation "By" "definition" "of" "Inverse" "image" "applied" "to" ":" constr(stmt):=
-unfold Pre.
+tryif (unfold Pre) then idtac else fail 1 "Not an Inverse image statement".
 
 Tactic Notation "By" "definition" "of" "In" "applied" "to" ":" constr(stmt):=
-definition_unfold stmt.
+tryif (unfold In) then idtac else fail 1 "Not an In statement".
 
 
 Tactic Notation "By" "definition" "of" "Image" "applied" "to" ":" constr(stmt):=
-unfold Im.
+tryif (unfold Im) then idtac else fail 1 "Not an Image statement".
 
+Tactic Notation "By" "definition" "of" "equality" "applied" "to" ":" constr(stmt):=
+tryif (unfold Set_eq) then idtac else fail 1 "Not an Equality statement".
 
+Tactic Notation "By" "definition" "of" "Intersection" "applied" "to" ":" constr(stmt):=
+tryif (unfold Inter) then idtac else fail 1 "Not an Intersection statement".
 
 (*definitions applied to hypothesis*)
-Tactic Notation "By" "definition" "of" "In" "applied" "to"  "the " "hypothesis" constr(h):=
-unfold In in h.
+Tactic Notation "By" "definition" "of" "In" "applied" "to"  "the " "hypothesis" ":" constr(h):=
+tryif (unfold In in h) then idtac else fail 1 "Not an In statement".
 
-Tactic Notation "By" "definition" "of" "Inverse" "image" "applied" "to"  "the" "hypothesis" constr(h):=
-unfold Pre in h.
-
-
-
-Tactic Notation "By" "definition" "of"  "Image" "applied"  "to"  "the" "hypothesis" constr(h):=
-unfold Im in h.
+Tactic Notation "By" "definition" "of" "Inverse" "image" "applied" "to"  "the" "hypothesis" ":" constr(h):=
+tryif (unfold Pre in h) then idtac else fail 1 "Not an Inverse Image statement".
 
 
+Tactic Notation "By" "definition" "of"  "Image" "applied"  "to"  "the" "hypothesis" ":" constr(h):=
+tryif (unfold Im in h) then idtac else fail 1 "Not an Image of statement".
 
-
-
+Tactic Notation "By" "definition" "of" "Injective" "applied" "to" "the" "hypothesis" ":" constr(h):=
+tryif (unfold Injective in h) then idtac else fail 1 "Not an Injective of statement".
 
 
 
