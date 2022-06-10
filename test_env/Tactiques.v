@@ -218,5 +218,8 @@ tryif (unfold Injective in h) then idtac else fail 1 "Not an Injective of statem
 
 
 
+Lemma surjectivity_ception: 
+ forall  {A B C: Type} (f: A -> B) (g: B -> C) (x:A),
+  Surjective g (f x)-> Surjective g.
 
 
