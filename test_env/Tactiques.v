@@ -4,12 +4,22 @@ Require Import Bool.
 Require Import CoqVerbose.Concepts.
 
 
-(*Commun definition that can be used*)
 
 
+
+
+(*Tactic used to rewrite *)
+Tactic Notation "Let's" "rewrite" ":" constr(H) :=
+rewrite H || fail 1 "No hypothesis that can be used to rewrite" H.
+
+(*Tactic used to prove trivial cases such as 1=1 or f x = f x*)
+
+Tactic Notation "It" "is" "trivial":=
+trivial.
 
 
 (*Tactic used for repeting the current objective without causing an error*)
+
 
 Ltac letsprove_repetition stmt :=
   match goal with
@@ -78,21 +88,42 @@ Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) :=
 
 
 (* Tactic used for equivalance statements *)
-(* /\ is not triggered due the existance of <-> statement ...*)
+
 
 Ltac equiva_proof stmt :=
   match goal with
-    |- ?P /\ ?Q => fail 1 "The equivalance is a disjunction of statement with the form of (A -> B) /\ (B -> A),However for conjunction cases we will use 'Let's apply our hypothesis [hypothesis]' " 
- |  |- ?P \/ ?Q => fail 1 "Not a disjunction Statements the equivalance is a conjunction case with the form of (A -> B) /\ (B -> A) it can also be written as <->"   
- |  |- ?Q <->  ?P => split
- |  |- ?P => fail 1 "error" (* message ??? *)  
+    |- ?Q <->  ?P => split
+ |  |- ?P => fail 1 "Not an equivalence statement" (* message ??? *)  
 end.
 
 
 Tactic Notation "Let's" "prove" "the" "equivalance" ":" constr(stmt) :=
 equiva_proof stmt.
 
-(*Tactics used for conjonction statements *)
+(*Tactics used for disjonction statements *)
+
+
+
+(*Tactics used for Conjunction statements *)
+
+
+Ltac prove_conj stmt := tryif split then idtac else fail 1 "Not a conjunction".
+Tactic Notation "Let's" "prove" "the" "conjunction" ": " constr(stmt) :=
+prove_conj stmt.
+(*by cases *) 
+
+
+Ltac hyp_of_type t :=
+ match goal with
+ | H1:t |- _ => H1
+end.
+
+Tactic Notation "By" "cases" "on" constr(t) :=
+(let H := hyp_of_type t in elim H).
+
+
+
+(*Conclusion using the definitions and hypothesis deduce*)
 
 
 Ltac spliter := repeat
@@ -103,34 +134,30 @@ end.
 Ltac splits :=
  repeat
  match goal with
-  | |- ?x /\ ?y => split
+   | [ H : _ /\ _ |- _ ] => destruct H
 end.
 
-Tactic Notation "By" "the" "definition" "of" "disjonction" :=
-splits.
+Ltac simpl_hyp stmt := repeat 
+match goal with
+   | H: _  |- _ => induction stmt 
+end.  
 
 
- 
-(*by cases *) 
-
-
-Ltac hyp_of_type t :=
- match goal with
-| H1:t |- _ => H1
-  end.
-
-Tactic Notation "By" "cases" "on" constr(t) :=
-(let H := hyp_of_type t in elim H).
-
-
-
-(*Conclusion using the definitions and hypothesis deduce*)
 
 Ltac  Applying_hypothesis hyp :=
 tryif apply hyp then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
 
 Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) :=
 Applying_hypothesis hyp.
+
+Tactic Notation "Let's" "simplify" "our" "hypothesis" ":" constr(stmt) :=
+simpl_hyp stmt.
+
+Ltac  Applying_hyp_on_hyp hyp  H :=
+tryif (apply hyp in H) then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
+
+Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) "on" "the" "hypothesis" constr(H):=
+Applying_hyp_on_hyp hyp H.
 
 (*Inversion statement*)
 
@@ -148,50 +175,35 @@ Ltac definition_unfold stmt:=
  | |- (In _ _) => unfold In
 end.
 
+
+
+(*definitions applied to goals and subgoals*)
 Tactic Notation "By" "definition" "of" "Inclusion" "applied" "to" ":" constr(stmt):=
 definition_unfold stmt.
 
-Tactic Notation "By" "definition" "of" "everse image" "applied" "to" ":" constr(stmt):=
-unfold pre.
+Tactic Notation "By" "definition" "of" "Inverse" "image" "applied" "to" ":" constr(stmt):=
+unfold Pre.
 
 Tactic Notation "By" "definition" "of" "In" "applied" "to" ":" constr(stmt):=
 definition_unfold stmt.
 
+
 Tactic Notation "By" "definition" "of" "Image" "applied" "to" ":" constr(stmt):=
-unfold im.
-
-
-Tactic Notation "It" "is" "trivial":=
-trivial.
+unfold Im.
 
 
 
-Theorem reverse_Inclusion :
-  forall {E F: Type} (f: E -> F),
-    injective f -> 
-      forall A, Incl (pre f (im f A)) A.
-Proof.
-  intros.                     (* introduction of universal quantifiers and of implication *)
-  unfold Incl.                (* unfolding the definition of Inclusion *)
-  intros.                     (* introduction of universal quantifiers and of implication *)
-  unfold pre, In in H0.       (* unfolding the definition of Preimage in hypothesis H0 *)
-  unfold im in H0.            (* unfolding the definition of Image in hypothesis H0 *)
-  destruct H0 as [x1 [Hx1 Heq]].      (* elimination of conjuction and of existential quantifier in H0 *)
-  apply H in Heq.              (* unfolding the definition of injectivity in hypothesis H3 *)
-  rewrite Heq.                 (* rewrite H3 in the conclusion *)
-  assumption.                 (* resolve a trivial goal *)
-Qed.
+(*definitions applied to hypothesis*)
+Tactic Notation "By" "definition" "of" "In" "applied" "to"  "the " "hypothesis" constr(h):=
+unfold In in h.
+
+Tactic Notation "By" "definition" "of" "Inverse" "image" "applied" "to"  "the" "hypothesis" constr(h):=
+unfold Pre in h.
 
 
-Theorem reverse_inclusion_verbose :
-  forall {E F: Type} (f: E -> F),
-    injective f -> 
-      forall A, Incl (pre f (im f A)) A.
-Let's fix values: A,B,C.
-Assume H : (injective C → ∀ A0 : Ens, pre C (im C A0) ⊆ A0).
-By definition of Inclusion applied to : (injective C → ∀ A0 : Ens, pre C (im C A0) ⊆ A0).
 
-
+Tactic Notation "By" "definition" "of"  "Image" "applied"  "to"  "the" "hypothesis" constr(h):=
+unfold Im in h.
 
 
 
