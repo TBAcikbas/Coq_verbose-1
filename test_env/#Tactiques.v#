@@ -250,6 +250,7 @@ By definition of Image applied to the hypothesis :H1.
 Let's simplify our hypothesis :H1.
 Let's simplify our hypothesis :H.
 Let's apply our hypothesis H0 on the hypothesis H1.
+Print _.
 Let's rewrite : H1.
 Let's apply our hypothesis :H.
 Qed.

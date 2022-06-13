@@ -1,30 +1,45 @@
 
-*** These modified files were found in JOE when it aborted on Thu Jun  9 18:22:14 2022
+*** These modified files were found in JOE when it aborted on Fri Jun 10 16:24:08 2022
 *** JOE was aborted because the terminal closed
+
+*** Fichier '(Sans nom)'
+save
+
+*** Fichier '(Sans nom)'
+overwrite
+overwrite
+overwrite
+overwrite
+
+*** Fichier '(Sans nom)'
+root
+root
+root
+root
 
 *** Fichier '(Sans nom)'
 /adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
 
 *** Fichier '/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG'
-working compilation
-
-
-# Veuillez saisir le message de validation pour vos modifications. Les lignes
+1)Implementation of intersections and union symboles 
+2)begining of Verbose for function with 2 exemples 
+3)remake of conj and apply tactics
+#Veuillez saisir le message de validation pour vos modifications. Les lignes
 # commençant par '#' seront ignorées, et un message vide abandonne la validation.
 #
 # Validateur : tacikbas <tacikbas@pcc307.psi.ad.unistra.fr>
 #
 # Sur la branche main
-# Votre branche est à jour avec 'origin/main'.
+# Votre branche est en avance sur 'origin/main' de 1 commit.
+#   (utilisez "git push" pour publier vos commits locaux)
 #
 # Modifications qui seront validées :
-#	nouveau fichier : CoqMakefile.conf
+#	modifié :         Concepts.v
 #	modifié :         Lemmas.v
-#	supprimé :        Makefile
 #	modifié :         Tactiques.v
-#	modifié :         _CoqProject
-#	nouveau fichier : makefile
-#	nouveau fichier : makefile.conf
+#
+# Modifications qui ne seront pas validées :
+#	supprimé :        ../DEADJOE
 #
 
 *** Fichier '* Startup Log *'

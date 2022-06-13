@@ -1,4 +1,5 @@
 -Q . CoqVerbose
+Hinter.v
 Concepts.v
 Tactiques.v
 Lemmas.v

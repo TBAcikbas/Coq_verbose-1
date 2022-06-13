@@ -1,6 +1,7 @@
 Require Import CoqVerbose.Concepts.
 Require Import CoqVerbose.Tactiques.
 Require Import Utf8.
+Require Import CoqVerbose.Hinter.
 
 
 (* Exercices logiques*)
@@ -11,7 +12,7 @@ Lemma exercice_27 :
 
 Proof.
 Let's fix values : A,B,C.
-Let's prove the equivalance : (((A /\ B) -> C) <-> ( A -> (B -> C))).
+Let's prove the equivalence : (((A /\ B) -> C) <-> ( A -> (B -> C))).
 Let's prove : ((A /\ B -> C) -> A -> B -> C).
 Assume H : (A /\ B -> C).
 Assume H1: A.
@@ -53,28 +54,31 @@ Qed.
 
 
 Theorem reverse_inclusion_verbose :
-  forall {E F: Type} (f: E -> F),
+  ∀ {E F: Type} (f: E -> F),
     Injective f -> 
-      forall A, Incl (Pre f (Im f A)) A.
+      ∀ A, (Pre f (Im f A)) ⊆ A.
 
 Proof.
 Let's fix values: A,B,C.
 Assume H0 : (Injective C).
-Let's fix :D.
-By definition of Inclusion applied to : (Pre C (Im C D) ⊆ D).
-Let's fix :E.
-Assume H : (E ∈ Pre C (Im C D)).
-By definition of Inverse image applied to the hypothesis :H.
-By definition of In applied to the hypothesis :H.
-By definition of Image applied to the hypothesis :H.
-Let's simplify our hypothesis : H.
+By definition of Inclusion applied to : (∀ A0 : Ens, Pre C (Im C A0) ⊆ A0).
+Let's fix values :D,E.
+Assume H1:(E ∈ Pre C (Im C D)).
+By definition of Injective applied to the hypothesis :H0.
+By definition of In applied to the hypothesis :H1.
+By definition of Inverse image applied to the hypothesis :H1.
+By definition of In applied to the hypothesis :H1.
+By definition of Image applied to the hypothesis :H1.
+Let's simplify our hypothesis :H1.
+Let's simplify our hypothesis :H.
 Let's apply our hypothesis H0 on the hypothesis H1.
-Let's rewrite: H1.
+Let's rewrite : H1.
 Let's apply our hypothesis :H.
 Qed.
 
 
-Theorem exercise_inj_inter : forall  {E F: Type} (f: E -> F) (A B:Ens),
+
+Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
     Injective f -> 
     (Im f (A ∩ B)) == ((Im f A) ∩ (Im f B)).
 Proof.

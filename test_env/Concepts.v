@@ -6,7 +6,6 @@ characteristic function. *)
 Definition Ens {E : Type} := E -> Prop.
 Definition In {E : Type} (A :@Ens E) (x:E) := A x.
 Notation "x ∈ A" := (In A x) (at level 60).
-Local Hint Unfold In.
 
 (* Inclusion relation *)
 Definition Incl {E: Type} (A B: Ens) :=
