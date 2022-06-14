@@ -38,3 +38,5 @@ Definition Injective {E F: Type} (f: E -> F) :=
 Definition Surjective {E F: Type} (f:E -> F) :=
   ∀ (y:F),∃ x:E, f x = y.
 
+
+Definition Right_Inv {A B} (f : A -> B) G :=  ∀ B, f (G B) = B.

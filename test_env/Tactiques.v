@@ -36,6 +36,7 @@ end.
 Tactic Notation "Let's" "prove" ":" constr(stmt):=
 letsprove_repetition stmt.
 
+
 (*Fix used for "forall" statements *)
 
 Ltac Fix name :=
@@ -71,6 +72,10 @@ Tactic Notation "Let's" "fix"  "values" ":" simple_intropattern(X) "," simple_in
 
 Tactic Notation  "Let's" "show" "that " constr(stmt) "fit" :=
 exists stmt.
+
+Tactic Notation  "Let's" "show" "that " constr(stmt) "applied" "to " constr(stmt_2) "fit" :=
+exists (stmt_2 stmt).
+
 
 (*Tactic used for implications statements *)
 
@@ -189,17 +194,20 @@ tryif (unfold In) then idtac else fail 1 "Not an In statement".
 Tactic Notation "By" "definition" "of" "Image" "applied" "to" ":" constr(stmt):=
 tryif (unfold Im) then idtac else fail 1 "Not an Image statement".
 
-Tactic Notation "By" "definition" "of" "equality" "applied" "to" ":" constr(stmt):=
+Tactic Notation "By" "definition" "of" "Equality" "applied" "to" ":" constr(stmt):=
 tryif (unfold Set_eq) then idtac else fail 1 "Not an Equality statement".
 
 Tactic Notation "By" "definition" "of" "Intersection" "applied" "to" ":" constr(stmt):=
 tryif (unfold Inter) then idtac else fail 1 "Not an Intersection statement".
 
-Tactic Notation "By" "definition" "of" "Injective" "applied" "to" "the" "hypothesis" ":" constr(h):=
-tryif (unfold Injective in h) then idtac else fail 1 "Not an Injective of statement".
+Tactic Notation "By" "definition" "of" "Injective" "applied" "to"  ":" constr(h):=
+tryif (unfold Injective) then idtac else fail 1 "Not an Injective of statement".
 
-Tactic Notation "By" "definition" "of" "Surjective" "applied" "to" "the" "hypothesis" ":" constr(h):=
-tryif (unfold Surjective in h) then idtac else fail 1 "Not an Surjective of statement".
+Tactic Notation "By" "definition" "of" "Surjective" "applied" "to"  ":" constr(h):=
+tryif (unfold Surjective ) then idtac else fail 1 "Not an Surjective of statement".
+
+Tactic Notation "By" "definition" "of" "Right" "inverse" "applied" "to" ":" constr(h):=
+tryif (unfold Right_Inv) then idtac else fail 1 "Not an Right Inverse of statement".
 
 
 (*definitions applied to hypothesis*)
@@ -224,6 +232,10 @@ Tactic Notation "By" "definition" "of" "Surjecive" "applied" "to" "the" "hypothe
 tryif (unfold Surjective in h) then idtac else fail 1 "Not an Surjective of hypothesis".
 
 
+Tactic Notation "By" "definition" "of" "Right" "Inverse" "applied" "to" "the" "hypothesis" ":" constr(h):=
+tryif (unfold Right_Inv in h) then idtac else fail 1 "Not an Right Inverse of hypothesis".
+
+
 (* Hint program *)
 
 
@@ -231,36 +243,17 @@ tryif (unfold Surjective in h) then idtac else fail 1 "Not an Surjective of hypo
   
 
 
-Theorem reverse_inclusion_verbose :
-  ∀ {E F: Type} (f: E -> F),
-    Injective f -> 
-      ∀ A, (Pre f (Im f A)) ⊆ A.
-
+Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
+  (∃ g, Right_Inv f g) -> Surjective f.
 Proof.
-Let's fix values: A,B,C.
-Assume H0 : (Injective C).
-Let's fix :D.
-By definition of Inverse image applied to: (Pre C (Im C D) ⊆ D).
-By definition of Inclusion applied to :((λ x : A, C x ∈ Im C D) ⊆ D).
-Let's fix :E.
-Assume H1:(E ∈ (λ x : A, C x ∈ Im C D)).
-By definition of Injective applied to the hypothesis :H0.
-By definition of In applied to the hypothesis :H1.
-By definition of Image applied to the hypothesis :H1.
-Let's simplify our hypothesis :H1.
-Let's simplify our hypothesis :H.
-Let's apply our hypothesis H0 on the hypothesis H1.
-Let's rewrite : H1.
+Let's fix values : A,B,f.
+Assume H0 :(∃ g : B → A, Right_Inv f g).
+By definition of Surjective applied to :(Surjective f).
+Let's simplify our hypothesis :H0.
+Let's fix :y.
+Let's show that y applied to x fit. (*add new sentence*)
 Let's apply our hypothesis :H.
 Qed.
-
-
-
-
-
-
-
-
 
 
 (* 

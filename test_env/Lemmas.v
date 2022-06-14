@@ -84,7 +84,7 @@ Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
 Proof.
 Let's fix values: A,B,C,D,E.
 Assume H:(Injective C).
-By definition of equality applied to :(Im C (D ∩ E) == (Im C D ∩ Im C E)).
+By definition of Equality applied to :(Im C (D ∩ E) == (Im C D ∩ Im C E)).
 Let's prove the conjunction :((Im C (D ∩ E) ⊆ (Im C D ∩ Im C E)) ∧ (Im C D ∩ Im C E) ⊆ Im C (D ∩ E)).
 By definition of Inclusion applied to : (Im C (D ∩ E) ⊆ (Im C D ∩ Im C E)).
 Let's fix :F.
@@ -124,6 +124,19 @@ Let's apply our hypothesis :H1.
 Let's apply our hypothesis :H2.
 Qed.
 
+
+
+Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
+  (∃ g, Right_Inv f g) -> Surjective f.
+Proof.
+Let's fix values : A,B,f.
+Assume H0 :(∃ g : B → A, Right_Inv f g).
+By definition of Surjective applied to :(Surjective f).
+Let's simplify our hypothesis :H0.
+Let's fix :y.
+Let's show that y applied to x fit. 
+Let's apply our hypothesis :H.
+Qed.
 
 
 
