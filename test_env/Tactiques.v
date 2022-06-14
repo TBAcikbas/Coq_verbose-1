@@ -2,7 +2,7 @@ Require Import Utf8.
 Require Import Classical.
 Require Import Bool.
 Require Import CoqVerbose.Concepts.
-Require Import CoqVerbose.Hinter.
+
 
 
 (*Change the current subgoal*)
@@ -125,6 +125,7 @@ match goal with
     |- stmt \/ ?Q  => left
  |  |- ?P \/ stmt  => right
 end.
+
 Tactic Notation "Let's" "prove" "the" "disjunction" "by" "proving" ":" constr(t):=
 disj_left_right t.
 
@@ -228,7 +229,7 @@ tryif (unfold Im in h) then idtac else fail 1 "Not an Image of hypothesis".
 Tactic Notation "By" "definition" "of" "Injective" "applied" "to" "the" "hypothesis" ":" constr(h):=
 tryif (unfold Injective in h) then idtac else fail 1 "Not an Injective of hypothesis".
 
-Tactic Notation "By" "definition" "of" "Surjecive" "applied" "to" "the" "hypothesis" ":" constr(h):=
+Tactic Notation "By" "definition" "of" "Surjective" "applied" "to" "the" "hypothesis" ":" constr(h):=
 tryif (unfold Surjective in h) then idtac else fail 1 "Not an Surjective of hypothesis".
 
 
@@ -236,50 +237,6 @@ Tactic Notation "By" "definition" "of" "Right" "Inverse" "applied" "to" "the" "h
 tryif (unfold Right_Inv in h) then idtac else fail 1 "Not an Right Inverse of hypothesis".
 
 
-(* Hint program *)
-
-
-
-  
-
-
-Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
-  (∃ g, Right_Inv f g) -> Surjective f.
-Proof.
-Let's fix values : A,B,f.
-Assume H0 :(∃ g : B → A, Right_Inv f g).
-By definition of Surjective applied to :(Surjective f).
-Let's simplify our hypothesis :H0.
-Let's fix :y.
-Let's show that y applied to x fit. (*add new sentence*)
-Let's apply our hypothesis :H.
-Qed.
-
-
-(* 
-(*Exercice 11 surjectivity*)
-Lemma surj : forall {E :Type} (f: E -> E) A B, Surjective f <-> (B ⊆  Im f A ).
-Proof.
-Abort.
-
-
-
-Let's fix values :E,F,f,A,B.
-Let's prove the equivalence :(Surjective f ↔ B ⊆ Im f A).
-Assume H0 :(Surjective f).
-By definition of Inclusion applied to :(B ⊆ Im f A).
-Let's fix :C.
-Assume H1 :( C ∈ B ).
-By definition of In applied to:(C ∈ Im f A).
-By definition of Surjective applied to the hypothesis :H0.
-Let's apply our hypothesis C on the hypothesis H0.
-By definition of Image applied to :(Im f A C).
-Let's show that x fit.
-Let's prove the conjunction :(x ∈ A ∧ C = f x).
-unfold In.
- 
-
- *)
 
 
 

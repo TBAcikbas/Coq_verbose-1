@@ -39,4 +39,7 @@ Definition Surjective {E F: Type} (f:E -> F) :=
   ∀ (y:F),∃ x:E, f x = y.
 
 
-Definition Right_Inv {A B} (f : A -> B) G :=  ∀ B, f (G B) = B.
+Definition Right_Inv {A B} (f : A -> B) G :=  ∀ x, f (G x) = x.
+
+(* Definition Fonc_Cont {A} (f:A -> A) (x1:A) :=
+∀ ε ≥ (0:nat),∃ η ≥ (0:nat), ∀ x, | x -x1| ≤ η -> |f x - fx1| ≤ ε. *) (* Patrick massot unfinished functions ...*)
