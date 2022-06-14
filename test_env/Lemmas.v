@@ -6,7 +6,7 @@ Require Import CoqVerbose.Hinter.
 
 (* Exercices logiques*)
 
-Lemma exercice_27 : 
+Theorem exercice_27 : 
   forall A B C: Prop,  
     (((A /\ B) -> C) <-> ( A -> (B -> C))).
 
@@ -28,8 +28,6 @@ Let's apply our hypothesis :H0.
 Let's apply our hypothesis :H1.
 Qed.
  
-
-
 
 
 
@@ -137,6 +135,8 @@ Let's fix :y.
 Let's show that y applied to x fit. 
 Let's apply our hypothesis :H.
 Qed.
+
+
 
 
 

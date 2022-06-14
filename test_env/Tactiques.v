@@ -239,11 +239,10 @@ tryif (unfold Right_Inv in h) then idtac else fail 1 "Not an Right Inverse of hy
 
 
 
-
-
-
-
-
+Theorem Surjective_incl: forall {E F} (f:E -> F)  B ,Surjective f -> forall C, (C ⊆ B -> Im f (Pre f C) = C).
+intros.
+unfold Im.
+split.
 
 
 
