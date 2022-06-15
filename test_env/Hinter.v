@@ -1,6 +1,5 @@
 Require Import Utf8.
 Require Import CoqVerbose.Concepts.
-Require Import CoqVerbose.Tactiques.
 
 
 
@@ -62,11 +61,7 @@ Messages given during the aplha phase will be changed according to the requireme
 
 (*Hints applied to Hypothesis*)
 | [ _:Injective _ |-_ ]    => idtac "An injective hypothesis can be applied to 'f(x) = f(x')'"
-<<<<<<< HEAD
-| [ _:?A -> ?B |- _]       => idtac "Can be used "s
-=======
-| [ _:?A -> ?B |- _]       => idtac "Can be used" 
->>>>>>> 11d73473db319e28788be881f5ef09705401fa72
+| [ _:?A -> ?B |- _]       => idtac "Can be used "
 | [ _:forall x, _ |- _ ]   => idtac "Apply another hypothesis in order to simplify a forall statement" 
 | [ _:?Q <->  ?P |- _ ]    => idtac "An '<->' can be simplified "
 | [ _:?A /\ ?B |-  _ ]     => idtac "A conjunction hypothesis can be simplified to two hypothesis A and B"
@@ -82,17 +77,8 @@ Tactic Notation "Help" "please":=
 Hinter.
 
 
-Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens) Q (i:F),
-    Injective f-> 
-    (Im f (A ∩ B)) == ((Im f A) ∩ (Im f B)) -> Q.
-Help please.
-intros.
-unfold Set_eq in H0.
-spliter.
 
-unfold Incl in H0.
-induction (H0 i).
-Abort.
+
 
 
 

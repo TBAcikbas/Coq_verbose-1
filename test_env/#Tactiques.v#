@@ -215,6 +215,7 @@ Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
 Proof.
 intros.
 Eval unfold Equal in (Image f (A ∩ B) == (Image f A ∩ Image f B)).
+unfold Equal;assert (r: ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)) -> True);intro x;trivial;exact r;clear r.
 Prove that : (Image f (A ∩ B) == (Image f A ∩ Image f B)) such that we get ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
 
 

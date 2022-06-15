@@ -33,16 +33,16 @@ Qed.
 
 Theorem direct_Inclusion_verbose:
   forall {E F: Type} (f: E → F),
-     ∀ A, A ⊆ Pre f (Im f A).
+     ∀ A, A ⊆ Inverse f (Image f A).
 
 Proof.
 Let's fix values:A,B,C,D.
-By definition of Inclusion applied to : (D ⊆ Pre C (Im C D)).
+By definition of Inclusion applied to : (D ⊆ Inverse C (Image C D)).
 Let's fix :H.
 Assume H1 : (H ∈ D).
-By definition of Inverse image applied to :( H ∈ Pre C (Im C D)).
-By definition of In applied to :(H ∈ (λ x : A, C x ∈ Im C D)).
-By definition of Image applied to :(Im C D (C H)).
+By definition of Inverse image applied to :( H ∈ Inverse C (Image C D)).
+By definition of In applied to :(H ∈ (λ x : A, C x ∈ Image C D)).
+By definition of Image applied to :(Image C D (C H)).
 Let's show that H fit.
 Let's prove the conjunction: (H ∈ D ∧ C H = C H).
 Let's apply our hypothesis :H1.
@@ -54,14 +54,14 @@ Qed.
 Theorem reverse_inclusion_verbose :
   ∀ {E F: Type} (f: E -> F),
     Injective f -> 
-      ∀ A, (Pre f (Im f A)) ⊆ A.
+      ∀ A, (Inverse f (Image f A)) ⊆ A.
 
 Proof.
 Let's fix values: A,B,C.
 Assume H0 : (Injective C).
-By definition of Inclusion applied to : (∀ A0 : Ens, Pre C (Im C A0) ⊆ A0).
+By definition of Inclusion applied to : (∀ A0 : Ens, Inverse C (Image C A0) ⊆ A0).
 Let's fix values :D,E.
-Assume H1:(E ∈ Pre C (Im C D)).
+Assume H1:(E ∈ Inverse C (Image C D)).
 By definition of Injective applied to the hypothesis :H0.
 By definition of In applied to the hypothesis :H1.
 By definition of Inverse image applied to the hypothesis :H1.
@@ -78,18 +78,18 @@ Qed.
 
 Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
     Injective f -> 
-    (Im f (A ∩ B)) == ((Im f A) ∩ (Im f B)).
+    (Image f (A ∩ B)) == ((Image f A) ∩ (Image f B)).
 Proof.
 Let's fix values: A,B,C,D,E.
 Assume H:(Injective C).
-By definition of Equality applied to :(Im C (D ∩ E) == (Im C D ∩ Im C E)).
-Let's prove the conjunction :((Im C (D ∩ E) ⊆ (Im C D ∩ Im C E)) ∧ (Im C D ∩ Im C E) ⊆ Im C (D ∩ E)).
-By definition of Inclusion applied to : (Im C (D ∩ E) ⊆ (Im C D ∩ Im C E)).
+By definition of Equality applied to :(Image C (D ∩ E) == (Image C D ∩ Image C E)).
+Let's prove the conjunction :((Image C (D ∩ E) ⊆ (Image C D ∩ Image C E)) ∧ (Image C D ∩ Image C E) ⊆ Image C (D ∩ E)).
+By definition of Inclusion applied to : (Image C (D ∩ E) ⊆ (Image C D ∩ Image C E)).
 Let's fix :F.
-Assume H1: (F ∈ Im C (D ∩ E)).
+Assume H1: (F ∈ Image C (D ∩ E)).
 Let's simplify our hypothesis : H1.
 Let's simplify our hypothesis : H0.
-By definition of Image applied to :((Im C D ∩ Im C E) F).
+By definition of Image applied to :((Image C D ∩ Image C E) F).
 By definition of Intersection applied to :(F ∈ ((λ y : B, ∃ x0 : A, x0 ∈ D ∧ y = C x0) ∩ (λ y : B, ∃ x0 : A, x0 ∈ E ∧ y = C x0))).
 By definition of Inclusion applied to :(F ∈ ((λ y : B, ∃ x0 : A, x0 ∈ D ∧ y = C x0) ∩ (λ y : B, ∃ x0 : A, x0 ∈ E ∧ y = C x0))).
 Let's prove the conjunction :((∃ x0 : A, D x0 ∧ F = C x0) ∧ (∃ x0 : A, E x0 ∧ F = C x0)).
@@ -101,12 +101,12 @@ Let's show that x fit.
 Let's prove the conjunction : (E x ∧ F = C x).
 Let's apply our hypothesis :H2.
 Let's apply our hypothesis :H1.
-By definition of Inclusion applied to :((Im C D ∩ Im C E) ⊆ Im C (D ∩ E)).
+By definition of Inclusion applied to :((Image C D ∩ Image C E) ⊆ Image C (D ∩ E)).
 Let's fix : F.
-Assume H0: (F ∈ (Im C D ∩ Im C E)).
-By definition of Image applied to : (F ∈ Im C (D ∩ E)).
-By definition of Intersection applied to :( Im C (D ∩ E) F).
-By definition of Image applied to :( Im C (λ x : A, x ∈ D ∧ x ∈ E) F).
+Assume H0: (F ∈ (Image C D ∩ Image C E)).
+By definition of Image applied to : (F ∈ Image C (D ∩ E)).
+By definition of Intersection applied to :( Image C (D ∩ E) F).
+By definition of Image applied to :( Image C (λ x : A, x ∈ D ∧ x ∈ E) F).
 By definition of In applied to: (F ∈ (λ y : B, ∃ x : A, x ∈ (λ x0 : A, x0 ∈ D ∧ x0 ∈ E) ∧ y = C x)).
 By definition of Injective applied to the hypothesis : H.
 Let's simplify our hypothesis :H0.

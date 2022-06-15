@@ -20,8 +20,8 @@ Definition Intersection {E:Type} (A B: Ens) :=
   fun x:E => x ∈ A /\ x ∈ B.
 Notation "A ∩ B" := (Intersection A B) (at level 90). 
 
-Definition Equality {E: Type} (A B: @Ens E) := A ⊆ B /\ B ⊆ A.
-Notation "A == B" := (Equality A B) (at level 90).
+Definition Equal {E: Type} (A B: @Ens E) := A ⊆ B /\ B ⊆ A.
+Notation "A == B" := (Equal A B) (at level 90).
 
 (* Image of a set by a function *)
 Definition Image {E F: Type} (f: E → F) (A: Ens): Ens :=
@@ -38,12 +38,6 @@ Definition Injective {E F: Type} (f: E -> F) :=
 Definition Surjective {E F: Type} (f:E -> F) :=
   ∀ (y:F),∃ x:E, f x = y.
 
+
 Definition Right_Inv {A B} (f : A -> B) G :=  ∀ x, f (G x) = x.
 
-<<<<<<< HEAD
-=======
-
-
-(* Definition Fonc_Cont {A} (f:A -> A) (x1:A) :=
-∀ ε ≥ (0:nat),∃ η ≥ (0:nat), ∀ x, | x -x1| ≤ η -> |f x - fx1| ≤ ε. *) (* Patrick massot unfinished functions ...*)
->>>>>>> 11d73473db319e28788be881f5ef09705401fa72
