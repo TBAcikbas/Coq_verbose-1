@@ -62,7 +62,7 @@ Messages given during the aplha phase will be changed according to the requireme
 
 (*Hints applied to Hypothesis*)
 | [ _:Injective _ |-_ ]    => idtac "An injective hypothesis can be applied to 'f(x) = f(x')'"
-| [ _:?A -> ?B |- _]       => idtac "Can be used 
+| [ _:?A -> ?B |- _]       => idtac "Can be used "s
 | [ _:forall x, _ |- _ ]   => idtac "Apply another hypothesis in order to simplify a forall statement" 
 | [ _:?Q <->  ?P |- _ ]    => idtac "An '<->' can be simplified "
 | [ _:?A /\ ?B |-  _ ]     => idtac "A conjunction hypothesis can be simplified to two hypothesis A and B"

@@ -180,12 +180,12 @@ Applying_hyp_on_hyp H hyp.
 
 
 (*By definition ... *)
-
+(* 
 (*definitions applied to goals and subgoals*)
 Tactic Notation "By" "definition" "of" "Inclusion" "applied" "to" ":" constr(stmt):=
 tryif (unfold Incl) then idtac else fail 1 "Not an Inclusion statement".
 
-Tactic Notation "By" "definition" "of" "Inverse" "image" "applied" "to" ":" constr(stmt):=
+Tactic Notation "By" "definition" "of" "Inverse" "applied" "to" ":" constr(stmt):=
 tryif (unfold Pre) then idtac else fail 1 "Not an Inverse image statement".
 
 Tactic Notation "By" "definition" "of" "In" "applied" "to" ":" constr(stmt):=
@@ -236,13 +236,17 @@ tryif (unfold Surjective in h) then idtac else fail 1 "Not an Surjective of hypo
 Tactic Notation "By" "definition" "of" "Right" "Inverse" "applied" "to" "the" "hypothesis" ":" constr(h):=
 tryif (unfold Right_Inv in h) then idtac else fail 1 "Not an Right Inverse of hypothesis".
 
+ *)
+
+Tactic Notation "By" "definition" "of" constr(definition) "applied" "to" ":" constr(h):=
+tryif (unfold definition) then idtac else fail 1 "Not an Right Inverse of hypothesis".
+
+
+Tactic Notation "By" "definition" "of" constr(definition) "applied" "to" "the" "hypothesis" ":" constr(hypothesis):=
+tryif (unfold definition in hypothesis ) then idtac else fail 1 "Not an Right Inverse of hypothesis".
 
 
 
-Theorem Surjective_incl: forall {E F} (f:E -> F)  B ,Surjective f -> forall C, (C ⊆ B -> Im f (Pre f C) = C).
-intros.
-unfold Im.
-split.
 
 
 

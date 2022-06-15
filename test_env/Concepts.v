@@ -8,27 +8,27 @@ Definition In {E : Type} (A :@Ens E) (x:E) := A x.
 Notation "x ∈ A" := (In A x) (at level 60).
 
 (* Inclusion relation *)
-Definition Incl {E: Type} (A B: Ens) :=
+Definition Inclusion {E: Type} (A B: Ens) :=
   ∀ x: E, x ∈ A → x ∈ B.
-Notation "A ⊆ B" := (Incl A B) (at level 80).
+Notation "A ⊆ B" := (Inclusion A B) (at level 80).
 
 Definition Union {E:Type} (A B: Ens) :=
   fun x:E => x ∈ A \/ x ∈ B.
 Notation "A ∪ B" := (Union A B) (at level 90). 
 
-Definition Inter {E:Type} (A B: Ens) :=
+Definition Intersection {E:Type} (A B: Ens) :=
   fun x:E => x ∈ A /\ x ∈ B.
-Notation "A ∩ B" := (Inter A B) (at level 90). 
+Notation "A ∩ B" := (Intersection A B) (at level 90). 
 
-Definition Set_eq {E: Type} (A B: @Ens E) := A ⊆ B /\ B ⊆ A.
-Notation "A == B" := (Set_eq A B) (at level 90).
+Definition Equality {E: Type} (A B: @Ens E) := A ⊆ B /\ B ⊆ A.
+Notation "A == B" := (Equality A B) (at level 90).
 
 (* Image of a set by a function *)
-Definition Im {E F: Type} (f: E → F) (A: Ens): Ens :=
+Definition Image {E F: Type} (f: E → F) (A: Ens): Ens :=
   fun (y: F) => ∃ x, x ∈ A ∧ y = f x.
 
 (* Inverse image of a set by a function *)
-Definition Pre {E F: Type} (f: E → F) (B: Ens): Ens :=
+Definition Inverse {E F: Type} (f: E → F) (B: Ens): Ens :=
   fun (x: E) => f x ∈ B.
 
 (* Injective function *)
@@ -41,5 +41,3 @@ Definition Surjective {E F: Type} (f:E -> F) :=
 
 Definition Right_Inv {A B} (f : A -> B) G :=  ∀ x, f (G x) = x.
 
-(* Definition Fonc_Cont {A} (f:A -> A) (x1:A) :=
-∀ ε ≥ (0:nat),∃ η ≥ (0:nat), ∀ x, | x -x1| ≤ η -> |f x - fx1| ≤ ε. *) (* Patrick massot unfinished functions ...*)
