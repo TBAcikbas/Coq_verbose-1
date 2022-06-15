@@ -187,16 +187,12 @@ Applying_hyp_on_hyp hyp H.
 
 
 (*By definition ... *)
-(* 
+
 (*definitions applied to goals and subgoals*)
 Tactic Notation "By" "definition" "of" "Inclusion" "applied" "to" ":" constr(stmt):=
 tryif (unfold Incl) then idtac else fail 1 "Not an Inclusion statement".
 
-<<<<<<< HEAD
-Tactic Notation "By" "definition" "of" "Inverse" "applied" "to" ":" constr(stmt):=
-=======
 Tactic Notation "By" "definition" "of" "Inverse" "Image" "applied" "to" ":" constr(stmt):=
->>>>>>> 11d73473db319e28788be881f5ef09705401fa72
 tryif (unfold Pre) then idtac else fail 1 "Not an Inverse image statement".
 
 Tactic Notation "By" "definition" "of" "In" "applied" "to" ":" constr(stmt):=
@@ -249,14 +245,6 @@ tryif (unfold Surjective in h) then idtac else fail 1 "Not an Surjective of hypo
 Tactic Notation "By" "definition" "of" "Right" "Inverse" "applied" "to" "the" "hypothesis" ":" constr(h):=
 tryif (unfold Right_Inv in h) then idtac else fail 1 "Not an Right Inverse of hypothesis".
 
- *)
-
-Tactic Notation "By" "definition" "of" constr(definition) "applied" "to" ":" constr(h):=
-tryif (unfold definition) then idtac else fail 1 "Not an Right Inverse of hypothesis".
-
-
-Tactic Notation "By" "definition" "of" constr(definition) "applied" "to" "the" "hypothesis" ":" constr(hypothesis):=
-tryif (unfold definition in hypothesis ) then idtac else fail 1 "Not an Right Inverse of hypothesis".
 
 
 
