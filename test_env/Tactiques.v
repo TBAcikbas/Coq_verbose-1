@@ -184,9 +184,7 @@ Applying_hyp_on_hyp H hyp.
 
 
 
-Ltac tester G R :=let r := fresh in tryif(assert (r: R -> True);intros;trivial;[exact r| idtac];clear r) then idtac else fail 1 "pas le bon reponse pour:" G.
-
- 
+Ltac tester G R :=let r := fresh in tryif(assert (r: G -> R); intro R;exact R;clear r) then idtac else fail 1 "la reponse recherché n'est pas:" R.
 
 Ltac verification G R :=
 match goal with
@@ -197,24 +195,89 @@ match goal with
 | |- Inverse (_ _) => idtac "Inverse"
 | |- Injective _ => idtac "Injective"
 | |- Surjective _ => idtac "Surjective"
-| |- Equal _ _ => unfold Equal;tester G R
-| |- _ == _ => idtac "equalitiy"
+| |- _ == _ =>  unfold Equal;tester G R
+| |- context [Image _ _ ] => unfold Image ;tester G R
+
 end.
 
-Tactic Notation "Prove" "that" ":" constr(Goal) "such" "that" "we" "get" constr(Result):=
+Tactic Notation "Prove" "that" ":" constr(Goal) "such" "that" "we" "get" ":"constr(Result):=
 verification Goal Result.
 
 
-
-
-
-Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
+Theorem reverse_inclusion_verbose :
+  ∀ {E F: Type} (f: E -> F),
     Injective f -> 
-    (Image f (A ∩ B)) == ((Image f A) ∩ (Image f B)).
-
+      ∀ A, (Inverse f (Image f A)) ⊆ A.
 Proof.
 intros.
-Eval unfold Equal in (Image f (A ∩ B) == (Image f A ∩ Image f B)).
-Prove that : (Image f (A ∩ B) == (Image f A ∩ Image f B)) such that we get ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
+Eval unfold Inclusion in (Inverse f (Image f A) ⊆ A).
+Abort.
+
+(* 
+
+Introduction : Quand la verification est faite a la main, on peut voir que ça marche alors que c'est pas le cas pour la tactique...
+
+(*  verification a la main :
+
+unfold Inclusion.
+assert (r: (∀ x : E, x ∈ Inverse f (Image f A) → x ∈ A) -> (Inverse f (Image f A) ⊆ A)).
+intro R.
+exact R.
+clear r.
+ *)
+
+(* verification avec Ltac :
+
+Prove that : (Inverse f (Image f A) ⊆ A) such that we get :(∀ x : E, x ∈ Inverse f (Image f A) → x ∈ A).
 
 
+*)
+
+
+Message d'erreur reçu : Tactic failure: la reponse recherché n'est pas: (∀ x : E, x ∈ Inverse f (Image f A) → x ∈ A).
+Cause possible : la commande "exact t" ne trouve pas la variable  pour une raison inconnue..
+Methode de résolution : Trouver une autre moyen de verifier la validité du resultat...
+
+ *)
+
+
+
+
+
+(* 
+
+Introduction : Utilisation du nom de la Definition (ex: Inclusion, Injective) comme parametre d'une fonction.
+
+
+
+(* Notation tactique qui peux remplacer  Prove that : constr(Goal) such that we get : constr(Result)*)
+
+
+
+        Tactic Notation By Definition of constr(Definition_to_use) rove  that   : constr(Goal) such that we get : constr(Result):=
+        verification Definition Goal Result.
+
+(*Ltac qui peux remplacer  
+         Ltac verification G R :=
+        match goal with
+          .
+          .
+          .
+        end.
+ *)
+
+      Ltac verification def G R :=
+        match def with
+          .
+          .
+          .
+        end.
+
+
+
+
+Message d'erreur reçu : Cannot infer the implicit parameter E of Inclusion whose type is "Type" in
+Cause possible : Utilisation d'une fonction comme parametre 
+Methode de résolution : ???
+
+*)
