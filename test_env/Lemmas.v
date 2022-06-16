@@ -36,7 +36,8 @@ Theorem direct_Inclusion_verbose:
      ∀ A, A ⊆ Inverse f (Image f A).
 
 Proof.
-Let's fix values:A,B,C,D.
+Abort.
+(* Let's fix values:A,B,C,D.
 By definition of Inclusion applied to : (D ⊆ Inverse C (Image C D)).
 Let's fix :H.
 Assume H1 : (H ∈ D).
@@ -47,7 +48,7 @@ Let's show that H fit.
 Let's prove the conjunction: (H ∈ D ∧ C H = C H).
 Let's apply our hypothesis :H1.
 It is trivial.
-Qed.
+Qed. *)
 
 
 
@@ -57,7 +58,8 @@ Theorem reverse_inclusion_verbose :
       ∀ A, (Inverse f (Image f A)) ⊆ A.
 
 Proof.
-Let's fix values: A,B,C.
+Abort.
+(* Let's fix values: A,B,C.
 Assume H0 : (Injective C).
 By definition of Inclusion applied to : (∀ A0 : Ens, Inverse C (Image C A0) ⊆ A0).
 Let's fix values :D,E.
@@ -72,7 +74,7 @@ Let's simplify our hypothesis :H.
 Let's apply our hypothesis H0 on the hypothesis H1.
 Let's rewrite : H1.
 Let's apply our hypothesis :H.
-Qed.
+Qed. *)
 
 
 
@@ -80,6 +82,8 @@ Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
     Injective f -> 
     (Image f (A ∩ B)) == ((Image f A) ∩ (Image f B)).
 Proof.
+Abort.
+(* 
 Let's fix values: A,B,C,D,E.
 Assume H:(Injective C).
 By definition of Equality applied to :(Image C (D ∩ E) == (Image C D ∩ Image C E)).
@@ -121,12 +125,14 @@ Let's rewrite : H3.
 Let's apply our hypothesis :H1.
 Let's apply our hypothesis :H2.
 Qed.
-
+ *)
 
 
 Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
   (∃ g, Right_Inv f g) -> Surjective f.
 Proof.
+Abort.
+(* 
 Let's fix values : A,B,f.
 Assume H0 :(∃ g : B → A, Right_Inv f g).
 By definition of Surjective applied to :(Surjective f).
@@ -134,7 +140,7 @@ Let's simplify our hypothesis :H0.
 Let's fix :y.
 Let's show that y applied to x fit. 
 Let's apply our hypothesis :H.
-Qed.
+Qed. *)
 
 
 

@@ -2,7 +2,7 @@ Require Import Utf8.
 Require Import Classical.
 Require Import Bool.
 Require Import CoqVerbose.Concepts.
-Require Import CoqVerbose.Hinter.
+
 
 
 
@@ -176,7 +176,7 @@ Applying_hypothesis hyp.
 Tactic Notation "Let's" "simplify" "our" "hypothesis" ":" constr(stmt) :=
 simpl_hyp stmt.
 
-Tactic Notation "Let's" "apply" "our" "hypothesis" constr(hyp) "on" "the" "hypothesis" constr(H):=
+Tactic Notation "Let's" "apply" "our" "hypothesis" ":" constr(hyp) "on" "the" "hypothesis" ":" constr(H):=
 Applying_hyp_on_hyp H hyp.
 
 
