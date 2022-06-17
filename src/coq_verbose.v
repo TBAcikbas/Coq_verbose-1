@@ -90,6 +90,9 @@ Tactic Notation "By" "cases" "on" constr(t) :=
 Example test1 : forall n:nat, n>0 -> True.
 Proof.
 Fix n.
+(* intro name.
+assert(Hf:n>0).
+ *)
 Assume that H : (n>0).
 Assume for contradiction H2 : (~ True).
 intuition.

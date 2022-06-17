@@ -45,3 +45,136 @@ root
 *** Fichier '* Startup Log *'
 Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
 Finished processing /etc/joe/editorrc
+
+*** These modified files were found in JOE when it aborted on Fri Jun 17 18:12:12 2022
+*** JOE was aborted because the terminal closed
+
+*** Fichier '/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG'
+remake of Hinter.v
+
+# Veuillez saisir le
+ message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Validateur : tacikbas <tacikbas@pcc307.psi.ad.unistra.fr>
+#
+# Sur la branche main
+# Votre branche est à jour avec 'origin/main'.
+#
+# Modifications qui seront validées :
+#	modifié :         Hinter.v
+#	modifié :         Hinter2.v
+#
+# Modifications qui ne seront pas validées :
+#	modifié :         ../src/coq_verbose.v
+#
+
+*** Fichier '(Sans nom)'
+exit
+
+*** Fichier '(Sans nom)'
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+
+*** Fichier '* Startup Log *'
+Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc
+
+*** These modified files were found in JOE when it aborted on Fri Jun 17 18:12:56 2022
+*** JOE was aborted because the terminal closed
+
+*** Fichier '* Shell 2 *'
+
+Type joehelp for editor shell commands
+
+tacikbas@pcc307:~/Bureau/Coq_verbose-1$ ls
+ DEADJOE   LICENSE   README.md   [1m[34msrc[m   [1m[34mtest_env[m  [1m[34m'TP test'
+tacikbas@pcc307:~/Bureau/Coq_verbose-1$ git a
+*** Fichier '/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG'
+
+# Veuillez,OP saisir le message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Validateur : tacikbas <tacikbas@pcc307.psi.ad.unistra.fr>
+#
+# Sur la branche main
+# Votre branche est à jour avec 'origin/main'.
+#
+# Modifications qui seront validées :
+#	modifié :         DEADJOE
+#	modifié :         src/coq_verbose.v
+#	modifié :         test_env/Hinter.v
+#	modifié :         test_env/Hinter2.v
+#
+
+*** Fichier '(Sans nom)'
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+* Startup Log *
+* Shell 2 *
+* Startup Log *
+* Shell 2 *
+
+*** Fichier '* Startup Log *'
+Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc
+
+*** These modified files were found in JOE when it aborted on Fri Jun 17 18:12:56 2022
+*** JOE was aborted by UNIX signal 1
+
+*** These modified files were found in JOE when it aborted on Fri Jun 17 18:12:56 2022
+*** JOE was aborted by UNIX signal 1
+
+*** Fichier '/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG'
+
+*** Fichier '/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG'
+
+# Veuillez,OP saisir le message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Validateur : tacikbas <tacikbas@pcc307.psi.ad.unistra.fr>
+#
+# Sur la branche main
+# Votre branche est à jour avec 'origin/main'.
+#
+# Modifications qui seront validées :
+#	modifié :         DEADJOE
+#	modifié :         src/coq_verbose.v
+#	modifié :         test_env/Hinter.v
+#	modifié :         test_env/Hinter2.v
+#
+
+# Veuillez,OP saisir le message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Validateur : tacikbas <tacikbas@pcc307.psi.ad.unistra.fr>
+#
+# Sur la branche main
+# Votre branche est à jour avec 'origin/main'.
+#
+# Modifications qui seront validées :
+#	modifié :         DEADJOE
+#	modifié :         src/coq_verbose.v
+#	modifié :         test_env/Hinter.v
+#	modifié :         test_env/Hinter2.v
+#
+
+*** Fichier '(Sans nom)'
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+* Startup Log *
+* Shell 2 *
+
+*** Fichier '(Sans nom)'
+
+*** Fichier '* Startup Log *'
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+* Startup Log *
+* Shell 2 *
+Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc
+
+*** Fichier '* Startup Log *'
+Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc

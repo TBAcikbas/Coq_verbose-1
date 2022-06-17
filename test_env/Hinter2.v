@@ -48,7 +48,7 @@ Messages given during the aplha phase will be changed according to the requireme
 (*Hints applied to goals*)
 | [                              |- _ -> _                   ] => intro
 | [                              |- forall x,?P              ] => Let's fix : ?P
-| [H:?Q                          |- exists x,?P :?Q              ] => (*Unknown ??*) exists H
+| [H:?Q                          |- exists x,?P :?Q          ] => exists H
 | [H:exists x,?P                 |- _                        ] => simpl_hyp H
 | [                              |- context [ _ <-> _ ]      ] => split
 | [                              |- context [ _ == _ ]       ] => unfold Equal
@@ -57,7 +57,6 @@ Messages given during the aplha phase will be changed according to the requireme
 | [                              |- context [ _ ∪  _ ]       ] => unfold Union
 | [                              |- context [ _  ⊆ _ ]       ] => unfold Inclusion
 | [ H:context[_ /\ _ ]           |- _                        ] => simpl_hyp H 
-| [ H:context[exists x,?P], T: _ |- _                        ] => (*Unknown*) idtac "welp"
 | [ H:context[ _ ∈ _ ]           |- _                        ] => unfold In in H
 | [                              |- ?A ∈ ?B                  ] => unfold In
 | [ H: _ <->  _                  |- _                        ] => simpl_hyp 
@@ -72,7 +71,6 @@ Messages given during the aplha phase will be changed according to the requireme
 | [                              |- Surjective _             ] => unfold Surjective
 | [ H:Injective _                |- _                        ] => unfold Injective in H
 | [                              |- ?P _ = ?P _              ] => f_equal
-| [ H:Injective ?P ,Q:?P _ = ?P _  |-_                         ] => apply H in Q
 | [                              |- _                        ] => tryif (assumption) then idtac else idtac "Error: No Help avaible"
 end.
 
