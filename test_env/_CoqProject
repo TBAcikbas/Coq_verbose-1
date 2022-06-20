@@ -1,9 +1,8 @@
--Q . CoqVerbose
-Hinter.v
-Hinter2.v
-Hinter3.v
+-R . CoqVerbose
 Concepts.v
 Tactiques.v
+Hinter.v
+Hinter2.v
 Lemmas.v
 
 

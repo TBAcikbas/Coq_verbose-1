@@ -181,42 +181,73 @@ Applying_hyp_on_hyp H hyp.
 
 
 
-
-Ltac tester user R :=
+(* Ltac tester  goal newgoal :=
 let Hf := fresh in 
+let r := fresh in 
+tryif (assert (Hf: goal -> newgoal);[intro r;exact r|idtac];clear Hf) then cut newgoal;[intro r;exact r| idtac] else fail 1 "Wrong anwser, the result you are looking for isn't" newgoal.  
 
-tryif(assert (Hf: R) ;intros;[exact user|idtac ];clear Hf) then idtac else assert (Hf: R);[exact R|idtac ];clear Hf .
+ *)
+
+
+
+
+Ltac tester  goal newgoal :=
+let Hf := fresh in 
+let r := fresh in 
+tryif cut newgoal;[intro r;exact r| idtac] then idtac else fail 1 "Wrong anwser, the result you are looking for isn't" newgoal.  
 
 
 
 Ltac verification G R :=
 
-let alpha := (unfold G)in
+
 
 match goal with
-  |- _ ∈ _ => idtac "in"
-| |- Inclusion _ _ => unfold Inclusion;tester G R
-| |- Union _ _ => unfold Union;tester G R
-| |- Intersection _ _ => idtac "Intersection"
-| |- Inverse _ _ => idtac "Inverse"
-| |- Injective _ => idtac "Injective"
-| |- Surjective _ =>unfold Surjective;idtac "Surjective"
-| |- _ == _ =>  tester alpha R
+  |- In _ _                => tester G R
+| |- Inclusion _ _        => unfold Inclusion;tester G R
+| |- Union _ _            => unfold Union;tester G R
+| |- Intersection _ _     => idtac "Intersection"
+| |- Inverse _ _          => idtac "Inverse"
+| |- Injective _          => idtac "Injective"
+| |- Surjective _         => unfold Surjective;idtac "Surjective"
+| |- Equal _ _            => unfold Equal; tester G R
 | |- context [Image _ _ ] => unfold Image ;tester G R
+| [ H:context[ _ ∈ _ ]           |- _                        ] => check_hyp_is G R
 
 end.
 
-Tactic Notation "Prove" "that" ":" constr(Goal) "such" "that" "we" "get" ":"constr(Result):=
+Tactic Notation "We" "need" "to" "prove" "that" ":" constr(Goal) "that" "means" ":"constr(Result):=
 verification Goal Result.
+
+
 
 Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
     Injective f -> 
     (Image f (A ∩ B)) == ((Image f A) ∩ (Image f B)).
+
+
 Proof.
 intros.
+tester ( (Image f (A ∩ B) == (Image f A ∩ Image f B))) ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
 
-(* Prove that : (Image f (A ∩ B) == (Image f A ∩ Image f B)) such that we get :((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)). *)
-Abort.
+Admitted.
+
+
+Theorem reverse_inclusion_verbose :
+  ∀ {E F: Type} (f: E -> F),
+    Injective f -> 
+      ∀ A, (Inverse f (Image f A)) ⊆ A.
+Proof.
+intros E F f Hinj A.
+We need to prove that :(Inverse f (Image f A) ⊆ A) that means : (∀ x : E, x ∈ Inverse f (Image f A) → x ∈ A).
+intros.
+We need to prove that :(x ∈ A) that means: (A x).
+
+We need to prove that :(x ∈ Inverse f (Image f A)) that means :(Inverse f (Image f A) x).
+
+
+Admitted.
+
 
 
 

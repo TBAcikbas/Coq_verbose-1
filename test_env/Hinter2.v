@@ -4,6 +4,9 @@ Require Import CoqVerbose.Tactiques.
 
 
 
+
+
+
 (* Ltac Hinter_yoda := (*Easter egg ??*)
 match goal with
 (*Hints applied to Hypothesis*)
@@ -38,14 +41,11 @@ Hinter_yoda.
 
 
 Ltac Hinter_2 :=
+repeat
 match goal with
 (* Sentences are temporary this files contains hints that will be used in order to help user. 
 Messages given during the aplha phase will be changed according to the requirement put forward by the Owner later on*)
 
-
-
-
-(*Hints applied to goals*)
 | [                              |- _ -> _                   ] => intro
 | [                              |- forall x,?P              ] => Let's fix : ?P
 | [H:?Q                          |- exists x,?P :?Q          ] => exists H
@@ -57,7 +57,7 @@ Messages given during the aplha phase will be changed according to the requireme
 | [                              |- context [ _ ∪  _ ]       ] => unfold Union
 | [                              |- context [ _  ⊆ _ ]       ] => unfold Inclusion
 | [ H:context[_ /\ _ ]           |- _                        ] => simpl_hyp H 
-| [ H:context[ _ ∈ _ ]           |- _                        ] => unfold In in H
+
 | [                              |- ?A ∈ ?B                  ] => unfold In
 | [ H: _ <->  _                  |- _                        ] => simpl_hyp 
 | [ H: _  ⊆ _                    |- _                        ] => unfold Inclusion in
@@ -71,7 +71,9 @@ Messages given during the aplha phase will be changed according to the requireme
 | [                              |- Surjective _             ] => unfold Surjective
 | [ H:Injective _                |- _                        ] => unfold Injective in H
 | [                              |- ?P _ = ?P _              ] => f_equal
+| [ H:Injective ?P,H2: ?P _ = ?P _  |- _                        ] => tryif (apply H in H2) then idtac else idtac "Not an Injection"
 | [                              |- _                        ] => tryif (assumption) then idtac else idtac "Error: No Help avaible"
+
 end.
 
 Tactic Notation "Help" "Please":=
@@ -92,29 +94,15 @@ Theorem direct_Inclusion_verbose:
 
 Proof.
 help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-help.
-Qed. 
-
+Qed.
+ 
 
 Theorem reverse_inclusion_verbose :
   ∀ {E F: Type} (f: E -> F),
     Injective f -> 
       ∀ A, (Inverse f (Image f A)) ⊆ A.
 Proof.
+help.
 help.
 help.
 help.

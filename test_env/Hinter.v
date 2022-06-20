@@ -4,6 +4,7 @@ Require Import CoqVerbose.Tactiques.
 
 
 
+
 (* Ltac Hinter_yoda := (*Easter egg ??*)
 match goal with
 (*Hints applied to Hypothesis*)
@@ -66,9 +67,10 @@ Messages given during the aplha phase will be changed according to the requireme
 | [ H: _ ∪ _                     |- _                        ] =>idtac "When using a ∪ , you should always prove both cases (exemple:exemple :By cases on :(Your current goal) such that we get (First implication) and (Second Implication))"
 | [                              |- context [Image _ _]      ] =>  idtac "Image applied to :(your current goal) such that we get (Result of Unfold)" 
 | [                              |- context [Inverse _ _ ]   ] => idtac "It is possible to rewrite Inverse by usint it's definition (exemple: Prove that :(your goal) such that we get (Result of Unfold)"
-| [                              |- context [Right_Inv _ _]  ] => idtac "It is possible to rewrite Right_Inv by using it's definition (exemple: Prove that:(your hypothesis) such that we get (Result of Unfold))"| [                              |- Surjective _             ] =>  idtac "It is possible to rewrite Surjective by using it's definition (exemple: Prove that:(your hypothesis) such that we get (Result of Unfold))"
+| [                              |- context [Right_Inv _ _]  ] => idtac "It is possible to rewrite Right_Inv by using it's definition (exemple: Prove that:(your hypothesis) such that we get (Result of Unfold))"
+| [                              |- Surjective _             ] =>  idtac "It is possible to rewrite Surjective by using it's definition (exemple: Prove that:(your hypothesis) such that we get (Result of Unfold))"
 | [ H:Injective _                |- _                        ] =>  idtac "An injective hypothesis can be applied to 'f(x) = f(x')' (exemple:Let's apply our hypothesis: (name of your Injective Hypothesis))"
-
+| [ H: _ \/ _                    |- _                        ] => idtac "When proving a disjunction which is an hypothesis, you need to prove both cases (exemple : Prove that :(you disjunction) such that we get (Cases)"
 | [                              |- _                        ] =>  idtac "Error: No Help avaible"
 end.
 
@@ -82,14 +84,14 @@ Hinter.
 Tactic Notation "Help":=
 Hinter.
 
-(* 
+
 Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
     Injective f -> 
     (Image f (A ∩ B)) == ((Image f A) ∩ (Image f B)).
 Proof.
 Help Please.
 Let's fix values: A,B,C,D,E.
-help.
+help. (*error*)
 Assume H:(Injective C).
 Help Please.
 unfold Equal.
@@ -180,7 +182,7 @@ assumption.
 Qed.
 
 
-
+(* 
 
 Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
   (∃ g, Right_Inv f g) -> Surjective f.
@@ -257,3 +259,4 @@ help.
 apply H0.
 apply H0.
 Qed.  *)
+ *)
