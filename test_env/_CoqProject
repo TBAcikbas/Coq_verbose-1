@@ -1,8 +1,11 @@
 -R . CoqVerbose
 Concepts.v
-Tactiques.v
+Adv_Concepts.v
+Tactics.v
 Hinter.v
 Hinter2.v
+Hinter3.v
+Hinter4.v
 Lemmas.v
 
 
