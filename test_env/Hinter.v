@@ -2,8 +2,6 @@ Require Import Utf8.
 Require Import CoqVerbose.Concepts.
 
 
-
-
 (* Ltac Hinter_yoda := (*Easter egg ??*)
 match goal with
 (*Hints applied to Hypothesis*)
@@ -34,6 +32,8 @@ Tactic Notation "Master" "yoda" "," "what" "is" "your" "wisdom" "?":= (* To be c
 Hinter_yoda.
 
  *)
+
+
 
 
 

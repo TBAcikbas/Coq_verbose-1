@@ -1,7 +1,9 @@
 Require Import CoqVerbose.Concepts.
-Require Import CoqVerbose.Tactiques.
+Require Import CoqVerbose.Tactics.
 Require Import Utf8.
 Require Import CoqVerbose.Hinter.
+Require Import Reals.
+
 
 
 (* Exercices logiques*)
@@ -11,22 +13,7 @@ Theorem exercice_27 :
     (((A /\ B) -> C) <-> ( A -> (B -> C))).
 
 Proof.
-Let's fix values : A,B,C.
-Let's prove the equivalence : (((A /\ B) -> C) <-> ( A -> (B -> C))).
-Let's prove : ((A /\ B -> C) -> A -> B -> C).
-Assume H : (A /\ B -> C).
-Assume H1: A.
-Assume H2: B.
-Let's apply our hypothesis :H.
-Let's prove the conjunction : (A /\ B).
-Let's apply our hypothesis :H1.
-Let's apply our hypothesis :H2.
-Assume H : (A -> B -> C ).
-Assume H1: (A /\ B).
-Let's apply our hypothesis :H.
-Let's apply our hypothesis :H0.
-Let's apply our hypothesis :H1.
-Qed.
+Abort.
  
 
 
@@ -37,18 +24,7 @@ Theorem direct_Inclusion_verbose:
 
 Proof.
 Abort.
-(* Let's fix values:A,B,C,D.
-By definition of Inclusion applied to : (D ⊆ Inverse C (Image C D)).
-Let's fix :H.
-Assume H1 : (H ∈ D).
-By definition of Inverse image applied to :( H ∈ Inverse C (Image C D)).
-By definition of In applied to :(H ∈ (λ x : A, C x ∈ Image C D)).
-By definition of Image applied to :(Image C D (C H)).
-Let's show that H fit.
-Let's prove the conjunction: (H ∈ D ∧ C H = C H).
-Let's apply our hypothesis :H1.
-It is trivial.
-Qed. *)
+
 
 
 
@@ -59,71 +35,60 @@ Theorem reverse_inclusion_verbose :
 
 Proof.
 Abort.
-(* Let's fix values: A,B,C.
-Assume H0 : (Injective C).
-By definition of Inclusion applied to : (∀ A0 : Ens, Inverse C (Image C A0) ⊆ A0).
-Let's fix values :D,E.
-Assume H1:(E ∈ Inverse C (Image C D)).
-By definition of Injective applied to the hypothesis :H0.
-By definition of In applied to the hypothesis :H1.
-By definition of Inverse image applied to the hypothesis :H1.
-By definition of In applied to the hypothesis :H1.
-By definition of Image applied to the hypothesis :H1.
-Let's simplify our hypothesis :H1.
-Let's simplify our hypothesis :H.
-Let's apply our hypothesis H0 on the hypothesis H1.
-Let's rewrite : H1.
-Let's apply our hypothesis :H.
-Qed. *)
+
 
 
 
 Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
     Injective f -> 
     (Image f (A ∩ B)) == ((Image f A) ∩ (Image f B)).
+
+
 Proof.
 Abort.
 (* 
-Let's fix values: A,B,C,D,E.
-Assume H:(Injective C).
-By definition of Equality applied to :(Image C (D ∩ E) == (Image C D ∩ Image C E)).
-Let's prove the conjunction :((Image C (D ∩ E) ⊆ (Image C D ∩ Image C E)) ∧ (Image C D ∩ Image C E) ⊆ Image C (D ∩ E)).
-By definition of Inclusion applied to : (Image C (D ∩ E) ⊆ (Image C D ∩ Image C E)).
-Let's fix :F.
-Assume H1: (F ∈ Image C (D ∩ E)).
-Let's simplify our hypothesis : H1.
-Let's simplify our hypothesis : H0.
-By definition of Image applied to :((Image C D ∩ Image C E) F).
-By definition of Intersection applied to :(F ∈ ((λ y : B, ∃ x0 : A, x0 ∈ D ∧ y = C x0) ∩ (λ y : B, ∃ x0 : A, x0 ∈ E ∧ y = C x0))).
-By definition of Inclusion applied to :(F ∈ ((λ y : B, ∃ x0 : A, x0 ∈ D ∧ y = C x0) ∩ (λ y : B, ∃ x0 : A, x0 ∈ E ∧ y = C x0))).
-Let's prove the conjunction :((∃ x0 : A, D x0 ∧ F = C x0) ∧ (∃ x0 : A, E x0 ∧ F = C x0)).
-Let's show that x fit.
-Let's prove the conjunction :(D x ∧ F = C x).
-Let's apply our hypothesis :H0.
-Let's apply our hypothesis :H1.
-Let's show that x fit.
-Let's prove the conjunction : (E x ∧ F = C x).
-Let's apply our hypothesis :H2.
-Let's apply our hypothesis :H1.
-By definition of Inclusion applied to :((Image C D ∩ Image C E) ⊆ Image C (D ∩ E)).
-Let's fix : F.
-Assume H0: (F ∈ (Image C D ∩ Image C E)).
-By definition of Image applied to : (F ∈ Image C (D ∩ E)).
-By definition of Intersection applied to :( Image C (D ∩ E) F).
-By definition of Image applied to :( Image C (λ x : A, x ∈ D ∧ x ∈ E) F).
-By definition of In applied to: (F ∈ (λ y : B, ∃ x : A, x ∈ (λ x0 : A, x0 ∈ D ∧ x0 ∈ E) ∧ y = C x)).
-By definition of Injective applied to the hypothesis : H.
-Let's simplify our hypothesis :H0.
-Let's simplify our hypothesis :H1.
-Let's show that x fit.
-Let's prove the conjunction :((D x ∧ E x) ∧ F = C x).
-Let's prove the conjunction :(D x ∧ E x).
-Let's apply our hypothesis :H0.
+Let's fix values: E,F,f,A,B.
+Assume H:(Injective f).
+Let's prove :( (Image f (A ∩ B) == (Image f A ∩ Image f B))) by proving :((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
+Let's prove :(Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) by proving :( ∀ x : F, x ∈ Image f (A ∩ B) → x ∈ (Image f A ∩ Image f B)).
+Let's fix:y.
+Assume H1:(y ∈ Image f (A ∩ B) ).
+Let's prove :(y ∈ (Image f A ∩ Image f B)) by proving :((Image f A ∩ Image f B) y).
+Let's prove :((Image f A ∩ Image f B) y) by proving :(((λ y : F, ∃ x : E, x ∈ A ∧ y = f x) ∩ (λ y : F, ∃ x : E, x ∈ B ∧ y = f x)) y).
+Let's prove :(((λ y0 : F, ∃ x : E, x ∈ A ∧ y0 = f x) ∩ (λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x)) y) by proving :(y ∈ (λ y0 : F, ∃ x : E, x ∈ A ∧ y0 = f x) ∧ y ∈ (λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x)).
+Let's prove :(y ∈ (λ y0 : F, ∃ x : E, x ∈ A ∧ y0 = f x)) by proving :(∃ x : E, x ∈ A ∧ y = f x).
+By using our definitions on :(H1) such that we get:(∃ x : E, x ∈ (A ∩ B) ∧ y = f x).
+Let's show that x fits.
+Let's prove :(x ∈ A ∧ y = f x) by proving :(A x ∧ y = f x).
+By using our definitions on :(H0) such that we get :((A ∩ B) x).
+By using our definitions on :(H0) such that we get :(A x).
+assumption.
+assumption.
+Let's prove:(y ∈ (λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x)) by proving :((λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x) y).
+Let's prove :((λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x) y) by proving :((∃ x : E, x ∈ B ∧ y = f x)).
+By using our definitions on :(H1) such that we get :(Image f (A ∩ B) y).
+Let's show that x fits.
+Let's prove :(x ∈ B ∧ y = f x) by proving :(x ∈ B ∧ y = f x).
+By using our definitions on :(H0) such that we get:((A ∩ B) x).
+assumption.
+assumption.
+Let's prove:((Image f A ∩ Image f B) ⊆ Image f (A ∩ B)) by proving :(∀ x : F, x ∈ (Image f A ∩ Image f B) → x ∈ Image f (A ∩ B)).
+Let's fix :y.
+Assume H0:(y ∈ (Image f A ∩ Image f B)).
+Let's prove :(y ∈ Image f (A ∩ B)) by proving :(Image f (A ∩ B) y).
+Let's prove :(Image f (A ∩ B) y) by proving :(∃ x : E, x ∈ (A ∩ B) ∧ y = f x).
+By using our definitions on :(H0) such that we get:((Image f A ∩ Image f B) y).
+By using our definitions on :(H0) such that we get:(∃ x : E, x ∈ A  ∧ y = f x).
+By using our definitions on :(H1) such that we get:(∃ x : E, x ∈ B  ∧ y = f x).
+Let's show that x fits.
+Let's prove :(x ∈ (A ∩ B) ∧ y = f x) by proving :(x ∈ (A ∩ B) ∧ y = f x).
+Let's prove :(x ∈ (A ∩ B)) by proving :(x ∈ A /\ x ∈ B).
+assumption.
 Let's rewrite :H2 as H3.
-Let's apply our hypothesis H on the hypothesis H3.
-Let's rewrite : H3.
-Let's apply our hypothesis :H1.
-Let's apply our hypothesis :H2.
+Let's apply our hypothesis H on the hypothesis H3 such that we get :(x =x0).
+Let's rewrite our goal by using our hypothesis H3.
+assumption.
+assumption.
 Qed.
  *)
 
@@ -143,6 +108,73 @@ Let's apply our hypothesis :H.
 Qed. *)
 
 
+
+
+(*Lean exos...*)
+
+
+Open Scope R_scope.
+
+
+
+
+
+
+
+
+Theorem example: forall (f : R → R) (u : nat → R) (x0 : R) (hu:sequence_tendsto u x0) (hf:continuous_function_at f x0),  sequence_tendsto (compose f u) (f x0).
+Proof.
+Abort.
+(*
+Let's fix values :f,u,x0.
+Assume H:(sequence_tendsto u x0 ).
+Assume H1:(continuous_function_at f x0).
+Let's prove :(sequence_tendsto (compose f u) (f x0)) by proving :(∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (compose f u n + - f x0) <= ε).
+Let's fix: eps.
+Assume eps_pos:(eps > 0).
+By using our definitions on :(H1) such that we get:( ∀ ε : R, ε > 0 → ∃ δ : R, δ > 0 ∧ (∀ x : R, Rabs (x - x0) <= δ → Rabs (f x - f x0) <= ε)).
+Let's apply our hypothesis eps on the hypothesis H1.
+By using our definitions on :H0  such that we get :(x > 0 ∧ (∀ x1 : R, Rabs (x1 - x0) <= x → Rabs (f x1 - f x0) <= eps)).
+By using our definitions on :H such that we get:( ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n + - x0) <= ε).
+Let's apply our hypothesis x on the hypothesis H .
+exists x1.
+Let's fix :N.
+Assume H4:(N ≥ x1).
+Let's apply our hypothesis (u N) on the hypothesis H2.
+Let's prove :(Rabs (compose f u N + - f x0) <= eps) by proving:(Rabs (compose f u N + - f x0) < eps ∨ Rabs (compose f u N + - f x0) = eps).
+Let's prove the disjunction by proving :(Rabs (compose f u N + - f x0) < eps).
+assumption.
+Let's prove :(Rabs (compose f u N + - f x0) <= eps) by proving:(Rabs (compose f u N + - f x0) < eps ∨ Rabs (compose f u N + - f x0) = eps).
+Let's prove the disjunction by proving :( Rabs (compose f u N + - f x0) = eps).
+assumption.
+Let's apply our hypothesis :H3.
+Let's apply our hypothesis :H4.
+assumption.
+assumption.
+
+
+ *)
+
+Theorem test :forall (u : nat→ R) (l : R),(∀ n, u n = l) → sequence_tendsto u l.
+Proof.
+Abort.
+(* Let's fix values:u,l.
+Assume H0:((∀ n : nat, u n = l)).
+Let's prove :(sequence_tendsto u l) by proving :(∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) <= ε).
+Let's fix :eps.
+Assume eps_pos :(eps >0).
+Let's show that (0%nat) fits.
+Let's fix:N.
+Assume N_pos:(N ≥ 0).
+Let's apply our hypothesis N on the hypothesis H0.
+Let's prove :(Rabs (u N - u N) <= eps) by proving :(Rabs (u N - u N) < eps ∨ Rabs (u N - u N) = eps).
+Let's prove the disjunction by proving :(Rabs (u N - u N) < eps).
+Let's rewrite our goal by using our hypothesis Rminus_diag_eq. (*Special library function*)
+Let's rewrite our goal by using our hypothesis Rabs_R0.(*Special library function*)
+assumption.
+trivial.
+Qed.
+ *)
 
 
 

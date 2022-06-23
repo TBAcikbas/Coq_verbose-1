@@ -1,4 +1,5 @@
 Require Import Utf8.
+Require Import Reals.
 
 (* Set definition *)
 (* In this file, a set is represented by its 
@@ -40,4 +41,24 @@ Definition Surjective {E F: Type} (f:E -> F) :=
 
 
 Definition Right_Inv {A B} (f : A -> B) G :=  ∀ x, f (G x) = x.
+
+
+Lemma Req_dec_1:
+  forall r1 r2:R, {r1 = r2} + {r1 <> r2}.
+Proof.
+intros. generalize (total_order_T r1 r2) Rlt_dichotomy_converse;intuition eauto 3.
+Defined.
+
+Open Scope R_scope.
+
+Definition minus_eq :=forall r:R, r - r =0.
+
+Definition continuous_function_at  (f:R -> R) (x0:R) :=
+forall ε, ε > 0 -> exists δ, δ > 0  /\ forall x, Rabs (x -x0) <= δ -> Rabs( f x - f x0) <= ε.
+
+
+
+Definition sequence_tendsto (u : nat → R) (l : R) :=
+∀ ε, ε > 0 -> ∃ N, ∀ n, n ≥ N -> Rabs(u n  - l) <= ε.
+
 
