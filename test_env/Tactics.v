@@ -2,7 +2,6 @@ Require Import Utf8.
 Require Import Classical.
 Require Import Bool.
 Require Import CoqVerbose.Concepts.
-Require Import CoqVerbose.Hinter.
 Require Import Reals.
 Require Import NArith.
 Require Import Basics.
@@ -138,27 +137,25 @@ Ltac  Applying_hypothesis hyp :=
 tryif apply hyp then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
 
 
-Ltac Applying_hyp_on_hyp hyp hyp2 R:= 
-tryif (induction (hyp hyp2);Check_hyp_is hyp R) then idtac else (tryif (apply hyp2 in hyp) then idtac else fail 1 "error cannot apply" hyp2 "to the hypothesis" hyp).
+Ltac Applying_hyp_on_hyp hyp hyp2 := 
+tryif (induction (hyp hyp2)) then idtac else (tryif (apply hyp2 in hyp) then idtac else fail 1 "error cannot apply" hyp2 "to the hypothesis" hyp).
 
 
 Tactic Notation "Let's" "apply" "our" "hypothesis" ":" constr(hyp) :=
 Applying_hypothesis hyp.
 
 
-Tactic Notation "Let's" "apply" "our" "hypothesis"  constr(hyp2) "on" "the" "hypothesis"  constr(hyp) "such" "that" "we" "get" ":" constr(Result):=
-Applying_hyp_on_hyp hyp hyp2 Result.
+Tactic Notation "Let's" "apply" "our" "hypothesis"  constr(hyp2) "on" "the" "hypothesis"  constr(hyp):=
+Applying_hyp_on_hyp hyp hyp2 .
 
 
 
 (*General Solving Tactics*)
 
-Ltac prove_goal G R :=idtac "here";
+Ltac prove_goal G R :=
 match goal with
  |  |- ?P => Check_goal_is G R;isconj
  |  |- G => idtac
- |  |- G \/ ?Q  => left
- |  |- ?P \/ G  => right
 
  end.
 
@@ -177,56 +174,17 @@ Tactic Notation "Let's" "prove" ":" constr(Goal) "by" "proving" ":" constr(Resul
 prove_goal Goal Result.
 
 
-Tactic Notation "By" "using" "our" "definitions" "on" ":" constr(hypothesis) "such" "that" "we" "get" ":" constr(Result):=
+Tactic Notation "By"  "definition" "of" ":" constr(hypothesis) "we" "get" ":" constr(Result):=
 hypothesis_unfolder hypothesis Result.
 
 
-Theorem example: forall (f : R → R) (u : nat → R) (x0 : R) (hu:sequence_tendsto u x0) (hf:continuous_function_at f x0),  sequence_tendsto (compose f u) (f x0).
-Proof.
-Let's fix values :f,u,x0.
-Assume H:(sequence_tendsto u x0 ).
-Assume H1:(continuous_function_at f x0).
-Let's prove :(sequence_tendsto (compose f u) (f x0)) by proving :(∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (compose f u n + - f x0) <= ε).
-Let's fix: eps.
-Assume eps_pos:(eps > 0).
-By using our definitions on :(H1) such that we get:( ∀ ε : R, ε > 0 → ∃ δ : R, δ > 0 ∧ (∀ x : R, Rabs (x - x0) <= δ → Rabs (f x - f x0) <= ε)).
-Let's apply our hypothesis eps on the hypothesis H1 such that we get:(∀ ε : R, ε > 0 → ∃ δ : R, δ > 0 ∧ (∀ x : R, Rabs (x - x0) <= δ → Rabs (f x - f x0) <= ε)).
-By using our definitions on :H0  such that we get :(x > 0 ∧ (∀ x1 : R, Rabs (x1 - x0) <= x → Rabs (f x1 - f x0) <= eps)).
-By using our definitions on :H such that we get:( ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n + - x0) <= ε).
-Let's apply our hypothesis x on the hypothesis H such that we get:(∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n + - x0) <= ε).
-exists x1.
-Let's fix :N.
-Assume H4:(N ≥ x1).
-induction (H2 (u N)).
-unfold compose.
-assumption.
-Let's prove 
 
-assumption.
-induction H0.
 
-Let's apply our hypothesis eps on the hypothesis H1 such that we get:(eps > 0 → ∃ δ : R, δ > 0 ∧ (∀ x : R, Rabs (x - x0) <= δ → Rabs (f x - f x0) <= eps)).
 
-Abort. 
-(* intros.
-unfold sequence_tendsto. 
-intros.
-unfold continuous_function_at in hf.
-assert (T:= hf ε H).
-induction T as [delta [deltapos Hd]]. 
-assert (X := hu delta deltapos).
-destruct X as [N HN].
-exists N.
-intros.
-assert (W:= Hd (u n)).
-apply W.
-apply HN.
-assumption.
-Qed. *)
-
+(* 
+Theorem Lean_ex_3  (u:nat -> R) (l:R) (hl : l > 0) : sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
 
  *)
-
 
 
 

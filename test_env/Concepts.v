@@ -5,6 +5,11 @@ Require Import Reals.
 (* In this file, a set is represented by its 
 characteristic function. *)
 Definition Ens {E : Type} := E -> Prop.
+
+
+
+
+
 Definition In {E : Type} (A :@Ens E) (x:E) := A x.
 Notation "x ∈ A" := (In A x) (at level 60).
 
@@ -49,6 +54,8 @@ Proof.
 intros. generalize (total_order_T r1 r2) Rlt_dichotomy_converse;intuition eauto 3.
 Defined.
 
+
+
 Open Scope R_scope.
 
 Definition minus_eq :=forall r:R, r - r =0.
@@ -56,9 +63,15 @@ Definition minus_eq :=forall r:R, r - r =0.
 Definition continuous_function_at  (f:R -> R) (x0:R) :=
 forall ε, ε > 0 -> exists δ, δ > 0  /\ forall x, Rabs (x -x0) <= δ -> Rabs( f x - f x0) <= ε.
 
-
-
 Definition sequence_tendsto (u : nat → R) (l : R) :=
 ∀ ε, ε > 0 -> ∃ N, ∀ n, n ≥ N -> Rabs(u n  - l) <= ε.
+
+
+
+
+
+Close Scope R_scope.
+
+
 
 

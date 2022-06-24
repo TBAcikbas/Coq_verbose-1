@@ -1,8 +1,8 @@
 Require Import CoqVerbose.Concepts.
 Require Import CoqVerbose.Tactics.
 Require Import Utf8.
-Require Import CoqVerbose.Hinter.
 Require Import Reals.
+Require Import Basics.
 
 
 
@@ -120,8 +120,6 @@ Open Scope R_scope.
 
 
 
-
-
 Theorem example: forall (f : R → R) (u : nat → R) (x0 : R) (hu:sequence_tendsto u x0) (hf:continuous_function_at f x0),  sequence_tendsto (compose f u) (f x0).
 Proof.
 Abort.
@@ -132,10 +130,10 @@ Assume H1:(continuous_function_at f x0).
 Let's prove :(sequence_tendsto (compose f u) (f x0)) by proving :(∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (compose f u n + - f x0) <= ε).
 Let's fix: eps.
 Assume eps_pos:(eps > 0).
-By using our definitions on :(H1) such that we get:( ∀ ε : R, ε > 0 → ∃ δ : R, δ > 0 ∧ (∀ x : R, Rabs (x - x0) <= δ → Rabs (f x - f x0) <= ε)).
+By definition of:(H1) we get:( ∀ ε : R, ε > 0 → ∃ δ : R, δ > 0 ∧ (∀ x : R, Rabs (x - x0) <= δ → Rabs (f x - f x0) <= ε)).
 Let's apply our hypothesis eps on the hypothesis H1.
-By using our definitions on :H0  such that we get :(x > 0 ∧ (∀ x1 : R, Rabs (x1 - x0) <= x → Rabs (f x1 - f x0) <= eps)).
-By using our definitions on :H such that we get:( ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n + - x0) <= ε).
+By definition of:H0  we get :(x > 0 ∧ (∀ x1 : R, Rabs (x1 - x0) <= x → Rabs (f x1 - f x0) <= eps)).
+By definition of:H we get:( ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n + - x0) <= ε).
 Let's apply our hypothesis x on the hypothesis H .
 exists x1.
 Let's fix :N.
@@ -151,14 +149,14 @@ Let's apply our hypothesis :H3.
 Let's apply our hypothesis :H4.
 assumption.
 assumption.
+Qed.*)
 
-
- *)
 
 Theorem test :forall (u : nat→ R) (l : R),(∀ n, u n = l) → sequence_tendsto u l.
 Proof.
 Abort.
-(* Let's fix values:u,l.
+(* 
+Let's fix values:u,l.
 Assume H0:((∀ n : nat, u n = l)).
 Let's prove :(sequence_tendsto u l) by proving :(∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) <= ε).
 Let's fix :eps.
@@ -170,7 +168,7 @@ Let's apply our hypothesis N on the hypothesis H0.
 Let's prove :(Rabs (u N - u N) <= eps) by proving :(Rabs (u N - u N) < eps ∨ Rabs (u N - u N) = eps).
 Let's prove the disjunction by proving :(Rabs (u N - u N) < eps).
 Let's rewrite our goal by using our hypothesis Rminus_diag_eq. (*Special library function*)
-Let's rewrite our goal by using our hypothesis Rabs_R0.(*Special library function*)
+Let's rewrite our goal by using our hypothesis Rabs_R0. (* Special library function*)
 assumption.
 trivial.
 Qed.

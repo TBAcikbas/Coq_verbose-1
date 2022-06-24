@@ -16,16 +16,16 @@ Messages given during the aplha phase will be changed according to the requireme
 | [                              |- _ -> _                   ] => intro
 | [                              |- forall x,?P              ] => Let's fix : P
 | [H:?Q                          |- exists x,?P :?Q          ] => exists H
-| [H:exists x,?P                 |- _                        ] => simpl_hyp H
+| [H:exists x,?P                 |- _                        ] => induction H
 | [                              |- context [ _ <-> _ ]      ] => split
 | [                              |- context [ _ == _ ]       ] => unfold Equal
 | [                              |- context [ _ /\ _ ]       ] => split
 | [                              |- context [ _ ∩  _ ]       ] => unfold Intersection
 | [                              |- context [ _ ∪  _ ]       ] => unfold Union
 | [                              |- context [ _  ⊆ _ ]       ] => unfold Inclusion
-| [ H:context[_ /\ _ ]           |- _                        ] => simpl_hyp H 
+| [ H:context[_ /\ _ ]           |- _                        ] => induction H 
 | [                              |- ?A ∈ ?B                  ] => unfold In
-| [ H: _ <->  _                  |- _                        ] => simpl_hyp 
+| [ H: _ <->  _                  |- _                        ] => split
 | [ H: _  ⊆ _                    |- _                        ] => unfold Inclusion in
 | [ H: _ ∩ _                     |- _                        ] => unfold Intersection in H
 | [ H: _ ∪ _                     |- _                        ] => unfold Union in H

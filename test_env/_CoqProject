@@ -1,9 +1,7 @@
 -R . CoqVerbose
 Concepts.v
-
 Hinter.v
 Hinter2.v
-
 Tactics.v
 Hinter3.v
 Hinter4.v
