@@ -84,14 +84,16 @@ Tactic Notation "Help":=
 Hinter.
 
 
-(* Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
+Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
     Injective f -> 
     (Image f (A ∩ B)) == ((Image f A) ∩ (Image f B)).
 Proof.
-Help Please.
-Let's fix values: A,B,C,D,E.
+Abort.
+(* Help Please.
+intros A B C D E.
 help. (*error*)
-Assume H:(Injective C).
+(* Assume H:(Injective C). *)
+intro.
 Help Please.
 unfold Equal.
 Help.
@@ -105,11 +107,13 @@ intros.
 help.
 split.
 help.
-simpl_hyp H0.
+elim H0.
 help.
+destruct H0.
+destruct H0.
 unfold In in H0.
-unfold In in H2.
 help.
+intros.
 unfold In.
 help.
 unfold Image.
@@ -119,15 +123,17 @@ help.
 split.
 help.
 unfold In.
+destruct H0.
 assumption.
 assumption.
 help.
-simpl_hyp H0.
+destruct H0.
+destruct H0.
 help.
 unfold In.
 help.
 unfold In in H0.
-unfold In in H2.
+destruct H0.
 help.
 unfold Image.
 help.
@@ -152,35 +158,40 @@ help.
 unfold In in H0.
 help.
 unfold Image in H0.
-simpl_hyp H0.
+destruct H0.
 help.
+destruct H0.
+destruct H0.
 exists x0.
 help.
 split.
 split.
 help.
-simpl_hyp H1.
+destruct H1.
+destruct H1.
 help.
 unfold In in H0.
 help.
 unfold In in H1.
 assumption.
 help.
-simpl_hyp H1.
+destruct H1.
 unfold In in H0.
 unfold In in H1.
 (*Injective help start*) 
 help.
-rewrite H2 in H3.
-Let's apply our hypothesis :H on the hypothesis :H3.
+destruct H1.
+
 symmetry in H3.
+rewrite H2 in H3.
+apply H in H3.
 rewrite H3 in H1.
 (*Injective help end*)
 assumption.
 assumption.
 Qed.
-
  *)
+ 
 (* 
 
 Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),

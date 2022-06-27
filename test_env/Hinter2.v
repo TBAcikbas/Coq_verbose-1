@@ -1,6 +1,9 @@
 Require Import Utf8.
 Require Import CoqVerbose.Concepts.
 
+
+(*Version 1*)
+
 Ltac Hinter :=
 match goal with
 (* Sentences are temporary this files contains hints that will be used in order to help user. 
@@ -37,3 +40,40 @@ Messages given during the aplha phase will be changed according to the requireme
 | [ H: _ \/ _                    |- _                        ] => idtac "By cases on :(name of your hypothesis)"
 | [                              |- _                        ] => idtac "Error: No Help avaible"
 end.
+
+
+(*Version 2 of Hinter2*)
+
+Ltac help_goal G :=let newhyp := fresh in let result :=eval hnf in G in
+match goal with
+| [ H:_ -> ?P                    |- ?P                       ] => idtac "Let's apply our hypothesis :(Name of the hypothesis)"
+| [H:?P                          |- ?P                       ] => idtac "assumption"
+| [                              |- forall x,?P              ] => idtac "Let's fix :name of the hypothesis"
+| [                              |- ?P -> _                  ] => idtac "Assume (fresh hypothesis name):()"
+| [                              |- ?P                       ] => idtac "Let's prove:(your current goal) by proving:(Result of Unfolded Goal)"
+| [                              |- G                        ] => idtac
+
+end.
+
+
+
+
+Ltac help_hyp hyp_name hyp :=let result := eval hnf in hyp in
+match hyp with 
+
+| ?P => idtac "By definition of :(Name of the Hypothesis ) we get :(Result of unfolded Hypothesis)."
+| _ \/ _ => idtac "By cases on :(Name of the Hypothesis)."
+
+end.
+
+
+
+
+Tactic Notation "Help" "with" "goal" ":" constr(goal):=
+help_goal goal.
+
+
+Tactic Notation "Help" "with" "Hyp" constr(hyp_name) ":" constr(hyp) :=
+help_hyp hyp_name hyp.
+
+
