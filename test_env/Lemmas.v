@@ -57,19 +57,19 @@ Let's prove :(y ∈ (Image f A ∩ Image f B)) by proving :((Image f A ∩ Image
 Let's prove :((Image f A ∩ Image f B) y) by proving :(((λ y : F, ∃ x : E, x ∈ A ∧ y = f x) ∩ (λ y : F, ∃ x : E, x ∈ B ∧ y = f x)) y).
 Let's prove :(((λ y0 : F, ∃ x : E, x ∈ A ∧ y0 = f x) ∩ (λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x)) y) by proving :(y ∈ (λ y0 : F, ∃ x : E, x ∈ A ∧ y0 = f x) ∧ y ∈ (λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x)).
 Let's prove :(y ∈ (λ y0 : F, ∃ x : E, x ∈ A ∧ y0 = f x)) by proving :(∃ x : E, x ∈ A ∧ y = f x).
-By using our definitions on :(H1) such that we get:(∃ x : E, x ∈ (A ∩ B) ∧ y = f x).
+By definition of  :(H1) we get:(∃ x : E, x ∈ (A ∩ B) ∧ y = f x).
 Let's show that x fits.
 Let's prove :(x ∈ A ∧ y = f x) by proving :(A x ∧ y = f x).
-By using our definitions on :(H0) such that we get :((A ∩ B) x).
-By using our definitions on :(H0) such that we get :(A x).
+By definition of  :(H0) we get :((A ∩ B) x).
+By definition of  :(H0) we get :(A x).
 assumption.
 assumption.
 Let's prove:(y ∈ (λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x)) by proving :((λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x) y).
 Let's prove :((λ y0 : F, ∃ x : E, x ∈ B ∧ y0 = f x) y) by proving :((∃ x : E, x ∈ B ∧ y = f x)).
-By using our definitions on :(H1) such that we get :(Image f (A ∩ B) y).
+By definition of  :(H1) we get :(Image f (A ∩ B) y).
 Let's show that x fits.
 Let's prove :(x ∈ B ∧ y = f x) by proving :(x ∈ B ∧ y = f x).
-By using our definitions on :(H0) such that we get:((A ∩ B) x).
+By definition of  :(H0) we get:((A ∩ B) x).
 assumption.
 assumption.
 Let's prove:((Image f A ∩ Image f B) ⊆ Image f (A ∩ B)) by proving :(∀ x : F, x ∈ (Image f A ∩ Image f B) → x ∈ Image f (A ∩ B)).
@@ -77,15 +77,15 @@ Let's fix :y.
 Assume H0:(y ∈ (Image f A ∩ Image f B)).
 Let's prove :(y ∈ Image f (A ∩ B)) by proving :(Image f (A ∩ B) y).
 Let's prove :(Image f (A ∩ B) y) by proving :(∃ x : E, x ∈ (A ∩ B) ∧ y = f x).
-By using our definitions on :(H0) such that we get:((Image f A ∩ Image f B) y).
-By using our definitions on :(H0) such that we get:(∃ x : E, x ∈ A  ∧ y = f x).
-By using our definitions on :(H1) such that we get:(∃ x : E, x ∈ B  ∧ y = f x).
+By definition of  :(H0) we get:((Image f A ∩ Image f B) y).
+By definition of  :(H0) we get:(∃ x : E, x ∈ A  ∧ y = f x).
+By definition of  :(H1) we get:(∃ x : E, x ∈ B  ∧ y = f x).
 Let's show that x fits.
 Let's prove :(x ∈ (A ∩ B) ∧ y = f x) by proving :(x ∈ (A ∩ B) ∧ y = f x).
 Let's prove :(x ∈ (A ∩ B)) by proving :(x ∈ A /\ x ∈ B).
 assumption.
 Let's rewrite :H2 as H3.
-Let's apply our hypothesis H on the hypothesis H3 such that we get :(x =x0).
+Let's apply our hypothesis H on the hypothesis H3 we get :(x =x0).
 Let's rewrite our goal by using our hypothesis H3.
 assumption.
 assumption.

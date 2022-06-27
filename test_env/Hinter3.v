@@ -41,9 +41,10 @@ Hinter stmt.
 Ltac help_goal G :=let newhyp := fresh in let result :=eval hnf in G in
 match goal with
 | [ H:_ -> ?P                    |- ?P                       ] => idtac "Let's apply our hypothesis :("H")."
-| [H:?P                          |- ?P                       ] => idtac "assumption."
+| [ H:?P                         |- ?P                       ] => idtac "assumption."
 | [                              |- forall x,?P              ] => idtac "Let's fix :"x"."
 | [                              |- ?P -> _                  ] => idtac "Assume "newhyp":"P"."
+| [H:?Q                          |- exists x,?P :?Q          ] => idtac "Let's show that ("H") fits."
 | [                              |- ?P                       ] => idtac "Let's prove:("G") by proving:("result")."
 | [                              |- G                        ] => idtac
 end.
@@ -54,7 +55,11 @@ end.
 Ltac help_hyp hyp_name hyp :=let result := eval hnf in hyp in
 match hyp with 
 
-| ?P => idtac "By definition of :("hyp_name") we get :("result")."
+| ?P => match goal with
+             
+              |H :?P   |- _  =>  idtac "By definition of :("hyp_name") we get :("result")."
+        end
+
 | _ \/ _ => idtac "By cases on :("hyp")."
 
 end.
@@ -143,16 +148,25 @@ Qed. *)
 
 (*Complexe exemple with help*)
 
-(*Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
+Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
   (∃ g, Right_Inv f g) -> Surjective f.
 Proof.
-Help goal :(∀ (A B : Type) (f : A → B), (∃ g : B → A, Right_Inv f g) → Surjective f). (*anwser : Let's fix : A .*)
-Let's fix : A .
-help:(∀ (B : Type) (f : A → B), (∃ g : B → A, Right_Inv f g) → Surjective f). (*anwser Let's fix : B .*)
-Let's fix : B .
-Help goal :(∀ f : A → B, (∃ g : B → A, Right_Inv f g) → Surjective f). (*anwser :Let's fix : f .*)
-Let's fix : f .
-Help goal :((∃ g : B → A, Right_Inv f g) → Surjective f). (*Assume  H : (∃ g : B → A, Right_Inv f g) .*)
-Assume  H : (∃ g : B → A, Right_Inv f g) .
-Help
-*)
+intros.
+destruct H.
+Help with Hyp H : (Right_Inv f x). (*anwser : Let's fix : A .*)
+By definition of :( H ) we get :( (∀ x0 : B, f (x x0) = x0) ).
+(* 
+Let's fix values : A,B,f.
+Assume H0 :(∃ g : B → A, Right_Inv f g).
+By definition of Surjective applied to :(Surjective f).
+Let's simplify our hypothesis :H0.
+Let's fix :y.
+Let's show that y applied to x fit. 
+Let's apply our hypothesis :H.
+Qed. *)
+
+
+
+
+
+

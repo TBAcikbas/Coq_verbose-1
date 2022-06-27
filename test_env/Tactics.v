@@ -163,9 +163,9 @@ match goal with
 
 
 Ltac hypothesis_unfolder hyp R  :=
-match hyp with 
-| ?P => hnf in hyp;Check_hyp_is hyp R;splits 
+match hyp with
 | _ \/ _ => elim hyp
+| _ => hnf in hyp;Check_hyp_is hyp R;splits;destruct hyp 
 
 end.
 
@@ -181,7 +181,6 @@ hypothesis_unfolder hypothesis Result.
 
 
 Open Scope R_scope.
-
 
 (*Lean comand: Compute ???? *)
 
