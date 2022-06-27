@@ -19,8 +19,8 @@ Messages given during the aplha phase will be changed according to the requireme
 | [                              |- forall x,?P              ] => idtac "Let's fix :"x"."
 | [                              |- ?P -> _                  ] => idtac "Assume "newhyp":"P"."
 | [H:?Q                          |- exists x,?P :?Q          ] => idtac "Let's show that ("H") fits." 
-| [ H:context[exists x,?P]       |- _                        ] => idtac "Let's simplify our hypothesis:("H")."
-| [ H: _ <->  _                  |- _                        ] => idtac "Let's simplify our hypothesis ("H"))."
+| [ H:context[exists x,?P]       |- _                        ] => idtac "Let's prove ("H") by proving ("H")"
+| [ H: _ <->  _                  |- _                        ] => idtac "Let's prove ("H") by proving ("H")"
 | [ H: _ ∪ _                     |- _                        ] => idtac "By cases on :("H")."
 | [ H:Injective _                |- _                        ] => idtac "Let's apply our hypothesis: ("H"))."
 | [ H: _ \/ _                    |- _                        ] => idtac "By cases on :("H")."
@@ -40,6 +40,7 @@ Hinter stmt.
 
 Ltac help_goal G :=let newhyp := fresh in let result :=eval hnf in G in
 match goal with
+| [ H:_ -> ?P                    |- ?P                       ] => idtac "Let's apply our hypothesis :("H")."
 | [H:?P                          |- ?P                       ] => idtac "assumption."
 | [                              |- forall x,?P              ] => idtac "Let's fix :"x"."
 | [                              |- ?P -> _                  ] => idtac "Assume "newhyp":"P"."
@@ -52,7 +53,7 @@ end.
 
 Ltac help_hyp hyp_name hyp :=let result := eval hnf in hyp in
 match hyp with 
-| forall x, ?P => idtac "Let's simplify our hypothesis ("hyp_name")."
+
 | ?P => idtac "By definition of :("hyp_name") we get :("result")."
 | _ \/ _ => idtac "By cases on :("hyp")."
 
@@ -61,15 +62,15 @@ end.
 
 
 
-Tactic Notation "Help" "goal" ":" constr(goal):=
+Tactic Notation "Help" "with" "goal" ":" constr(goal):=
 help_goal goal.
 
 
-Tactic Notation "Help" "Hyp" constr(hyp_name) ":" constr(hyp) :=
+Tactic Notation "Help" "with" "Hyp" constr(hyp_name) ":" constr(hyp) :=
 help_hyp hyp_name hyp.
 
 
-
+(*Simple exemple demonstrating both help*)
 Theorem exercice_27 : 
   forall A B C: Prop,  
     (((A /\ B) -> C) <-> ( A -> (B -> C))).
@@ -96,7 +97,7 @@ help:((A → B → C) → A ∧ B → C).
 Assume  H : (A → B → C) .
 help :(A ∧ B → C).
 Assume  H0 : (A ∧ B).
-help :((A → B → C)).  (* marche pas pour _ ->_ -> ?P*)
+help :((A → B → C)).  (* Doesn't work with _ ->_ -> ?P*)
 Let's apply our hypothesis :H.
 assumption.
 assumption.
@@ -104,4 +105,54 @@ Qed.
 *)
 
 
+Theorem exercice_27 : 
+  forall A B C: Prop,  
+    (((A /\ B) -> C) <-> ( A -> (B -> C))).
+Proof.
+Abort.
+(* Help with goal :(∀ A B C : Prop, (A ∧ B → C) ↔ (A → B → C)). (*Let's fix : A .*)
+Let's fix : A .
+intros B C.
+Help with goal :((A ∧ B → C) ↔ (A → B → C)).
+Let's prove:( ((A ∧ B → C) ↔ (A → B → C)) ) by proving:(
+(((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ B → C)) ).
+Help with goal :((A ∧ B → C) → A → B → C).
+Assume  H : (A ∧ B → C) .
+Help with goal :(A → B → C).
+Assume  H0 : A .
+Assume  H1 : B .
+Help with goal :(C).
+Let's apply our hypothesis :( H ).
+Help with goal:(A ∧ B).
+Let's prove:( (A ∧ B) ) by proving:( (A ∧ B) ).
+Help with goal :(A).
+assumption.
+assumption.
+Help with goal :((A → B → C) → A ∧ B → C).
+Assume  H : (A → B → C) .
+Help with goal: (A ∧ B → C).
+Assume  H0 : (A ∧ B) .
+Help with Hyp H0 : (A ∧ B).
+By definition of :( H0 ) we get :( (A ∧ B) ).
+Let's apply our hypothesis :H.
+Help with goal :(A). (* Doesn't work with _ ->_ -> ?P*) 
+assumption.
+assumption.
+Qed. *)
 
+
+(*Complexe exemple with help*)
+
+(*Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
+  (∃ g, Right_Inv f g) -> Surjective f.
+Proof.
+Help goal :(∀ (A B : Type) (f : A → B), (∃ g : B → A, Right_Inv f g) → Surjective f). (*anwser : Let's fix : A .*)
+Let's fix : A .
+help:(∀ (B : Type) (f : A → B), (∃ g : B → A, Right_Inv f g) → Surjective f). (*anwser Let's fix : B .*)
+Let's fix : B .
+Help goal :(∀ f : A → B, (∃ g : B → A, Right_Inv f g) → Surjective f). (*anwser :Let's fix : f .*)
+Let's fix : f .
+Help goal :((∃ g : B → A, Right_Inv f g) → Surjective f). (*Assume  H : (∃ g : B → A, Right_Inv f g) .*)
+Assume  H : (∃ g : B → A, Right_Inv f g) .
+Help
+*)

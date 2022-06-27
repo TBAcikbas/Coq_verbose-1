@@ -180,11 +180,37 @@ hypothesis_unfolder hypothesis Result.
 
 
 
+Open Scope R_scope.
 
-(* 
-Theorem Lean_ex_3  (u:nat -> R) (l:R) (hl : l > 0) : sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
 
- *)
+(*Lean comand: Compute ???? *)
+
+(*  unfinished test
+
+
+
+Theorem Leanvernbove_ex3: forall (u :nat -> R) n, u n = 1 -> sequence_tendsto u 1.
+intros.
+unfold sequence_tendsto.
+intro ε .
+intro eps_pos.
+exists 0%nat.
+intro .
+intro.
+symmetry in H.
+rewrite H.
+left.
+Compute(Rabs (u n0 - u n) < ε). *)
+
+(*  unfinished test
+Theorem Lean_ex_4  (u:nat -> R) (l:R) (hl : l > 0) : sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
+intros.
+induction (H (l/2)) .
+exists x.
+intros.
+destruct (H0 n H1).
+rewrite Rabs_left in H2. *)
+
 
 
 

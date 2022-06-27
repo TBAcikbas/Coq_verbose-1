@@ -48,15 +48,16 @@ Definition Surjective {E F: Type} (f:E -> F) :=
 Definition Right_Inv {A B} (f : A -> B) G :=  ∀ x, f (G x) = x.
 
 
+
+
+
+Open Scope R_scope.
+
 Lemma Req_dec_1:
   forall r1 r2:R, {r1 = r2} + {r1 <> r2}.
 Proof.
 intros. generalize (total_order_T r1 r2) Rlt_dichotomy_converse;intuition eauto 3.
 Defined.
-
-
-
-Open Scope R_scope.
 
 Definition minus_eq :=forall r:R, r - r =0.
 
