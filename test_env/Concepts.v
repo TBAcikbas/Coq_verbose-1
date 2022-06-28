@@ -47,9 +47,7 @@ Definition Surjective {E F: Type} (f:E -> F) :=
 
 Definition Right_Inv {A B} (f : A -> B) G :=  ∀ x, f (G x) = x.
 
-
-
-
+Definition max_le_iff n m p := p <= max n m <-> p <= n \/ p <= m.
 
 Open Scope R_scope.
 
@@ -66,6 +64,7 @@ forall ε, ε > 0 -> exists δ, δ > 0  /\ forall x, Rabs (x -x0) <= δ -> Rabs(
 
 Definition sequence_tendsto (u : nat → R) (l : R) :=
 ∀ ε, ε > 0 -> ∃ N, ∀ n, n ≥ N -> Rabs(u n  - l) <= ε.
+
 
 
 

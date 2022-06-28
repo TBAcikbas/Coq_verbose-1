@@ -1,11 +1,11 @@
 Require Import Utf8.
 Require Import Classical.
 Require Import Bool.
-Require Import CoqVerbose.Concepts.
+Require Import RelationClasses.
 Require Import Reals.
 Require Import NArith.
 Require Import Basics.
-
+Require Import CoqVerbose.Concepts.
 
 (*Verification Tactics*)
 
@@ -179,12 +179,44 @@ hypothesis_unfolder hypothesis Result.
 
 
 
+Definition max_le_iff n m p := p <= max n m <-> p <= n \/ p <= m.
 
 Open Scope R_scope.
 
+
 (*Lean comand: Compute ???? *)
 
-(*  unfinished test
+
+
+
+(*  unfinished test*)
+
+(* 
+Theorem Leanvernbove_ex3: forall (u :nat -> R) n, u n = 1 -> sequence_tendsto u 1.
+intros.
+unfold sequence_tendsto.
+intro ε .
+intro eps_pos.
+exists 0%nat.
+intro .
+intro.
+split_Rabs.
+Search "transitivity".
+transitivity Hlt.
+apply Rlt_trans with (r1 :=(u n0 - 1)) in eps_pos.
+rewrite Ropp_minus_distr'.
+left.
+symmetry in H.
+rewrite H.
+elim H0.
+
+ *)
+
+
+
+
+
+
 
 
 
@@ -194,23 +226,45 @@ unfold sequence_tendsto.
 intro ε .
 intro eps_pos.
 exists 0%nat.
-intro .
-intro.
+intros.
 symmetry in H.
 rewrite H.
 left.
-Compute(Rabs (u n0 - u n) < ε). *)
+Search "Rabs".
 
-(*  unfinished test
-Theorem Lean_ex_4  (u:nat -> R) (l:R) (hl : l > 0) : sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
+rewrite Rabs_pos.
+
+Parameter (u v w : nat -> R) (l l':R).
+
+(*  unfinished test*)
+(* Theorem Leanverbose_ex4  (u:nat -> R) (l:R) (hl : l > 0) : sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
 intros.
 induction (H (l/2)) .
 exists x.
 intros.
 destruct (H0 n H1).
-rewrite Rabs_left in H2. *)
+left.
+hnf.  *)
 
 
+(* 
+Theorem Leanverbose_ex5 ( v u:nat -> R)  (l l':R) (hu : sequence_tendsto u l) (hv : sequence_tendsto v l') :
+sequence_tendsto (u + v) (l + l').
+ *)
+
+(* Theorem Leanverbose_ex6 (u: nat -> R) (hu : sequence_tendsto u l) (hw : sequence_tendsto w l)
+(h : ∀ n, (u n) <= (v n))
+(h' : ∀ n, v n <= w n) : sequence_tendsto v l .
+hnf.
+intros.
+hnf in hu.
+hnf in hw.
+destruct (hu ε H).
+destruct (hw ε H).
+exists (max x x0).
+intros.
+rewrite max_le_iff in H2.
+SearchPattern (_ > _). *)
 
 
 

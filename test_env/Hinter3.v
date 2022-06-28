@@ -151,17 +151,19 @@ Qed. *)
 Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
   (∃ g, Right_Inv f g) -> Surjective f.
 Proof.
-intros.
+Abort.
+(* intros.
 destruct H.
 Help with Hyp H : (Right_Inv f x). (*anwser : Let's fix : A .*)
 By definition of :( H ) we get :( (∀ x0 : B, f (x x0) = x0) ).
-(* 
-Let's fix values : A,B,f.
-Assume H0 :(∃ g : B → A, Right_Inv f g).
-By definition of Surjective applied to :(Surjective f).
-Let's simplify our hypothesis :H0.
-Let's fix :y.
-Let's show that y applied to x fit. 
+Help with goal :(Surjective f).
+
+Let's prove:( (Surjective f) ) by proving:( (∀ y : B, ∃ x : A, f x = y) ).
+
+Help with goal :(∀ y : B, ∃ x0 : A, f x0 = y).
+Let's fix : y .
+Help with goal :(∃ x0 : A, f x0 = y).
+Let's show that ( x y ) fits.
 Let's apply our hypothesis :H.
 Qed. *)
 
