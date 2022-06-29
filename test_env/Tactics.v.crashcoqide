@@ -11,6 +11,7 @@ Require Import CoqVerbose.Concepts.
 
 
 Ltac Check_goal_is  goal newgoal :=
+let Hf := fresh in 
 let r := fresh in
 tryif cut newgoal;[intro r;exact r| idtac] then idtac else fail 1 "Wrong anwser, the result you are looking for isn't" newgoal.
 

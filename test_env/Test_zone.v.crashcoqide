@@ -1,0 +1,47 @@
+Require Import Tactics.
+Require Import Utf8.
+Require Import Bool.
+Require Import CoqVerbose.Concepts.
+Require Import CoqVerbose.Hinter3.
+
+
+Ltac Check_goal_is  goal newgoal :=
+let Hf := fresh in 
+let r := fresh in
+tryif cut newgoal;[intro r;exact r| idtac] then idtac else fail 1 "Wrong anwser, the result you are looking for isn't" newgoal.
+
+
+(*Test zone, Will be erased from document...*)
+Ltac folder  G stmt := repeat 
+match goal with
+|H: _ |- _ => let r := H in tryif cut stmt;[intro r;exact r| idtac]then idtac "stmt is" stmt "G is" G else revert H
+end.
+
+
+
+
+
+Ltac unfolder G status :=   let newhyp := fresh in 
+match goal with
+| [                              |- forall x,?Q              ] => idtac "Let's fix :"x".";intro;unfolder Q status
+| [                              |- ?P -> ?Q                  ] => idtac "Assume "newhyp":"P".";intro;unfolder Q status
+| [                              |- ?P                        ] => let result := eval hnf in G in idtac "Let's prove :("P") by proving :(" result ").";unfolder G status
+ 
+end.
+
+
+
+Tactic Notation "Help" "with" "goal" ":" constr(goal):=
+unfolder goal goal.
+
+
+Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
+  (∃ g, Right_Inv f g) -> Surjective f.
+Proof.
+Let's fix : A .
+Let's fix : B .
+Let's fix : f .
+Assume  H : (∃ g : B → A, Right_Inv f g) .
+Let's prove :( (Surjective f) ) by proving :( (∀ y : B, ∃ x : A, f x = y) ).
+
+Help with goal :(∀ y : B, ∃ x : A, f x = y).

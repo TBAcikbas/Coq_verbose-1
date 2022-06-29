@@ -1,4 +1,6 @@
--R . CoqVerbose
+
+-R ./ CoqVerbose
+
 Concepts.v
 Hinter.v
 Hinter2.v
