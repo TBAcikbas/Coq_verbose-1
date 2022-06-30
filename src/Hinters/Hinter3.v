@@ -1,8 +1,8 @@
 Require Import Utf8.
 Require Import Basics.
 Require Import Reals.
-Require Import CoqVerbose.Concepts.
-Require Import CoqVerbose.Tactics.
+Require Import CoqVerbose.src.Tactics.Concepts.
+Require Import CoqVerbose.src.Tactics.Tactics.
 
 
 (*Version 1 of Hinter3*)
@@ -40,7 +40,7 @@ Hinter stmt.
 
 Ltac help_goal G :=let newhyp := fresh in let result :=eval hnf in G in
 match goal with
-| [ H:_ -> ?P                    |- ?P                       ] => idtac "Let's apply our hypothesis :("H")."
+
 | [ H:?P                         |- ?P                       ] => idtac "assumption."
 | [                              |- ?P -> _                  ] => idtac "Assume "newhyp":"P"."
 | [                              |- forall x,?P              ] => idtac "Let's fix :"x"."
@@ -67,7 +67,7 @@ end.
 
 
 
-Tactic Notation "Help" "with" "goal" ":" constr(goal):=
+Tactic Notation "Help" "with" "Goal" ":" constr(goal):=
 help_goal goal.
 
 

@@ -178,3 +178,14 @@ Finished processing /etc/joe/editorrc
 *** Fichier '* Startup Log *'
 Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
 Finished processing /etc/joe/editorrc
+
+*** These modified files were found in JOE when it aborted on Thu Jun 30 13:24:17 2022
+*** JOE was aborted because the terminal closed
+
+*** Fichier '(Sans nom)'
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+/adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/.git/COMMIT_EDITMSG
+
+*** Fichier '* Startup Log *'
+Traitement de '/etc/joe/editorrc'...Traitement de '/etc/joe/ftyperc'...Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc

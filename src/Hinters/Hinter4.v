@@ -1,6 +1,6 @@
 Require Import Utf8.
-Require Import CoqVerbose.Concepts.
-Require Import CoqVerbose.Tactics.
+Require Import CoqVerbose.src.Tactics.Concepts.
+Require Import CoqVerbose.src.Tactics.Tactics.
 
 
 

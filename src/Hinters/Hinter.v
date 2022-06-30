@@ -1,5 +1,5 @@
 Require Import Utf8.
-Require Import CoqVerbose.Concepts.
+Require Import CoqVerbose.src.Tactics.Concepts.
 
 
 (* Ltac Hinter_yoda := (*Easter egg ??*)

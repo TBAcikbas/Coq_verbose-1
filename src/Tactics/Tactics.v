@@ -5,14 +5,14 @@ Require Import RelationClasses.
 Require Import Reals.
 Require Import NArith.
 Require Import Basics.
-Require Import CoqVerbose.Concepts.
+Require Import CoqVerbose.src.Tactics.Concepts.
 
 (*Verification Tactics*)
 
 
 Ltac Check_goal_is  goal newgoal :=
-let r := fresh in
-tryif cut newgoal;[intro r;exact r| idtac] then idtac else fail 1 "Wrong anwser, the result you are looking for isn't" newgoal.
+let r := fresh in let result_goal := eval hnf in goal in
+tryif cut newgoal;[intro r;exact r| idtac] then idtac else fail 1 "Error, we expect" goal "which means" result_goal "instead of" newgoal.
 
 
 Ltac Check_hyp_is h stmt :=
@@ -39,14 +39,14 @@ Ltac isconj :=
 end.
 
 
-
+Ltac Exists_hyp hypothesis := tryif (induction hypothesis) then idtac else idtac.
 
 
 (*Tactic used to rewrite *)
 Tactic Notation "Let's" "rewrite" ":" constr(H) "as" constr(H1):=
 tryif (rewrite H in H1)then idtac else tryif (symmetry in H;rewrite H in H1) then idtac else fail 1 "No hypothesis that can't be used to rewrite" H "as" H1.
 
-Tactic Notation "Let's" "rewrite" "our" "goal" "by" "using" "our" "hypothesis"  constr(H):=
+Tactic Notation "Let's" "rewrite" "the" "goal" "by" "using" "the" "hypothesis"  constr(H):=
 tryif (rewrite H)then idtac else fail 1 "hypothesis" H "cannot be used to rewrite".
 
 
@@ -59,7 +59,7 @@ trivial.
 
 Ltac Fix name :=
  match goal with
-   |- ?P -> ?Q => fail 1 "Not a forall statement"
+   |- ?P -> ?Q => fail 1 "Error: Let's fix is expectng a universally quantified statement of the form forall x, ...."
  |  |- forall x, ?P => intro name
 end.
 
@@ -88,10 +88,10 @@ Tactic Notation "Let's" "fix"  "values" ":" simple_intropattern(X) "," simple_in
 (*Tactic used for "exists" statements*)
 
 
-Tactic Notation  "Let's" "show" "that " constr(stmt) "fits" :=
+Tactic Notation  "Let's" "prove" "that " constr(stmt) "fits" :=
 exists stmt.
 
-Tactic Notation  "Let's" "show" "that " constr(stmt) "applied" "to " constr(stmt_2) "fit" :=
+Tactic Notation  "Let's" "prove" "that " constr(stmt) "applied" "to " constr(stmt_2) "fit" :=
 exists (stmt_2 stmt).
 
 
@@ -140,7 +140,7 @@ Ltac Applying_hyp_on_hyp hyp hyp2 :=
 tryif (induction (hyp hyp2)) then idtac else (tryif (apply hyp2 in hyp) then idtac else fail 1 "error cannot apply" hyp2 "to the hypothesis" hyp).
 
 
-Tactic Notation "Let's" "apply" "our" "hypothesis" ":" constr(hyp) :=
+Tactic Notation "Let's" "apply" ":" constr(hyp) :=
 Applying_hypothesis hyp.
 
 
@@ -164,7 +164,7 @@ match goal with
 Ltac hypothesis_unfolder hyp R  :=
 match hyp with
 | _ \/ _ => elim hyp
-| _ => hnf in hyp;Check_hyp_is hyp R;splits;destruct hyp 
+| _ => hnf in hyp;Check_hyp_is hyp R;splits;Exists_hyp hyp
 
 end.
 
@@ -176,8 +176,11 @@ prove_goal Goal Result.
 Tactic Notation "By"  "definition" "of" ":" constr(hypothesis) "we" "get" ":" constr(Result):=
 hypothesis_unfolder hypothesis Result.
 
+(*
+Create RewriteDb simplifications.
+*)
 
-
+Tactic Notation "Let's" "simplify" := autorewrite with simplifications. 
 
 (*Test_zone*)
 
@@ -193,7 +196,6 @@ hypothesis_unfolder hypothesis Result.
 
 Open Scope R_scope.
 
-
 (*Lean comand: Compute ???? *)
 
 
@@ -201,23 +203,23 @@ Open Scope R_scope.
 
 (*  unfinished test*)
 
+(*
+Theorem Leanverbose_ex4  (u:nat -> R) (l:R) (hl : l > 0%R) :  sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
+Proof.
+Assume H:(sequence_tendsto u l).
+Search "half".
+apply pos_half in l.
+assert (T:= H (l/2) ()).
+
+
+*)
+
  
 
 
 
 
 Parameter (u v w : nat -> R) (l l':R).
-
-(*  unfinished test*)
-(* Theorem Leanverbose_ex4  (u:nat -> R) (l:R) (hl : l > 0) : sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
-intros.
-induction (H (l/2)) .
-exists x.
-intros.
-destruct (H0 n H1).
-left.
-hnf.  *)
-
 
 (* 
 Theorem Leanverbose_ex5 ( v u:nat -> R)  (l l':R) (hu : sequence_tendsto u l) (hv : sequence_tendsto v l') :
@@ -231,8 +233,8 @@ hnf.
 intros.
 hnf in hu.
 hnf in hw.
-destruct (hu ε H).
-destruct (hw ε H).
+assert (T:= hu ε H).
+assert (Q:=hw ε H).
 exists (max x x0).
 intros.
 rewrite max_le_iff in H2.
