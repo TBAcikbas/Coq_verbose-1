@@ -20,6 +20,6 @@ $(CIBLE_EXEMPLES)%:
 
 .PHONY:
 clean:
-	rm $(SRC)/Hinters/*.vos $(SRC)/Hinters/*.vok $(SRC)/Hinters/*.vo $(SRC)/Hinters/*.aux $(SRC)/Hinters/*.glob \
-		$(SRC)/Tactics/*.vos $(SRC)/Tactics/*.vok $(SRC)/Tactics/*.vo $(SRC)/Tactics/*.aux $(SRC)/Tactics/*.glob \
-		exemples/*.vos exemples/*.vok exemples/*.vo exemples/*.aux exemples/*.glob 
+	rm -f $(SRC)Hinters/*.vos $(SRC)Hinters/*.vok $(SRC)Hinters/*.vo $(SRC)Hinters/.*.aux $(SRC)Hinters/*.glob \
+		$(SRC)Tactics/*.vos $(SRC)Tactics/*.vok $(SRC)Tactics/*.vo $(SRC)Tactics/.*.aux $(SRC)Tactics/*.glob \
+		exemples/*.vos exemples/*.vok exemples/*.vo exemples/.*.aux exemples/*.glob 
