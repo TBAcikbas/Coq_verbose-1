@@ -1,5 +1,5 @@
 Require Import Utf8.
-Require Import CoqVerbose.src.Tactics.Concepts.
+Require Import CoqVerbose.src.Concepts.Concepts.
 
 (*Version 1*)
 

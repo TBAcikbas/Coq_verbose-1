@@ -1,6 +1,6 @@
 Require Import Utf8.
 Require Import Bool.
-Require Import CoqVerbose.src.Tactics.Concepts.
+Require Import CoqVerbose.src.Concepts.Concepts.
 Require Import CoqVerbose.src.Tactics.Tactics.
 Require Import CoqVerbose.src.Hinters.Hinter3.
 
@@ -33,8 +33,9 @@ end.
 Ltac goal_helper G anchor :=   let newhyp := fresh in 
 match goal with
 | [ H:_ -> ?P                    |- ?P                       ] => idtac "Let's apply our hypothesis :("H").";intro;goal_helper P anchor
-| [                              |- forall x,?Q              ] => idtac "Let's fix :"x".";intro;goal_helper Q anchor
 | [                              |- ?P -> ?Q                  ] => idtac "Assume "newhyp":"P".";intro;goal_helper Q anchor
+| [                              |- forall x,?Q              ] => idtac "Let's fix :"x".";intro;goal_helper Q anchor
+| [                              |- ?P \/ ?Q                  ] => idtac "Let's prove the disjucntion ("P"). or Let's prove the disjunction ("Q")."
 | [                              |- ?P                        ] => let result := eval hnf in P in idtac "Let's prove :("P") by proving :(" result ").";folder anchor
 end.    
 

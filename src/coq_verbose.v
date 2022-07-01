@@ -87,30 +87,6 @@ Tactic Notation "By" "cases" "on" constr(t) :=
 (let H := hyp_of_type t in elim H).
 
 
-Example test1 : forall n:nat, n>0 -> True.
-Proof.
-Fix n.
-(* intro name.
-assert(Hf:n>0).
- *)
-Assume that H : (n>0).
-Assume for contradiction H2 : (~ True).
-intuition.
-Qed.
-
-Example test2 : forall n:nat, n>0 -> True.
-Proof.
-Fix n.
-Assume H : (n>0).
-auto.
-Qed.
-
-Example test3 : forall P Q : Prop, ( ~Q -> ~ P) -> P -> Q.
-Proof.
-intros.
-Assume for contradiction H2 : (~ Q).
-apply (H H2 H0).
-Qed.
 
 
 Example test_letsprove_1 : forall P Q: Prop, P -> P \/ Q.

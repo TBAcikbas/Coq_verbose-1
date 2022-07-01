@@ -65,7 +65,14 @@ forall ε, ε > 0 -> exists δ, δ > 0  /\ forall x, Rabs (x -x0) <= δ -> Rabs(
 Definition sequence_tendsto (u : nat → R) (l : R) :=
 ∀ ε, ε > 0 -> ∃ N, ∀ n, n ≥ N -> Rabs(u n  - l) <= ε.
 
+Lemma Rminus_same : forall x, x-x=0.
+Proof.
+intros.
+apply Rminus_diag_eq;trivial.
+Qed.
 
+Hint Rewrite Rminus_same : simplifications.
+Hint Rewrite Rabs_R0 : simplifications.
 
 
 

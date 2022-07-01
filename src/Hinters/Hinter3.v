@@ -1,7 +1,7 @@
 Require Import Utf8.
 Require Import Basics.
 Require Import Reals.
-Require Import CoqVerbose.src.Tactics.Concepts.
+Require Import CoqVerbose.src.Concepts.Concepts.
 Require Import CoqVerbose.src.Tactics.Tactics.
 
 
