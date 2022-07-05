@@ -202,7 +202,7 @@ nra.  (*Tactics for ???? simplification ?? resolve ?? *)
 Qed.
 
 
-T(* heorem Leanverbose_ex6 ( w v u: nat -> R) (l l':R) (hu : sequence_tendsto u l) (hw : sequence_tendsto w l)
+Theorem Leanverbose_ex6 ( w v u: nat -> R) (l l':R) (hu : sequence_tendsto u l) (hw : sequence_tendsto w l)
 (h : ∀ n, (u n) <= (v n))
 (h' : ∀ n, v n <= w n) : sequence_tendsto v l .
 Proof.
@@ -222,16 +222,8 @@ By definition of  (∀ n : nat, v n <= w n)  we get  (∀ n : nat, v n <= w n) .
 By definition of  (∀ n : nat, u n <= v n)  we get  (∀ n : nat, u n <= v n) .
 By definition of  (sequence_tendsto w l)  we get  (∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (w n - l) <= ε) .
 By definition of  (sequence_tendsto u l)  we get  (∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) <= ε) .
-
-
-
-
-(* hnf in hu. *)
-(* hnf in hw.  *)
 Let's Assert the hypothesis HN with (hu ε H) such that we get (∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) <= ε).
-Let's Assert the hypothesis HN' with (hw ε H) such that we get (∃ N : nat, ∀ n : nat, n ≥ N → Rabs (w n - l) <= ε). (* 
-assert (HN:= hu ε H).
-assert (HN':=hw ε H). *)
+Let's Assert the hypothesis HN' with (hw ε H) such that we get (∃ N : nat, ∀ n : nat, n ≥ N → Rabs (w n - l) <= ε). 
 By HN we obtain N and HN.
 By HN' we obtain N' and HN'.
 Let's prove that (max N N') fits.
@@ -243,36 +235,16 @@ By n_pos we obtain hn1 and hn2.
 Let's Assert the hypothesis Hn1 with (HN n hn1) such that we get ( Rabs (u n - l) <= ε).
 Let's Assert the hypothesis Hn2 with (HN' n hn2) such that we get ( Rabs (w n - l) <= ε).
 Let's Assert the hypothesis h with (h n) such that we get (u n <= v n).
-Let's Assert the hypothesis h with (h' n) such that we get (v n <= w n).
+Let's Assert the hypothesis h' with (h' n) such that we get (v n <= w n).
 Let's apply Rabs_le_le on the hypothesis Hn1.
 Let's apply Rabs_le_le on the hypothesis Hn2.
 By Hn1 we obtain Hn1 and Hnd.
 By Hn2 we obtain Hn'1 and Hnd'.
 Let's apply Rabs_le.
-split
-nra.
-nra.
-destruct HN as [N HN].
-destruct HN' as [N' HN'].
-exists (max N N').
-intro n.
-intro n_pos.
-hnf in n_pos.
-apply ge_max_iff in n_pos.
-destruct n_pos as [hn1 hn2].
-assert (Hn1 := HN n hn1).
-assert (Hn2 := HN' n hn2).
-assert (h:= h n ).
-assert (h':= h' n ).
-apply Rabs_le_le in Hn1.
-apply Rabs_le_le in Hn2.
-destruct Hn1 as [Hn1 Hnd].
-destruct Hn2 as [Hn'1 Hnd'].
-apply Rabs_le.
-split.
+Let's prove (- ε <= v n - l <= ε) by proving (- ε <= v n - l <= ε).
 nra.
 nra.
 Qed.
- *)
+
 
 
