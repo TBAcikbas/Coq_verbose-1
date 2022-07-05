@@ -5,6 +5,7 @@ Require Import CoqVerbose.src.Tactics.Tactics.
 Require Import CoqVerbose.src.Hinters.Hinter3.
 
 
+
 (*Test zone, Will be erased from Project...*)
 
 
@@ -25,6 +26,7 @@ Ltac Unfolder anchor := repeat
    | _ => intro
   end.
 
+(* - ∃ x0 : E, x0 ∈ A ∧ x = f x0 *)
 
 
 Ltac goal_helper G anchor :=   let newhyp := fresh in 
@@ -35,13 +37,13 @@ match goal with
 | [                              |- forall x,?Q               ] => idtac "Let's fix "x".";intro;goal_helper Q anchor
 | [H:?Q                          |- exists x:?Q,?P            ] => idtac "Let's prove that"H"fits";folder  anchor
 | [                              |- ?P \/ ?Q                  ] => idtac "Let's prove the disjucntion ("P"). or Let's prove the disjunction ("Q")."
-| [                              |- ?P                        ] => let result := eval hnf in P in idtac  "Let's prove ("P") by proving (" result ").";folder anchor
+| [                              |- ?P                        ] => let result := eval hnf in P in idtac  "Let's prove ("P") by proving (" result ").";goal_helper result anchor
 end.
 
 
 
 
-Ltac hyp_helper anchor_hyp anchor_goal  := 
+Ltac hyp_helper anchor_hyp anchor_goal := 
 match goal with
 |H: ?P |- _ => let r := H in  let current_hyp := P in 
       match current_hyp with
@@ -59,8 +61,7 @@ match goal with
       
       |?P =>let new_instance_first := fresh in let new_instance_second := fresh in
            match goal with
-              |H:?Q = ?P, H1: ?Q = ?A|-_ =>  idtac "Let's rewrite"H "as" H1".";Unfolder anchor_goal
-              |H:?Q = ?P, H1: ?P ∈ ?A|-_ =>  idtac "Let's rewrite"H "as" H1".";Unfolder anchor_goal
+              |H:?Q = ?P, H1: ?Q = ?A|-_ => idtac "rewrite"
               |H:exists x,_   |- _  => idtac "By" H "we obtain"  new_instance_first "and" new_instance_second ".";revert H;Unfolder anchor_goal
               |H:_ /\ _       |- _  => idtac "By" H "we obtain"  new_instance_first "and" new_instance_second "." ;revert H;hyp_helper anchor_hyp anchor_goal
               |H: _ \/ _      |- _  => idtac "By cases on :("H")."
@@ -83,7 +84,7 @@ goal_helper goal goal.
 Tactic Notation "Help" "with" "hypothesis" constr(hypothesis):=
 hyp_helper_sub_func hypothesis.
 
-
+(* 
 Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
   (∃ g, Right_Inv f g) -> Surjective f.
 Proof.
@@ -93,17 +94,15 @@ Let's fix  B .
 Let's fix  f .
 Assume  H : (∃ g : B → A, Right_Inv f g) .
 Let's prove ( (Surjective f) ) by proving ( (∀ y : B, ∃ x : A, f x = y) ).
-
 Help with goal (∀ y : B, ∃ x : A, f x = y).
 Let's fix  y .
 Let's prove ( (∃ x : A, f x = y) ) by proving ( (∃ x : A, f x = y) ).
-Show Existentials.
-Help with hypothesis (∃ g : B → A, Right_Inv f g).
+hyp_helper_g_is (∃ g : B → A, Right_Inv f g).
 By H we obtain H0 and H1 .
 Let's prove that (H0 y) fits.                                                             (*fits trigger the rest of the Hypothesis*)
 Let's apply H1.
 Qed.
-
+ *)
 
 
 Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
@@ -246,25 +245,9 @@ assumption.
 
 
 (*experimental part*)
-Help with hypothesis (H2 ∈ A ∧ x = f H2).
-By H4 we obtain H1 and H5 .
-By H3 we obtain H4 and H6 .
+destruct H4.
+destruct H3.
 
 Help with hypothesis ( x = f H0).
-Let's rewrite H6 as H5 .
-
-(*Application of Injective*) 
-apply H in H5.
-symmetry in H5.
-Help with hypothesis (H0 ∈ B).
-Let's rewrite H5 as H4.
-assumption.
-
-Help with hypothesis ( H2 ∈ A ∧ x = f H2).
-By H4 we obtain H1 and H5 .
-
-assumption.
-
-Qed.
 
 

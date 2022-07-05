@@ -38,139 +38,81 @@ Hinter stmt.
 
 (*Version 2 of Hinter3*)
 
-Ltac help_goal G :=let newhyp := fresh in let result :=eval hnf in G in
+
+Ltac folder   anchor := repeat 
 match goal with
+|H: _ |- _ => let r := H in 
+                                    match goal with 
+                                            |- anchor => idtac
+                                            | _ => revert r
+                                            end
+end.
 
-| [ H:?P                         |- ?P                       ] => idtac "assumption."
-| [                              |- ?P -> _                  ] => idtac "Assume "newhyp":"P"."
-| [                              |- forall x,?P              ] => idtac "Let's fix :"x"."
-| [H:?Q                          |- exists x,?P :?Q          ] => idtac "Let's show that ("H") fits."
 
-| [                              |- G                        ] => idtac
+
+Ltac Unfolder anchor := repeat
+  match goal with 
+   |- anchor => idtac
+   | _ => intro
+  end.
+
+
+
+Ltac goal_helper G anchor :=   let newhyp := fresh in 
+match goal with
+| [ H:?Q                         |- ?Q                        ] => idtac "assumption."
+| [ H:?Q -> ?P                   |- ?P                        ] => idtac "Let's apply ("H").";folder anchor
+| [                              |- ?P -> ?Q                  ] => idtac "Assume "newhyp":"P".";intro;goal_helper Q anchor
+| [                              |- forall x,?Q               ] => idtac "Let's fix "x".";intro;goal_helper Q anchor
+| [H:?Q                          |- exists x:?Q,?P            ] => idtac "Let's prove that"H"fits";folder  anchor
+| [                              |- ?P \/ ?Q                  ] => idtac "Let's prove the disjucntion ("P"). or Let's prove the disjunction ("Q")."
+| [                              |- ?P                        ] => let result := eval hnf in P in idtac  "Let's prove ("P") by proving (" result ").";folder anchor
 end.
 
 
 
 
-Ltac help_hyp hyp_name hyp :=let result := eval hnf in hyp in
-match hyp with 
+Ltac hyp_helper anchor_hyp anchor_goal := 
+match goal with
+|H: ?P |- _ => let r := H in  let current_hyp := P in 
+      match current_hyp with
+      
+      | anchor_hyp =>let new_instance_first := fresh in let new_instance_second := fresh in
+           match goal with
+              |H:exists x,_   |- _  => idtac "By" H "we obtain"  new_instance_first "and" new_instance_second ".";revert H;Unfolder anchor_goal
+              |H:_ /\ _       |- _  => idtac "By" H "we obtain"  new_instance_first "and" new_instance_second ".";revert H;Unfolder anchor_goal
+              |H: ?P          |- _  => let result := eval hnf in P in idtac "By definition of "P" we get "result".";revert H;Unfolder anchor_goal
+              |H: _ \/ _      |- _  => idtac "By cases on :("H").";Unfolder anchor_goal
+           end
+      | Type => revert r
+      | (?P -> ?Q) => revert r
+      
+      
+      |?P =>let new_instance_first := fresh in let new_instance_second := fresh in
+           match goal with
+              |H:?Q = ?P, H1: ?Q = ?A|-_ =>  idtac "Let's rewrite"H "as" H1".";Unfolder anchor_goal
+              |H:?Q = ?P, H1: ?P ∈ ?A|-_ =>  idtac "Let's rewrite"H "as" H1".";Unfolder anchor_goal
+              |H:exists x,_   |- _  => idtac "By" H "we obtain"  new_instance_first "and" new_instance_second ".";revert H;Unfolder anchor_goal
+              |H:_ /\ _       |- _  => idtac "By" H "we obtain"  new_instance_first "and" new_instance_second "." ;revert H;hyp_helper anchor_hyp anchor_goal
+              |H: _ \/ _      |- _  => idtac "By cases on :("H")."
+              |H: ?P          |- _  => let result := eval hnf in P in idtac "By definition of "P" we get "result".";revert H;hyp_helper anchor_hyp anchor_goal
+           end
 
-| ?P => match goal with
-             
-              |H :?P   |- _  =>  idtac "By definition of :("hyp_name") we get :("result")."
-        end
-
-| _ \/ _ => idtac "By cases on :("hyp")."
-
+      end
 end.
 
 
+Ltac hyp_helper_sub_func anchor:=
+match goal with
+|H: _ |- ?P => hyp_helper anchor P
+end.
+
+Tactic Notation "Help" "with" "goal" constr(goal):=
+goal_helper goal goal.
 
 
-Tactic Notation "Help" "with" "Goal" ":" constr(goal):=
-help_goal goal.
-
-
-Tactic Notation "Help" "with" "Hyp" constr(hyp_name) ":" constr(hyp) :=
-help_hyp hyp_name hyp.
-
-
-(*Simple exemple demonstrating both help*)
-Theorem exercice_27 : 
-  forall A B C: Prop,  
-    (((A /\ B) -> C) <-> ( A -> (B -> C))).
-Proof.
-Abort.
-(* 
-help :(∀ A B C : Prop, (A ∧ B → C) ↔ (A → B → C)).
-Show Existentials.
-Let's fix : A .
-Show Existentials.
-Let's fix : B .
-Show Existentials.
-Let's fix : C .
-help :((A ∧ B → C) ↔ (A → B → C)).
-Let's prove :( ((A ∧ B → C) ↔ (A → B → C)) ) by proving :( (((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ B → C)) ).
-help :((A ∧ B → C) → A → B → C).
-intros.
-help :(A ∧ B → C).
-Let's apply our hypothesis :( H ).
-help :(A ∧ B).
-Let's prove :( (A ∧ B) ) by proving :( (A ∧ B) ).
-help :(A).
-assumption.
-help :B.
-assumption.
-help:((A → B → C) → A ∧ B → C).
-Assume  H : (A → B → C) .
-help :(A ∧ B → C).
-Assume  H0 : (A ∧ B).
-help :((A → B → C)).  (* Doesn't work with _ ->_ -> ?P*)
-Let's apply our hypothesis :H.
-assumption.
-assumption. *)
-
-
-
-Theorem exercice_27 : 
-  forall A B C: Prop,  
-    (((A /\ B) -> C) <-> ( A -> (B -> C))).
-Proof.
-Abort.
-(* Help with goal :(∀ A B C : Prop, (A ∧ B → C) ↔ (A → B → C)). (*Let's fix : A .*)
-Let's fix : A .
-intros B C.
-Help with goal :((A ∧ B → C) ↔ (A → B → C)).
-Let's prove:( ((A ∧ B → C) ↔ (A → B → C)) ) by proving:(
-(((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ B → C)) ).
-Help with goal :((A ∧ B → C) → A → B → C).
-Assume  H : (A ∧ B → C) .
-Help with goal :(A → B → C).
-Assume  H0 : A .
-Assume  H1 : B .
-Help with goal :(C).
-Let's apply our hypothesis :( H ).
-Help with goal:(A ∧ B).
-Let's prove:( (A ∧ B) ) by proving:( (A ∧ B) ).
-Help with goal :(A).
-assumption.
-assumption.
-Help with goal :((A → B → C) → A ∧ B → C).
-Assume  H : (A → B → C) .
-Help with goal: (A ∧ B → C).
-Assume  H0 : (A ∧ B) .
-Help with Hyp H0 : (A ∧ B).
-By definition of :( H0 ) we get :( (A ∧ B) ).
-Let's apply our hypothesis :H.
-Help with goal :(A). (* Doesn't work with _ ->_ -> ?P*) 
-assumption.
-assumption.
-Qed. *)
-
-
-(*Complexe exemple with help*)
-
-Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
-  (∃ g, Right_Inv f g) -> Surjective f.
-Proof.
-Abort.
-(* intros.
-destruct H.
-Help with Hyp H : (Right_Inv f x). (*anwser : Let's fix : A .*)
-By definition of :( H ) we get :( (∀ x0 : B, f (x x0) = x0) ).
-Help with goal :(Surjective f).
-
-Let's prove:( (Surjective f) ) by proving:( (∀ y : B, ∃ x : A, f x = y) ).
-
-Help with goal :(∀ y : B, ∃ x0 : A, f x0 = y).
-Let's fix : y .
-Help with goal :(∃ x0 : A, f x0 = y).
-Let's show that ( x y ) fits.
-Let's apply our hypothesis :H.
-Qed. *)
-
-
-
+Tactic Notation "Help" "with" "hypothesis" constr(hypothesis):=
+hyp_helper_sub_func hypothesis.
 
 
 

@@ -3,14 +3,16 @@ BIN = bin/
 SRC = src/
 TEST = tests/
 
-SRC_HINTERS = $(wildcard $(SRC)Hinters/*.v)
-SRC_TACTICS = $(wildcard $(SRC)Tactics/*.v)
-SRC_CONCEPTS =$(wildcard $(SRC)Concepts/*.v)
+SRC_HINTERS  = $(wildcard $(SRC)Hinters/*.v)
+SRC_TACTICS  = $(wildcard $(SRC)Tactics/*.v)
+SRC_CONCEPTS = $(wildcard $(SRC)Concepts/*.v)
+SRC_LANGUAGE = $(wildcard $(SRC)Language/*.v)
 SRC_EXEMPLES = $(wildcard $(TEST)examples/*.v)
 SRC_UNITTEST = $(wildcard $(TEST)unit_test/*.v)
 
 CIBLE  = $(subst src/,, $(patsubst %.v, % ,$(SRC_CONCEPTS)))
 CIBLE  += $(subst src/,, $(patsubst %.v, % ,$(SRC_TACTICS)))
+CIBLE  += $(subst src/,, $(patsubst %.v, % ,$(SRC_LANGUAGE)))
 CIBLE  += $(subst src/,, $(patsubst %.v, % ,$(SRC_HINTERS)))
 
 CIBLE_EXEMPLES  = $(subst src/,, $(patsubst %.v, % ,$(SRC_EXEMPLES)))
@@ -29,6 +31,7 @@ $(CIBLE_EXEMPLES)%:
 clean:
 	rm -f $(SRC)Hinters/*.vos $(SRC)Hinters/*.vok $(SRC)Hinters/*.vo $(SRC)Hinters/.*.aux $(SRC)Hinters/*.glob \
 		$(SRC)Tactics/*.vos $(SRC)Tactics/*.vok $(SRC)Tactics/*.vo $(SRC)Tactics/.*.aux $(SRC)Tactics/*.glob \
+		$(SRC)Language/*.vos $(SRC)Language/*.vok $(SRC)Language/*.vo $(SRC)Language/.*.aux $(SRC)Language/*.glob \
 		$(SRC)Concepts/*.vos $(SRC)Concepts/*.vok $(SRC)Concepts/*.vo $(SRC)Concepts/.*.aux $(SRC)Concepts/*.glob \
 		$(TEST)examples/*.vos $(TEST)examples/*.vok $(TEST)examples/*.vo $(TEST)examples/.*.aux $(TEST)examples/*.glob \
 		$(TEST)unit_test/*.vos $(TEST)unit_test/*.vok $(TEST)unit_test/*.vo $(TEST)unit_test/.*.aux $(TEST)unit_test/*.glob 

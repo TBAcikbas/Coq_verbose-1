@@ -74,8 +74,25 @@ Qed.
 Hint Rewrite Rminus_same : simplifications.
 Hint Rewrite Rabs_R0 : simplifications.
 
+Lemma Rabs_le_le: ∀ x a : R, Rabs x <= a → x <= a ∧ - a <= x.
+Proof.
+intros.
+induction H.
+apply Rabs_def2 in H.
+intuition.
+split.
+rewrite <- H.
+apply RRle_abs.
+rewrite <- H.
+Admitted.
 
-
+Lemma ge_max_iff : forall a b c , c ≥ max a b ↔ a ≤ c ∧ b ≤ c.
+Proof.
+intros.
+split.
+intros.
+split.
+Admitted.
 
 Close Scope R_scope.
 

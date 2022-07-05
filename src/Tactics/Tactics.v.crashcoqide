@@ -5,7 +5,6 @@ Require Import RelationClasses.
 Require Import Reals.
 Require Import NArith.
 Require Import Basics.
-Require Import Lra.
 Require Import CoqVerbose.src.Concepts.Concepts.
 (*Verification Tactics*)
 
@@ -172,7 +171,7 @@ match goal with
 
 end.
 
-Tactic Notation "Let's" "prove" "the" "disjunction" "by" "proving"  constr(t):=
+Tactic Notation "Let's" "prove" "the" "disjunction" "by" "proving"   constr(t):=
 disj_left_right t.
 
 (*General Apply Tactics*)
@@ -292,54 +291,31 @@ Open Scope R_scope.
 
 
 
+Parameter (u v w : nat -> R) (l l':R).
 
 
 
 
 
 
-(* 
 
+
+(*
 Theorem Leanverbose_ex5 ( v u:nat -> R)  (l l':R) (hu : sequence_tendsto u l) (hv : sequence_tendsto v l') :
-sequence_tendsto (u  + v) (l + l').
-
-Proof.
+sequence_tendsto (u + v) (l + l').
  *)
 
-
-
-
-
-Theorem Leanverbose_ex6 ( w v u: nat -> R) (l l':R) (hu : sequence_tendsto u l) (hw : sequence_tendsto w l)
+(* Theorem Leanverbose_ex6 (u: nat -> R) (hu : sequence_tendsto u l) (hw : sequence_tendsto w l)
 (h : ∀ n, (u n) <= (v n))
 (h' : ∀ n, v n <= w n) : sequence_tendsto v l .
-
+hnf.
 intros.
 hnf in hu.
 hnf in hw. 
-assert (HN:= hu ε H).
-assert (HN':=hw ε H).
-destruct HN as [N HN].
-destruct HN' as [N' HN'].
-exists (max N N').
-intro n.
-intro n_pos.
-hnf in n_pos.
-apply ge_max_iff in n_pos.
-destruct n_pos as [hn1 hn2].
-assert (Hn1 := HN n hn1).
-assert (Hn2 := HN' n hn2).
-assert (h:= h n ).
-assert (h':= h' n ).
-apply Rabs_le_le in Hn1.
-apply Rabs_le_le in Hn2.
-destruct Hn1 as [Hn1 Hnd].
-destruct Hn2 as [Hn'1 Hnd'].
-apply Rabs_le.
-split.
-nra.
-nra.
-Qed.
+assert (T:= hu ε H).
+assert (Q:=hw ε H).
+destruct T;destruct Q. *)
+
 
 Close Scope R_scope.
 

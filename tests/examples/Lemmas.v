@@ -1,6 +1,8 @@
+
 Require Import Utf8.
 Require Import Reals.
 Require Import Basics.
+Require Import Lra.
 Require Import CoqVerbose.src.Concepts.Concepts.
 Require Import CoqVerbose.src.Tactics.Tactics.
 Require Import CoqVerbose.src.Hinters.Test_zone.
@@ -65,7 +67,7 @@ Assume H1:(x ∈ Inverse f (Image f A)).
 hnf in H1.
 By H1 we obtain x0 and in_x.
 By in_x we obtain H1 and H2.
-Let's apply the hypothesis H on the hypothesis H2.
+Let's apply H on the hypothesis H2.
 Let's rewrite the goal by using the hypothesis H2.
 It is trivial.
 Qed.
@@ -129,7 +131,7 @@ By H2 we obtain H2 and H4.
 By H1 we obtain H1 and H3.
 By symmetry of ( x = f x1) we obtain ( f x1 =x).
 Let's rewrite H4 as H3.
-Let's apply  the hypothesis H on the hypothesis H3.
+Let's apply  H on the hypothesis H3.
 By symmetry of ( x1 = x0) we obtain ( x0 =x1).
 Let's rewrite the goal by using the hypothesis H3.
 It is trivial.
@@ -181,5 +183,96 @@ It is trivial.
 It is trivial.
 Qed.
 
+
+
+
+
+
+Theorem Leanverbose_ex4  (u:nat -> R) (l:R) (hl : l > 0%R) :  sequence_tendsto u l → ∃ N, ∀ n,n ≥ N -> u n >= (l/2) .
+Proof.
+Assume H:(sequence_tendsto u l).
+By (H (l/2) (eps2_Rgt_R0 l hl)) we obtain N and HN.
+Let's prove that N fits.
+Let's fix n .
+Assume H0 :(n ≥ N).
+Let's Assert the hypothesis T with (HN n H0) such that we get (Rabs (u n - l) <= l / 2).
+Let's apply Rabs_le_le on the hypothesis T.
+By T we obtain UN1 and UN2.
+nra.  (*Tactics for ???? simplification ?? resolve ?? *)
+Qed.
+
+
+T(* heorem Leanverbose_ex6 ( w v u: nat -> R) (l l':R) (hu : sequence_tendsto u l) (hw : sequence_tendsto w l)
+(h : ∀ n, (u n) <= (v n))
+(h' : ∀ n, v n <= w n) : sequence_tendsto v l .
+Proof.
+Help with goal (sequence_tendsto v l).
+Let's prove ( (sequence_tendsto v l) ) by proving ( (∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (v n - l) <= ε) ).
+Help with goal (∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (v n - l) <= ε).
+
+Let's fix  ε .
+Assume  H : (ε > 0) .
+Let's prove ( (∃ N : nat, ∀ n : nat, n ≥ N → Rabs (v n - l) <= ε) ) by proving (
+(∃ N : nat, ∀ n : nat, n ≥ N → Rabs (v n - l) <= ε) ).
+
+Help with hypothesis (sequence_tendsto u l).
+By definition of  (ε > 0)  we get  (0 < ε) .
+By definition of  R  we get  R .
+By definition of  (∀ n : nat, v n <= w n)  we get  (∀ n : nat, v n <= w n) .
+By definition of  (∀ n : nat, u n <= v n)  we get  (∀ n : nat, u n <= v n) .
+By definition of  (sequence_tendsto w l)  we get  (∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (w n - l) <= ε) .
+By definition of  (sequence_tendsto u l)  we get  (∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) <= ε) .
+
+
+
+
+(* hnf in hu. *)
+(* hnf in hw.  *)
+Let's Assert the hypothesis HN with (hu ε H) such that we get (∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) <= ε).
+Let's Assert the hypothesis HN' with (hw ε H) such that we get (∃ N : nat, ∀ n : nat, n ≥ N → Rabs (w n - l) <= ε). (* 
+assert (HN:= hu ε H).
+assert (HN':=hw ε H). *)
+By HN we obtain N and HN.
+By HN' we obtain N' and HN'.
+Let's prove that (max N N') fits.
+Let's fix n.
+Assume n_pos:(n ≥ Init.Nat.max N N').
+By definition of ( n ≥ Init.Nat.max N N') we get (Init.Nat.max N N' ≤ n).
+Let's apply ge_max_iff on the hypothesis n_pos.
+By n_pos we obtain hn1 and hn2.
+Let's Assert the hypothesis Hn1 with (HN n hn1) such that we get ( Rabs (u n - l) <= ε).
+Let's Assert the hypothesis Hn2 with (HN' n hn2) such that we get ( Rabs (w n - l) <= ε).
+Let's Assert the hypothesis h with (h n) such that we get (u n <= v n).
+Let's Assert the hypothesis h with (h' n) such that we get (v n <= w n).
+Let's apply Rabs_le_le on the hypothesis Hn1.
+Let's apply Rabs_le_le on the hypothesis Hn2.
+By Hn1 we obtain Hn1 and Hnd.
+By Hn2 we obtain Hn'1 and Hnd'.
+Let's apply Rabs_le.
+split
+nra.
+nra.
+destruct HN as [N HN].
+destruct HN' as [N' HN'].
+exists (max N N').
+intro n.
+intro n_pos.
+hnf in n_pos.
+apply ge_max_iff in n_pos.
+destruct n_pos as [hn1 hn2].
+assert (Hn1 := HN n hn1).
+assert (Hn2 := HN' n hn2).
+assert (h:= h n ).
+assert (h':= h' n ).
+apply Rabs_le_le in Hn1.
+apply Rabs_le_le in Hn2.
+destruct Hn1 as [Hn1 Hnd].
+destruct Hn2 as [Hn'1 Hnd'].
+apply Rabs_le.
+split.
+nra.
+nra.
+Qed.
+ *)
 
 

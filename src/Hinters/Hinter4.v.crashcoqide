@@ -1,6 +1,6 @@
 Require Import Utf8.
 Require Import CoqVerbose.src.Concepts.Concepts.
-
+Require Import CoqVerbose.src.Tactics.Tactics.
 
 
 
@@ -14,7 +14,7 @@ match goal with
 Messages given during the aplha phase will be changed according to the requirement put forward by the Owner later on*)
 
 | [                              |- _ -> _                   ] => intro
-| [                              |- forall x,?P              ] => intro P
+| [                              |- forall x,?P              ] => Fix P
 | [H:?Q                          |- exists x,?P :?Q          ] => exists H
 | [H:exists x,?P                 |- _                        ] => induction H
 | [                              |- context [ _ <-> _ ]      ] => split

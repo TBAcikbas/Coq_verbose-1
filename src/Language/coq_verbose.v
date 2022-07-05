@@ -4,6 +4,8 @@
 (* This is inspired by Lean verbose. *)
 
 Require Import Classical.
+Require Import CoqVerbose.src.Language.language.
+
 
 Lemma contrapose_prop: forall P Q:Prop, (~ Q -> ~P) -> P -> Q.
 Proof.
@@ -89,11 +91,12 @@ Tactic Notation "By" "cases" "on" constr(t) :=
 
 
 
+
 Example test_letsprove_1 : forall P Q: Prop, P -> P \/ Q.
 Proof.
 Fix P.
 Fix Q.
-Assume H : P.
+Assume that H : P.
 Let's prove that P.
 assumption.
 Qed.

@@ -50,12 +50,7 @@ end.
 Tactic Notation "Help" "Please":=
 Hinter.
 
-Tactic Notation "help":=
-Hinter.
 
-
-Tactic Notation "Help":=
-Hinter.
 
 
 Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
