@@ -4,7 +4,10 @@ Require Import CoqVerbose.src.Tactics.Tactics.
 
 Example test_destruct_1: forall A B, A/\B -> B.
 intros.
-destruct_exist' H H H2.
+By H we obtain H1 and H2.
 assumption.
 Qed.
+
+
+
 

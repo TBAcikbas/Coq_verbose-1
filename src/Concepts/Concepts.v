@@ -65,6 +65,35 @@ forall ε, ε > 0 -> exists δ, δ > 0  /\ forall x, Rabs (x -x0) <= δ -> Rabs(
 Definition sequence_tendsto (u : nat → R) (l : R) :=
 ∀ ε, ε > 0 -> ∃ N, ∀ n, n ≥ N -> Rabs(u n  - l) <= ε.
 
+Definition increasing (u : nat → R) := ∀ n m, n ≤ m → u n <= u m.
+
+Definition is_supremum (M : R) (u : nat → R) := (∀ n, u n <= M) ∧ ∀ ε, ε > 0 -> ∃ n₀, u n₀ >= M - ε.
+
+Lemma R_sup_eq_symmetry r1 r2: r1 >= r2 <-> r2 <= r1.
+Proof.
+split.
+intros.
+hnf in H.
+elim H.
+intro.
+hnf.
+left.
+assumption.
+intro.
+right. 
+symmetry.
+assumption.
+intro.
+hnf in H.
+elim H.
+intro.
+left. assumption.
+intro.
+right.
+symmetry.
+assumption.
+Qed.
+
 Lemma Rminus_same : forall x, x-x=0.
 Proof.
 intros.

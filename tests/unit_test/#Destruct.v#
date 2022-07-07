@@ -1,0 +1,35 @@
+Require Import Utf8.
+Require Import CoqVerbose.src.Concepts.Concepts.
+Require Import CoqVerbose.src.Tactics.Tactics.
+
+(*Tactic zone*)
+
+Ltac destruct_exist'' Hyp P P1 P1_result P2 P2_result  :=
+match goal with 
+|H:Hyp |-_ => tryif (destruct H as [P [P1 P2]]) then 
+          match goal with 
+          |H:P1_result, H1:P2_result |- _=> idtac
+          |H:_  |-_ => fail 1 "The expected"P1 "and "P2" are not" P1_result "and" P2_result
+          end else fail 1 "The expected"P1 "and "P2" are not" P1_result "and" P2_result
+end.
+
+
+
+
+(*Zone test*)
+
+
+
+Theorem reverse_inclusion_verbose :
+  ∀ {E F: Type} (f: E -> F),
+    Injective f -> 
+      ∀ A, (Inverse f (Image f A)) ⊆ A.
+
+Proof.
+intros.
+hnf.
+intros.
+hnf in H0.
+destruct_exist'' (∃ x0 : E, x0 ∈ A ∧ f x = f x0) x0 K1 (x0 ∈ A) K2 (f x = f x0).
+Admitted.
+

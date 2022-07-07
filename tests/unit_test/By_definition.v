@@ -10,15 +10,20 @@ intros.
 intuition.
 Qed.
 
-
-
-Example Def_: forall (x: nat), x=2 -> True.
-Proof.
-Let's fix x.
-assert_fails (Let's fix h).
-intuition.
-Qed.
-
-
-
-
+Example exfalso_ex1 : forall A B C D :Prop, 
+ A \/ B -> (A-> C) -> (B->D) -> ~C -> D.
+ Proof.
+ Let's fix A,B,C,D .
+ Assume H:(A\/B).
+ Assume H2:(A->C).
+ Assume H3:(B->D).
+ Assume H4:(¬C).
+ By cases on (A\/B).
+ - Assume HA:A.
+   assert (C) by (exact (H2 HA)). (* todo *)
+   exfalso.
+   contradiction.
+- Assume HB:B.
+  assert (D) by (exact (H3 HB)).
+  It is trivial.
+  Qed.

@@ -12,12 +12,12 @@ Require Import CoqVerbose.src.Concepts.Concepts.
 
 Ltac Check_goal_is  goal newgoal :=
 let r := fresh in let result_goal := eval hnf in goal in
-tryif cut newgoal;[intro r;exact r| idtac] then idtac else fail 1 "Error, we expect" goal "which means" result_goal "instead of" newgoal.
+tryif cut newgoal;[intro r;exact r| idtac] then idtac else fail 0 "Error, we expect" goal "which means" result_goal "instead of" newgoal.
 
 
 Ltac Check_hyp_is h stmt :=
  let Hf:=fresh in
-  tryif  (assert (Hf: stmt);[exact h|idtac ];clear Hf);idtac then idtac else fail 2 "Wrong assumption, the proposition assumed shouldn't be: " stmt. 
+  tryif  (assert (Hf: stmt);[exact h|idtac ];clear Hf);idtac then idtac else fail 0 "Wrong assumption, the proposition assumed shouldn't be: " stmt. 
 
 (*sub-Tactics *)
 Ltac spliter := 
@@ -67,39 +67,68 @@ Tactic Notation "By" constr(hyp) "we" "obtain" simple_intropattern(P) "and" simp
 destruct_exist'''' hyp P P1 P2 P3 P4.
 
 
+
+
+
+
 (*Addding new hypothesis*)
 
 
-Ltac new_hyp hyp_name hyp_contents hyp_results :=  (* assert (hyp_name:=hyp_contents). *)
+Ltac new_hyp hyp_name hyp_contents hyp_results :=  
 tryif (assert (hyp_name:=hyp_contents)) then Check_hyp_is hyp_name hyp_results else clear hyp_name.
 
-Tactic Notation "Let's" "Assert" "the" "hypothesis" simple_intropattern(Hypothesis_name) "with" constr(Hypothesis_contents) "such" "that" "we" "get" constr(Hypothesis_results):=
+Tactic Notation "We" "have" simple_intropattern(Hypothesis_name) ":" constr(Hypothesis_contents) "such" "that" "we" "get" constr(Hypothesis_results):=
 new_hyp Hypothesis_name Hypothesis_contents Hypothesis_results.
 
 
 (*Tactic used to rewrite *)
-Tactic Notation "Let's" "rewrite"   constr(H) "as" constr(H1):=
-tryif (rewrite H in H1)then idtac else tryif (symmetry in H;rewrite H in H1) then idtac else fail 1 "No hypothesis that can't be used to rewrite" H "as" H1.
+Ltac rewrite_goal Hyp new_goal :=
+match goal with
+|H:Hyp |- ?P => tryif (rewrite H) then Check_goal_is (H) new_goal else fail
+|H:Hyp |- ?P => fail 1 "Cannot use"H ":" Hyp" to rewrite" P
+end.
 
-Tactic Notation "Let's" "rewrite" "the" "goal" "by" "using" "the" "hypothesis"  constr(H):=
-tryif (rewrite H)then idtac else fail 1 "hypothesis" H "cannot be used to rewrite".
+
+
+
+
+
+
+
+
+
+Tactic Notation "Let's" "rewrite"   constr(H) "as" constr(H1):=
+tryif (rewrite H in H1)then idtac else tryif (symmetry in H;rewrite H in H1) then idtac else fail 0 "No hypothesis that can't be used to rewrite" H "as" H1.
+
+
+Tactic Notation "By" "rewriting" "using" "the" "hypothesis"  constr(H) "we" "obtain" constr(new_goal):=
+rewrite_goal H new_goal.
+
 
 
 (*Tactic used for symmety*)
-Ltac Hyp_sym Hyp R :=
+Ltac sym Hyp R :=
 match goal with 
 |H:Hyp |-_ => symmetry in H;Check_hyp_is H R
-
-
+|H:_   |-?P => symmetry;Check_goal_is P R
 end.
 
-Tactic Notation "By" "symmetry" "of " constr(Hyp) "we" "obtain" constr(Result):=
-Hyp_sym Hyp Result.
+Tactic Notation "By" "symmetry" "," "using" constr(elem) "we" "obtain" constr(Result):=
+sym elem Result.
+
+(*Tactic used for Transitivity*)
+
 
 (*Tactic used to prove trivial cases such as 1=1 or f x = f x*)
 
 Tactic Notation "It" "is" "trivial":=
 trivial.
+
+
+(*Reflexivity*)
+
+Tactic Notation "By" "using" "reflexivity":=
+reflexivity.
 
 (*Fix used for "forall" statements *)
 
@@ -176,20 +205,31 @@ Tactic Notation "Let's" "prove" "the" "disjunction" "by" "proving"  constr(t):=
 disj_left_right t.
 
 (*General Apply Tactics*)
+
+
+
+
 Ltac  Applying_hypothesis hyp :=
 tryif apply hyp then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
 
 
-Ltac Applying_hyp_on_hyp hyp hyp2 := 
-tryif (induction (hyp hyp2)) then idtac else (tryif (apply hyp2 in hyp) then idtac else fail 1 "error cannot apply" hyp2 "to the hypothesis" hyp).
+Ltac Applying_hyp_on_hyp hyp hyp2 Result  := 
+
+match goal with 
+|H:hyp, H2:hyp2|-_ => tryif (apply H in H2) then Check_hyp_is H2 Result else fail 1 "wrong apply"
+|H:hyp, H2:hyp2|- _ => fail 1 "wrong apply"
+end.
 
 
 Tactic Notation "Let's" "apply"   constr(hyp) :=
 Applying_hypothesis hyp.
 
 
-Tactic Notation "Let's" "apply" constr(hyp2) "on" "the" "hypothesis"  constr(hyp):=
-Applying_hyp_on_hyp hyp hyp2 .
+Tactic Notation "By" "applying" constr(hyp) "on" "the" "hypothesis"  constr(hyp2) "we" "obtain" constr(expected) :=
+Applying_hyp_on_hyp hyp hyp2 expected  .
+
+
+
 
 
 
@@ -264,37 +304,64 @@ Tactic Notation "Let's" "prove" "that" constr(witness) "works" "ie" constr(stmt)
 Tactic Notation  "Let's" "prove" "that " constr(stmt) "fits" :=
 exists stmt.
 
-Tactic Notation  "Let's" "prove" "that " constr(stmt) "applied" "to " constr(stmt_2) "fit" :=
-exists (stmt_2 stmt).
 
+(* Tactic used for Compute*)
 
+Tactic Notation "We" "Compute":=
+first [nra| ring| field].
 
 (*Test_zone*)
 
 
 
-
-
-
-
-
-
-
-
 Open Scope R_scope.
-
-(*Lean comand: Compute ???? *)
 
 
 
 
 (*  unfinished test*)
+Inductive tag : Set :=
+  eq : tag
+  | ineq : tag.
+  
+Definition eq_or_ineq t a b :=
+ match t with
+  eq => a=b
+  | ineq => a<=b
+  end.
 
+Ltac put_eq_or_ineqs := 
+repeat
+ match goal with
+ | H: ?x = ?y |- _ => change (eq_or_ineq eq x y) in H
+ | H: ?x <= ?y |- _ => change (eq_or_ineq ineq x y) in H
+ 
+ end.
 
+Ltac foo:= assumption.
+Ltac assert_ineq_with_ldots x tac := 
+ put_eq_or_ineqs;
+ match goal with
+ | H: eq_or_ineq _ _ ?y |- _ => assert (y<=x) by tac
+ end;simpl eq_or_ineq in *.
+ 
+Ltac assert_eq_with_ldots x tac := 
+ put_eq_or_ineqs;
+ match goal with
+ | H: eq_or_ineq _ _ ?y |- _ => assert (y=x) by tac
+ end;simpl eq_or_ineq in *.
+ 
 
+Tactic Notation "ppp" "plus" "petit" constr(x) "by" tactic(tac) := assert_ineq_with_ldots x tac.
+Tactic Notation "ppp" "egal" constr(x) "by" tactic(tac) := assert_eq_with_ldots x tac.
 
-
-
+Lemma test_chaining_eq_ineq : forall a b c d: R, a <= b -> b <= c -> c=d -> a <=d.
+Proof.
+intros.
+assert (a <= b) by foo.
+ppp plus petit c by exact H0.
+ppp egal d by exact H1.
+Admitted.
 
 
 
@@ -305,41 +372,17 @@ sequence_tendsto (u  + v) (l + l').
 
 Proof.
  *)
-
-
-
-
-
-Theorem Leanverbose_ex6 ( w v u: nat -> R) (l l':R) (hu : sequence_tendsto u l) (hw : sequence_tendsto w l)
-(h : ∀ n, (u n) <= (v n))
-(h' : ∀ n, v n <= w n) : sequence_tendsto v l .
-
+Theorem Leanverbose_ex8 (u:nat -> R) (l l':R) : sequence_tendsto u l → sequence_tendsto u l' → l = l'.
+Proof.
 intros.
-hnf in hu.
-hnf in hw. 
-assert (HN:= hu ε H).
-assert (HN':=hw ε H).
-destruct HN as [N HN].
-destruct HN' as [N' HN'].
-exists (max N N').
-intro n.
-intro n_pos.
-hnf in n_pos.
-apply ge_max_iff in n_pos.
-destruct n_pos as [hn1 hn2].
-assert (Hn1 := HN n hn1).
-assert (Hn2 := HN' n hn2).
-assert (h:= h n ).
-assert (h':= h' n ).
-apply Rabs_le_le in Hn1.
-apply Rabs_le_le in Hn2.
-destruct Hn1 as [Hn1 Hnd].
-destruct Hn2 as [Hn'1 Hnd'].
-apply Rabs_le.
-split.
-nra.
-nra.
-Qed.
+hnf in H.
+hnf in H0.
+Admitted.
+
+
+
+
+
 
 Close Scope R_scope.
 
