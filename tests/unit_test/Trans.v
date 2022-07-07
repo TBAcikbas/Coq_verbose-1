@@ -4,10 +4,9 @@ Require Import CoqVerbose.src.Concepts.Concepts.
 Require Import CoqVerbose.src.Tactics.Tactics.
 
 
-Example Def_1: forall (f: nat -> nat), Injective f -> True.
+Example trans_succ_goal_1: forall A B C, A <= C -> C <= B -> A <= B.
 Proof.
 intros.
-By definition of (Injective  f) we get ( ∀ x x0 : nat, f x = f x0 → x = x0).
-intuition.
+transitivity C.
+assumption. assumption.
 Qed.
-

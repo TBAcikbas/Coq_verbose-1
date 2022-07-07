@@ -37,8 +37,8 @@ Messages given during the aplha phase will be changed according to the requireme
 | [                              |- Surjective _             ] => unfold Surjective
 | [ H:Injective _                |- _                        ] => unfold Injective in H
 | [                              |- ?P _ = ?P _              ] => f_equal
-| [ H:Injective ?P,H2: ?P _ = ?P _  |- _                     ] => tryif (apply H in H2) then idtac else idtac "Not an Injection"
-| [                              |- _                        ] => tryif (assumption) then idtac else idtac "Error: No Help avaible"
+| [ H:Injective ?P,H2: ?P _ = ?P _  |- _                     ] => tryif (apply H in H2) then idtac else fail 0 "Not an Injection"
+| [                              |- _                        ] => tryif (assumption) then idtac else fail 0 "Error: No Help avaible"
 
 end.
 

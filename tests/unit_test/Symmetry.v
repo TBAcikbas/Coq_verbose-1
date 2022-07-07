@@ -1,4 +1,4 @@
-oRequire Import Utf8.
+Require Import Utf8.
 Require Import Bool.
 Require Import CoqVerbose.src.Concepts.Concepts.
 Require Import CoqVerbose.src.Tactics.Tactics.

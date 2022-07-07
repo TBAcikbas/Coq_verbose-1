@@ -8,6 +8,6 @@ Require Import CoqVerbose.src.Hinters.Hinter3.
 Example Apply_1: forall A B C: Prop, (A -> B ) -> A -> B.
 Proof.
 intros.
-Let's apply (A->B) on the hypothesis A we obtain B.
+By applying H on the hypothesis A we obtain B.
 trivial.
 Qed.

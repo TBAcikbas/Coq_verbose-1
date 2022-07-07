@@ -45,6 +45,7 @@ Ltac Exists_hyp hypothesis := tryif (induction hypothesis) then idtac else idtac
 
 (*destruct_exist*)
 
+
 Ltac destruct_exist' H P1 P := destruct H as [P1 P ].
 
 Ltac destruct_exist'' H P2 P1 P := destruct H as [P2 P1 P].
@@ -71,6 +72,16 @@ destruct_exist'''' hyp P P1 P2 P3 P4.
 
 
 
+
+
+
+
+
+
+
+
+
+
 (*Addding new hypothesis*)
 
 
@@ -87,15 +98,6 @@ match goal with
 |H:Hyp |- ?P => tryif (rewrite H) then Check_goal_is (H) new_goal else fail
 |H:Hyp |- ?P => fail 1 "Cannot use"H ":" Hyp" to rewrite" P
 end.
-
-
-
-
-
-
-
-
-
 
 Tactic Notation "Let's" "rewrite"   constr(H) "as" constr(H1):=
 tryif (rewrite H in H1)then idtac else tryif (symmetry in H;rewrite H in H1) then idtac else fail 0 "No hypothesis that can't be used to rewrite" H "as" H1.
@@ -216,8 +218,8 @@ tryif apply hyp then (tryif spliter || splits then idtac else idtac ) else fail 
 Ltac Applying_hyp_on_hyp hyp hyp2 Result  := 
 
 match goal with 
-|H:hyp, H2:hyp2|-_ => tryif (apply H in H2) then Check_hyp_is H2 Result else fail 1 "wrong apply"
-|H:hyp, H2:hyp2|- _ => fail 1 "wrong apply"
+|H2:hyp2|-_ => tryif (apply hyp in H2) then Check_hyp_is H2 Result else fail 1 "wrong apply"
+|H2:hyp2|- _ => fail 1 "wrong apply"
 end.
 
 
@@ -233,11 +235,24 @@ Applying_hyp_on_hyp hyp hyp2 expected  .
 
 
 
+
+Ltac isconj_test C_left C_right :=
+ match goal with
+|  |- ?P => Check_goal_is P ( C_left /\ C_right);split 
+end.
+
+
+
+Tactic Notation "Let's" "prove" "the" "conjunction" "by" "proving"   constr(conj_left) "and" constr(conj_right):=
+isconj_test conj_left conj_right.
+
+
+
 (*General Solving Tactics*)
 
 Ltac prove_goal G R :=
 match goal with
- |  |- ?P => hnf;Check_goal_is G R;isconj
+ |  |- ?P => hnf;Check_goal_is G R
  |  |- G => idtac
 
  end.
@@ -270,22 +285,6 @@ hypothesis_unfolder hypothesis Result.
 
 
 
-
-
-
-
-
-
-
-
-
-(*
-
-
-Create RewriteDb simplifications.
-*)
-
-
 Hint Rewrite Rminus_diag_eq : simplifications.
 Hint Rewrite Rabs_R0 : simplifications.
 
@@ -309,6 +308,24 @@ exists stmt.
 
 Tactic Notation "We" "Compute":=
 first [nra| ring| field].
+
+
+(*Tactic used for Contradictions*)
+
+Tactic Notation "Let's" "prove" "by" "exfalso":=
+exfalso.
+
+Tactic Notation "This" "is" "a" "contradiction":=
+contradiction.
+
+(*Tactic used for Transitivity*)
+
+
+
+Tactic Notation "By" "Transitivity" "using" constr(middle_man) :=
+transitivity middle_man.
+
+
 
 (*Test_zone*)
 

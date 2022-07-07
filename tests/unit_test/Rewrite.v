@@ -27,10 +27,11 @@ Qed.
 
 
 
+
+
 Theorem Rewrite_fail_goal : forall (A B C D:nat),A =C -> B =D .
 Proof.
 intros.
-Print assert_fails.
-assert_fails (Let's rewrite the goal by using the hypothesis H).
+assert_fails (By rewriting using the hypothesis  H we obtain (A = D)).
 Admitted.
 

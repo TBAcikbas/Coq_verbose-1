@@ -1,4 +1,4 @@
-CMD = coqc -R . CoqVerbose 
+CMD = coqc  -R  . CoqVerbose -w none
 BIN = bin/
 SRC = src/
 TEST = tests/
