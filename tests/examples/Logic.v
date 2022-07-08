@@ -13,12 +13,12 @@ Theorem exercice_27 :
 Proof.
 Let's fix A,B,C.
 Let's prove ((A ∧ B → C) ↔ (A → B → C)) by proving (((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ B → C)).
-Let's prove the conjunction by proving (((A ∧ B → C) → A → B → C)) and (((A → B → C) → A ∧ B → C)).
+Let's prove (((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ B → C)) by proving (((A ∧ B → C) → A → B → C)) and (((A → B → C) → A ∧ B → C)).
 Assume H:((A ∧ B → C)).
 Assume H0:A.
 Assume H1:B.
 Let's apply H.
-Let's prove the conjunction by proving A and B.
+Let's prove(  A ∧ B )by proving A and B.
 It is trivial.
 It is trivial.
 Assume H:(A -> B -> C).

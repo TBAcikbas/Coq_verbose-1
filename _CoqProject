@@ -1,16 +1,3 @@
 
--R ./ CoqVerbose
-
-src/Tactics/Concepts.v
-src/Hinters/Hinter.v
-src/Hinters/Hinter2.v
-src/Tactics/Tactics.v
-src/Hinters/Hinter3.v
-src/Hinters/Hinter4.v
-exemples/Lemmas.v
-exemples/Assume.v
-exemples/By.v
-exemples/Disj.v
-exemples/Fix.v
-exemples/Let.v
+-R . CoqVerbose 
 

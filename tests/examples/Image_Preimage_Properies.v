@@ -19,7 +19,7 @@ Let's fix  x.
 Assume H:(x ∈ A ).
 Let's prove (x ∈ Inverse f (Image f A)) by proving (∃ x0 : E, x0 ∈ A ∧ f x = f x0).
 Let's prove that x fits.
-Let's prove the conjunction by proving (x ∈ A) and  (f x = f x).
+Let's prove (x ∈ A ∧ f x = f x) by proving (x ∈ A) and  (f x = f x).
 It is trivial. 
 By using reflexivity.
 Qed.
@@ -59,12 +59,13 @@ Let's fix E,F,f,A,B.
 Assume that H:(Injective f).
 
 Let's prove (Image f (A ∩ B) == (Image f A ∩ Image f B)) by proving ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
-Let's prove the conjunction by proving (Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) and ((Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
+Let's prove ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)) by proving (Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) and ((Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
 Let's prove (Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) by proving (∀ x : F, x ∈ Image f (A ∩ B) → x ∈ (Image f A ∩ Image f B)).
 Let's fix x.
 Assume H1:(x ∈ Image f (A ∩ B)).
 Let's prove (x ∈ (Image f A ∩ Image f B)) by proving ((Image f A ∩ Image f B) x).
-Let's prove the conjunction by proving (x ∈ Image f A)and  (x ∈ Image f B).
+Let's prove ((Image f A ∩ Image f B) x) by proving (x ∈ Image f A ∧ x ∈ Image f B).
+Let's prove (x ∈ Image f A ∧ x ∈ Image f B) by proving (x ∈ Image f A ) and ( x ∈ Image f B).
 
 Let's prove (x ∈ Image f A) by proving (∃ x0 : E, x0 ∈ A ∧ x = f x0).
 By definition of (x ∈ Image f (A ∩ B)) we get (∃ x0 : E, x0 ∈ (A ∩ B) ∧ x = f x0).
@@ -72,7 +73,7 @@ By definition of (x ∈ Image f (A ∩ B)) we get (∃ x0 : E, x0 ∈ (A ∩ B) 
 By H1 we obtain x0 and H1.
 By H1 we obtain H1 and H2.
 Let's prove that x0 fits.
-Let's prove the conjunction by proving (x0 ∈ A) and  (x = f x0).
+Let's prove (x0 ∈ A ∧ x = f x0) by proving (x0 ∈ A) and  (x = f x0).
 By definition of (x0 ∈ (A ∩ B)) we get ( x0 ∈ A /\ x0 ∈ B).
 By H1 we obtain In_a and In_b.
 It is trivial.
@@ -82,7 +83,7 @@ Let's prove ((Image f B) x) by proving  (∃ x0 : E, x0 ∈ B ∧ x = f x0).
 By definition of (x ∈ Image f (A ∩ B)) we get (∃ x0 : E, x0 ∈ (A ∩ B) ∧ x = f x0).
 By H1 we obtain x0 and H1.
 Let's prove that x0 fits.
-Let's prove the conjunction by proving (x0 ∈ B) and (x = f x0).
+Let's prove (x0 ∈ B ∧ x = f x0) by proving (x0 ∈ B) and (x = f x0).
 By H1 we obtain H1 and H2.
 By definition of ( x0 ∈ (A ∩ B)) we get ( x0 ∈ A /\ x0 ∈ B).
 By H1 we obtain In_a and In_b.
@@ -100,9 +101,9 @@ By definition of (x ∈ Image f B) we get (exists x0, (In B x0) /\  x =f x0).
 By H1 we obtain x0 and H1.
 By H2 we obtain x1 and H2.
 Let's prove that x0 fits.
-Let's prove the conjunction by proving (x0 ∈ (A ∩ B)) and  (x = f x0).
+Let's prove (x0 ∈ (A ∩ B) ∧ x = f x0) by proving (x0 ∈ (A ∩ B)) and  (x = f x0).
 Let's prove (x0 ∈ (A ∩ B)) by proving (In A x0 /\ In B x0).
-Let's prove the conjunction by proving (x0 ∈ A) and  (x0 ∈ B).
+Let's prove (x0 ∈ A ∧ x0 ∈ B) by proving (x0 ∈ A) and  (x0 ∈ B).
 By H1 we obtain H1 and H3.
 It is trivial.
 By H2 we obtain H2 and H4.

@@ -104,7 +104,7 @@ Let's prove (
 ) by proving (
 ((sequence_tendsto u l → ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε)
  ∧ ((∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε) → sequence_tendsto u l)) ).
-Let's prove the conjunction by proving ((sequence_tendsto u l → ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε)) and (((∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε) → sequence_tendsto u l)).
+Let's prove ((sequence_tendsto u l → ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε) ∧ ((∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε) → sequence_tendsto u l))by proving ((sequence_tendsto u l → ∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε)) and (((∀ ε : R, ε > 0 → ∃ N : nat, ∀ n : nat, n ≥ N → Rabs (u n - l) < ε) → sequence_tendsto u l)).
 Assume H:(sequence_tendsto u l).
 Let's fix eps.
 Assume eps_pos:(eps > 0).
