@@ -81,6 +81,8 @@ Tactic Notation "We" "have" simple_intropattern(Hypothesis_name) ":" constr(Hypo
 new_hyp Hypothesis_name Hypothesis_contents Hypothesis_results.
 
 
+
+
 (*Tactic used to rewrite *)
 Ltac rewrite_goal Hyp new_goal :=
 match goal with
@@ -97,6 +99,8 @@ rewrite_goal H new_goal.
 
 
 
+
+
 (*Tactic used for symmety*)
 Ltac sym Hyp R :=
 match goal with 
@@ -107,7 +111,44 @@ end.
 Tactic Notation "By" "symmetry" "," "using" constr(elem) "we" "obtain" constr(Result):=
 sym elem Result.
 
+
+
+
+
 (*Tactic used for Transitivity*)
+
+Ltac Trans_verif middle_man split_result_l split_result_r :=tryif (transitivity middle_man) then
+match goal with
+|- ?P  => Check_goal_is P split_result_l + Check_goal_is P split_result_r
+end
+else fail 1 middle_man "cannot be used for transitivity".
+
+
+Tactic Notation "By" "Transitivity" "using" constr(middle_man) "such" "that" "we" "get" constr(result_of_trans_first) "and" constr(result_of_trans_second):=
+Trans_verif middle_man result_of_trans_first result_of_trans_second.
+
+
+
+
+
+
+
+
+(* Tactic used for Compute*)
+
+Tactic Notation "We" "Compute":=
+first [nra| ring| field].
+
+
+(*Tactic used for Contradictions*)
+
+Tactic Notation "Let's" "prove" "by" "exfalso":=
+exfalso.
+
+Tactic Notation "This" "is" "a" "contradiction":=
+contradiction.
+
+
 
 
 (*Tactic used to prove trivial cases such as 1=1 or f x = f x*)
@@ -156,10 +197,14 @@ Fix X;Fix Y;Fix Z;Fix T;Fix A; Fix M; Fix R.
 
 
 (*Tactic used for implications statements *)
+(* o
+Ltac assume_tac_conj name_1 name_2 stmt:=let r := 
+match goal with
+  |-?P /\ ?Q -> ?A :=intro name *)
 
 Ltac assume_tac name stmt :=
  match goal with
-   |- ?P -> ?Q => intro name;Check_hyp_is name stmt
+   |- ?P -> ?Q =>  intro name;Check_hyp_is name stmt
     
 end.
 
@@ -273,18 +318,6 @@ hypothesis_unfolder hypothesis Result.
 
 
 
-
-
-Hint Rewrite Rminus_diag_eq : simplifications.
-Hint Rewrite Rabs_R0 : simplifications.
-
-
-Tactic Notation "Let's" "simplify" := autorewrite with simplifications. 
-
-
-
-
-
 (*Tactic used for "exists" statements*)
 
 Tactic Notation "Let's" "prove" "that" constr(witness) "works" "ie" constr(stmt) := 
@@ -294,113 +327,17 @@ Tactic Notation  "Let's" "prove" "that " constr(stmt) "fits" :=
 exists stmt.
 
 
-(* Tactic used for Compute*)
-
-Tactic Notation "We" "Compute":=
-first [nra| ring| field].
-
-
-(*Tactic used for Contradictions*)
-
-Tactic Notation "Let's" "prove" "by" "exfalso":=
-exfalso.
-
-Tactic Notation "This" "is" "a" "contradiction":=
-contradiction.
-
-(*Tactic used for Transitivity*)
-
-Ltac Trans_verif middle_man split_result_l split_result_r :=tryif (transitivity middle_man) then
-match goal with
-|- ?P  => Check_goal_is P split_result_l + Check_goal_is P split_result_r
-end
-else fail 1 "I am hidden".
-
-
-Tactic Notation "By" "Transitivity" "using" constr(middle_man) "such" "that" "we" "get" constr(result_of_trans_first) "and" constr(result_of_trans_second):=
-Trans_verif middle_man result_of_trans_first result_of_trans_second.
-
-Example trans_succ_goal_1: forall (A B C Q:nat), A <= C -> C <= B -> A <= B.
-Proof.
-intros.
-By Transitivity using C such that we get (A ≤ C) and (C ≤ B).
-assumption. assumption.
-Qed.
-
-(*Test_zone*)
 
 
 
-Open Scope R_scope.
+(*Simplification Tactics*)
 
 
 
 
-(*  unfinished test*)
-Inductive tag : Set :=
-  eq : tag
-  | ineq : tag.
-  
-Definition eq_or_ineq t a b :=
- match t with
-  eq => a=b
-  | ineq => a<=b
-  end.
-
-Ltac put_eq_or_ineqs := 
-repeat
- match goal with
- | H: ?x = ?y |- _ => change (eq_or_ineq eq x y) in H
- | H: ?x <= ?y |- _ => change (eq_or_ineq ineq x y) in H
- 
- end.
-
-Ltac foo:= assumption.
-Ltac assert_ineq_with_ldots x tac := 
- put_eq_or_ineqs;
- match goal with
- | H: eq_or_ineq _ _ ?y |- _ => assert (y<=x) by tac
- end;simpl eq_or_ineq in *.
- 
-Ltac assert_eq_with_ldots x tac := 
- put_eq_or_ineqs;
- match goal with
- | H: eq_or_ineq _ _ ?y |- _ => assert (y=x) by tac
- end;simpl eq_or_ineq in *.
- 
-
-Tactic Notation "ppp" "plus" "petit" constr(x) "by" tactic(tac) := assert_ineq_with_ldots x tac.
-Tactic Notation "ppp" "egal" constr(x) "by" tactic(tac) := assert_eq_with_ldots x tac.
-
-Lemma test_chaining_eq_ineq : forall a b c d: R, a <= b -> b <= c -> c=d -> a <=d.
-Proof.
-intros.
-assert (a <= b) by foo.
-ppp plus petit c by exact H0.
-ppp egal d by exact H1.
-Admitted.
+Tactic Notation "Let's" "simplify" := autorewrite with simplifications. 
 
 
 
-(* 
-
-Theorem Leanverbose_ex5 ( v u:nat -> R)  (l l':R) (hu : sequence_tendsto u l) (hv : sequence_tendsto v l') :
-sequence_tendsto (u  + v) (l + l').
-
-Proof.
- *)
-Theorem Leanverbose_ex8 (u:nat -> R) (l l':R) : sequence_tendsto u l → sequence_tendsto u l' → l = l'.
-Proof.
-intros.
-hnf in H.
-hnf in H0.
-Admitted.
-
-
-
-
-
-
-Close Scope R_scope.
 
 

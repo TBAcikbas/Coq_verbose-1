@@ -2,7 +2,7 @@ Require Import Utf8.
 Require Import CoqVerbose.src.Concepts.Concepts.
 Require Import CoqVerbose.src.Tactics.Tactics.
 
-(*Tactic zone*)
+(*Propositions*)
 
 Ltac destruct_exist'' hypothesis ext first_element second_element :=
 match goal with 
@@ -16,9 +16,7 @@ Tactic Notation "By" constr(hypothesis) "we" "obtain" simple_intropattern(ext) "
 destruct_exist'' hypothesis ext first_element second_element .
 
 
-
-
-Theorem reverse_inclusion_verbose :
+Theorem reverse_inclusion_verbose_ :
   ∀ {E F: Type} (f: E -> F),
     Injective f -> 
       ∀ A, (Inverse f (Image f A)) ⊆ A.
@@ -28,15 +26,19 @@ intros.
 hnf.
 intros.
 hnf in H0.
-By (∃ x0 : E, x0 ∈ A ∧ f x = f x0) we obtain  x0 such that we get K1 and K2 .
-apply H in K2.
-rewrite K2.
-assumption.
-Qed.
+By ( ∃ x0 : E, x0 ∈ A ∧ f x = f x0) we obtain  x0 such that we get K1 and K2 .
+Admitted.
 
 
 
 
+
+
+
+(* 
+
+
+(* Expected but "impossible" version *)
 
 
 
@@ -51,7 +53,7 @@ end.
 
 
 
-Tactic Notation "By" constr(hypothesis) "we" "obtain" simple_intropattern(ext) "such" "that" "we" "get" simple_intropattern(first_element) ":" constr(first_element_content) "and" constr(second_element) ":" constr(second_element_content):=
+Tactic Notation "By" constr(hypothesis) "we" "obtain" simple_intropattern(ext) "such" "that" "we" "get" simple_intropattern(first_element) ":" open_constr(first_element_content) "and" uconstr(second_element) ":" open_constr(second_element_content):=
 destruct_exist''_2 hypothesis ext first_element first_element_content second_element second_element_content.
 
 
@@ -59,7 +61,7 @@ destruct_exist''_2 hypothesis ext first_element first_element_content second_ele
 
 
 
-Theorem reverse_inclusion_verbose_ :
+Theorem reverse_inclusion_verbose_1:
   ∀ {E F: Type} (f: E -> F),
     Injective f -> 
       ∀ A, (Inverse f (Image f A)) ⊆ A.
@@ -69,6 +71,8 @@ intros.
 hnf.
 intros.
 hnf in H0.
-assert_fails (By (∃ x0 : E, x0 ∈ A ∧ f x = f x0) we obtain  (x0) such that we get K1:(x0 ∈ A) and (K2) : (f x = f x0)).
+(By (∃ x0 : E, x0 ∈ A ∧ f x = f x0) we obtain  (x0) such that we get K1:(x0 ∈ A) and (K2) : (f x = f x0)).
 Admitted.
+
+ *)
 

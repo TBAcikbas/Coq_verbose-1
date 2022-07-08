@@ -1,4 +1,3 @@
-
 Require Import Utf8.
 Require Import Reals.
 Require Import Basics.
@@ -27,7 +26,6 @@ By rewriting using the hypothesis ((∀ n : nat, u n = l)) we obtain (Rabs (l - 
 Let's simplify.
 Let's apply Rlt_le.
 It is trivial.
-It is trivial.
 Qed.
 
 
@@ -45,7 +43,7 @@ Assume H0 :(n ≥ N).
 We have T : (HN n H0) such that we get (Rabs (u n - l) <= l / 2).
 By  applying  Rabs_le_le on the hypothesis (Rabs (u n - l) <= l / 2) we obtain ((u n - l) <= l / 2 /\ - (l / 2) <= u n - l).
 By T we obtain UN1 and UN2.
-We Compute.  (*Tactics for ???? simplification ?? resolve ?? *)
+We Compute. 
 Qed.
 
 

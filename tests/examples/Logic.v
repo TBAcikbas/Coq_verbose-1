@@ -23,6 +23,7 @@ It is trivial.
 It is trivial.
 Assume H:(A -> B -> C).
 Assume H0:(A /\ B).
+
 Let's apply H.
 It is trivial.
 It is trivial.
