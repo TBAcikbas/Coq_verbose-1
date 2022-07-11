@@ -1,7 +1,0 @@
-COQAUX1 f3ef8623a0e4b56171de47d015a7d38f /adhome/t/ta/tacikbas/Bureau/Coq_verbose-1/tests/examples/Logic.v
-0 0 VernacProof "tac:no using:no"
-988 992 proof_build_time "0.004"
-0 0 exercice_27 "0.004"
-973 987 context_used ""
-988 992 proof_check_time "0.000"
-0 0 vo_compile_time "0.441"
