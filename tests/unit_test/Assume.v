@@ -16,7 +16,7 @@ Qed.
 Example test2 : forall n:nat, n>0 -> True.
 Proof.
 Fix n.
-Assume H : (n>0).
+Assume H : (n>0000).
 auto.
 Qed.
 
@@ -25,4 +25,28 @@ Proof.
 intros.
 Assume for contradiction H2 : (~ Q).
 apply (H H2 H0).
+Qed.
+
+
+Example test4: forall P Q : Prop, Q/\P -> P.
+Proof.
+intros P Q.
+Assume HQ:Q and HP:P.
+assumption.
+Qed.
+
+
+Example test5_fail : forall  Q T:Prop, Q/\T -> T.
+Proof.
+intros Q T.
+assert_fails (Assume HQ:T and HT: Q).
+Admitted.
+
+
+Example test6 : forall P Q:Prop, P /\ ~P -> ~Q.
+Proof.
+Let's fix P, Q.
+Assume H:P and H2:(~P).
+Assume HQ:(Q).
+tauto.
 Qed.

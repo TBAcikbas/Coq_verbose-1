@@ -9,6 +9,11 @@ Require Import CoqVerbose.src.Hinters.Hinter3.
 
 Open Scope R_scope.
 
+Ltac  Applying_hypothesis_test hyp stmt := 
+match goal with 
+|H:hyp |- ?P => tryif (apply H) then  match goal with |-?Q => Check_goal_is Q stmt end else idtac "failed" 
+|_  => idtac hyp ;tryif (apply hyp) then  match goal with |-?Q => idtac Q stmt end else idtac "failed2"
+end.
 
 
 Theorem test :forall (u : nat→ R) (l : R),(∀ n, u n = l) → sequence_tendsto u l.
@@ -21,10 +26,11 @@ Assume eps_pos :(eps >0).
 Let's prove that (0%nat) fits.
 Let's fix N.
 Assume N_pos:(N ≥ 0).
-
 By rewriting using the hypothesis ((∀ n : nat, u n = l)) we obtain (Rabs (l - l) <= eps).
 Let's simplify.
-Let's apply Rlt_le.
+
+By Rlt_le it suffices to prove (0 < eps).
+
 It is trivial.
 Qed.
 
@@ -85,7 +91,7 @@ By applying Rabs_le_le on the hypothesis (Rabs (u n - l) <= ε) we obtain (u n -
 By applying Rabs_le_le on the hypothesis ( Rabs (w n - l) <= ε) we obtain ( w n - l <= ε ∧ - ε <= w n - l).
 By Hn1 we obtain Hn1 and Hnd.
 By Hn2 we obtain Hn'1 and Hnd'.
-Let's apply Rabs_le.
+By Rabs_le it suffices to prove (- ε <= v n - l <= ε) .
 Let's prove (- ε <= v n - l <= ε) by proving (- ε <= v n - l <= ε).
 We Compute.
 Qed.
@@ -148,7 +154,7 @@ Let's prove that n0 fits.
 Let's fix n.
 Assume nh0:(n ≥ n0 ).
 We have  inf_M' : (inf_M n) such that we get ( u n <= M).
-Let's apply Rabs_le.
+By Rabs_le it suffices to prove (- eps <= u n - M <= eps).
 Let's prove (- eps <= u n - M <= eps) by proving (- eps <= u n - M /\ u n - M <= eps).
 We have  h'' : (h' n0 n nh0) such that we get (u n0 <= u n ).
 By applying  R_sup_eq_symmetry on the hypothesis ( u n0 >= M - eps) we obtain (M - eps <= u n0 ).

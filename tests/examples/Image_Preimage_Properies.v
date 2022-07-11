@@ -133,5 +133,5 @@ Let's prove  (Surjective f) by proving (∀ y : B, ∃ x : A, f x = y).
 Let's fix y.
 Let's prove that (g y) fits. 
 By definition of (Right_Inv f g) we get (∀ x : B, f (g x) = x).
-Let's apply Hg.
+By Hg it suffices to prove 0.                                               (*Using 0 because there are no goal left after applying Hg*)
 Qed. 

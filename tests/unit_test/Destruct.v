@@ -35,8 +35,8 @@ Admitted.
 
 
 
-(* 
 
+(* 
 
 (* Expected but "impossible" version *)
 
@@ -58,8 +58,9 @@ destruct_exist''_2 hypothesis ext first_element first_element_content second_ele
 
 
 (*Zone test*)
+Tactic Notation "Foo" open_constr(bidule) := idtac bidule.
 
-
+Ltac2 
 
 Theorem reverse_inclusion_verbose_1:
   ∀ {E F: Type} (f: E -> F),
@@ -70,9 +71,11 @@ Proof.
 intros.
 hnf.
 intros.
+Foo (In x0 A).
+
 hnf in H0.
 (By (∃ x0 : E, x0 ∈ A ∧ f x = f x0) we obtain  (x0) such that we get K1:(x0 ∈ A) and (K2) : (f x = f x0)).
 Admitted.
-
  *)
+
 

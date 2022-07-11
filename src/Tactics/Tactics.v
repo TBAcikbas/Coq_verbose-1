@@ -197,29 +197,53 @@ Fix X;Fix Y;Fix Z;Fix T;Fix A; Fix M; Fix R.
 
 
 (*Tactic used for implications statements *)
-(* o
-Ltac assume_tac_conj name_1 name_2 stmt:=let r := 
+
+Ltac assume_tac_conj name_1 stmt_1 name_2 stmt_2:=let r := fresh in  
 match goal with
-  |-?P /\ ?Q -> ?A :=intro name *)
+  |-?P /\ ?Q -> ?A =>intro r;Check_hyp_is r (stmt_1 /\ stmt_2);destruct r as [name_1 name_2]
+ end.
 
 Ltac assume_tac name stmt :=
  match goal with
-   |- ?P -> ?Q =>  intro name;Check_hyp_is name stmt
-    
+   |- ?P -> ?Q =>  hnf;intro name;Check_hyp_is name stmt
+ |  |- ~?P => hnf;intro name;Check_hyp_is name stmt
 end.
+
 
 Ltac assume_contr_tac name stmt := apply NNPP;hnf;assume_tac name stmt.
 
 
 Tactic Notation "Assume" "that" simple_intropattern(I) ":" constr(H) :=
  assume_tac I H.
+ 
+ 
+Tactic Notation "Assume" "that" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) :=
+ assume_tac I H; assume_tac I2 H2.
+
+Tactic Notation "Assume" "that" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) "and" simple_intropattern(I3) ":" constr(H3) :=
+ assume_tac I H; assume_tac I2 H2 ;assume_tac I3 H3.
+ 
+ 
 Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) :=
  assume_tac I H.
 
+Tactic Notation "Assume" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) :=
+ assume_tac I H; assume_tac I2 H2.
+
+Tactic Notation "Assume" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) "and" simple_intropattern(I3) ":" constr(H3) :=
+ assume_tac I H; assume_tac I2 H2 ;assume_tac I3 H3.
+ 
+ 
+
+
 Tactic Notation "Assume" "for" "contradiction" simple_intropattern(I) ":" constr(H) :=
  assume_contr_tac I H.
+ 
+ 
+ 
 
-
+Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) "and" simple_intropattern(I2) ":" constr(H2):=
+assume_tac_conj I H I2 H2.
 (*Tactics used for disjonction statements *)
 
 Ltac hyp_of_type t :=
@@ -244,9 +268,31 @@ disj_left_right t.
 
 
 
+Ltac  Applying_hypothesis hyp stmt := 
+match goal with 
+|H:hyp |- ?P => tryif (apply H) then  match goal with |-?Q => Check_goal_is Q stmt end else idtac "failed" 
+|_  => tryif (apply hyp) then  match goal with |-?Q => Check_goal_is Q stmt end else idtac "failed2"
+end.
 
-Ltac  Applying_hypothesis hyp :=
-tryif apply hyp then (tryif spliter || splits then idtac else idtac ) else fail 1 "The hypothesis used isn't:" hyp.  (* automatically use split on an hypothesis we apply *)
+
+
+Ltac  Applying_hypothesis_2 hyp stmt  stmt2:=
+match hyp with
+| stmt -> stmt2 -> ?P => match goal with |H:hyp |-_ => apply H end
+| _  => idtac hyp "isn't used correctly" 
+end.
+
+Ltac  Applying_hypothesis_3 hyp stmt  stmt2 stmt3 :=
+match hyp with
+| stmt -> stmt2 -> stmt3 -> ?P => match goal with |H:hyp |-_ => apply H end
+| _  => idtac hyp "isn't used correctly" 
+end.
+
+Ltac  Applying_hypothesis_4 hyp stmt  stmt2 stmt3 stmt4:=
+match hyp with
+| stmt -> stmt2 ->  stmt3 -> stmt4 -> ?P => match goal with |H:hyp |-_ => apply H end
+| _  => idtac hyp "isn't used correctly" 
+end.
 
 
 Ltac Applying_hyp_on_hyp hyp hyp2 Result  := 
@@ -257,8 +303,26 @@ match goal with
 end.
 
 
-Tactic Notation "Let's" "apply"   constr(hyp) :=
-Applying_hypothesis hyp.
+Tactic Notation "By" constr(hyp) "it" "suffices" "to" "prove" constr(stmt) :=
+Applying_hypothesis hyp stmt.
+
+
+
+Tactic Notation "By" constr(hyp) "it" "suffices" "to" "prove" constr(stmt) "and" constr(stmt2):=
+Applying_hypothesis_2 hyp stmt stmt2.
+
+
+Tactic Notation "By" constr(hyp) "it" "suffices" "to" "prove" constr(stmt) "and" constr(stmt2) "and" constr(stmt3):=
+Applying_hypothesis_3 hyp stmt stmt2 stmt3.
+
+
+Tactic Notation "By" constr(hyp) "it" "suffices" "to" "prove" constr(stmt) "and" constr(stmt2) "and" constr(stmt3) "and" constr(stmt4):=
+Applying_hypothesis_4 hyp stmt stmt2 stmt3 stmt4.
+
+
+
+
+
 
 
 Tactic Notation "By" "applying" constr(hyp) "on" "the" "hypothesis"  constr(hyp2) "we" "obtain" constr(expected) :=
@@ -270,7 +334,7 @@ Applying_hyp_on_hyp hyp hyp2 expected  .
 
 
 
-Ltac isconj_test C_full C_left C_right :=
+Ltac prove_equi_conj C_full C_left C_right :=
  match goal with
 |  |- ?P /\ ?Q => Check_goal_is (P /\ Q) (C_full);Check_goal_is P ( C_left /\ C_right);Check_goal_is Q (C_left /\ C_right);split 
 |  |- ?P <-> ?Q => Check_goal_is (P <-> Q) (C_full);Check_goal_is P ( C_left /\ C_right);Check_goal_is Q (C_left /\ C_right);split 
@@ -279,8 +343,8 @@ end.
 
 
 
-Tactic Notation "Let's" "prove" constr(full_conj) "by" "proving"   constr(conj_left) "and" constr(conj_right):=
-isconj_test full_conj conj_left conj_right.
+Tactic Notation "Let's" "prove" constr(full_stmt) "by" "proving"   constr(stmt_left) "and" constr(stmt_right):=
+prove_equi_conj full_stmt stmt_left stmt_right.
 
 
 (*General Solving Tactics*)

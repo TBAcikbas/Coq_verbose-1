@@ -17,15 +17,16 @@ Let's prove (((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ 
 Assume H:((A ∧ B → C)).
 Assume H0:A.
 Assume H1:B.
-Let's apply H.
+By H it suffices to prove (A /\B).
 Let's prove(  A ∧ B )by proving A and B.
 It is trivial.
 It is trivial.
 Assume H:(A -> B -> C).
 Assume H0:(A /\ B).
-
-Let's apply H.
+By (A → B → C) it suffices to prove A and B.
+By H0 we obtain HA and HB.
 It is trivial.
+By H0 we obtain HA and HB.
 It is trivial.
 Qed.
  
