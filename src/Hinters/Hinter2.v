@@ -1,47 +1,6 @@
 Require Import Utf8.
 Require Import CoqVerbose.src.Concepts.Concepts.
 
-(*Version 1*)
-
-Ltac Hinter :=
-match goal with
-(* Sentences are temporary this files contains hints that will be used in order to help user. 
-Messages given during the aplha phase will be changed according to the requirement put forward by the Owner later on*)
-
-
-
-
-
-(*Hints applied to goals*)
-| [                              |- forall x,?P              ] => idtac "Fix x"
-| [                              |- _ -> _                   ] => idtac "Assume (H:A))"
-| [H:?Q                          |- exists x,?P :?Q          ] => idtac "Let's show that (Name of the hypothesis containing the variable) fit" 
-| [                              |- context [ _ <-> _ ]      ] => idtac "Let's prove the equivalence :(Your current goal) such that we get (Result of unfold Goal))"
-| [                              |- context [ _ == _ ]       ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [                              |- context [ _  ⊆ _ ]       ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [                              |- context [ _ /\ _ ]       ] => idtac "Let's prove the by proving :(Your current goal) such that we get (First implication) /\ (Second Implication))"
-| [                              |- context [ _ ∩  _ ]       ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [                              |- context [ _ ∪  _ ]       ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [ H:context[_ /\ _ ]           |- _                        ] => idtac "By using our definition in :(name of the hypothesis) such that we get (Result of unfolding Definition)"
-| [ H:context[exists x,?P]       |- _                        ] => idtac "Let's simplify our hypothesis:(name of the hypothesis)"
-| [ H:context[ _ ∈ _ ]           |- _                        ] => idtac "By using our definition in :(name of the hypothesis) such that we get (Result of unfolding Definition)"
-| [                              |- ?A ∈ ?B                  ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [ H:context[Image _  _ ]       |- _                        ] => idtac "By using our definition in :(name of the hypothesis) such that we get (Result of unfolding Definition)"
-| [ H: _ <->  _                  |- _                        ] => idtac "Let's simplify our hypothesis (hypothesis to simplify))"
-| [ H: _  ⊆ _                    |- _                        ] => idtac "By using our definition in :(name of the hypothesis) such that we get (Result of unfolding Definition)"
-| [ H: _ ∩ _                     |- _                        ] => idtac "By using our definition in :(name of the hypothesis) such that we get (Result of unfolding Definition)"
-| [ H: _ ∪ _                     |- _                        ] => idtac "By cases on :(name of your hypothesis)"
-| [                              |- context [Image _ _]      ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)" 
-| [                              |- context [Inverse _ _ ]   ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [                              |- context [Right_Inv _ _]  ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [                              |- Surjective _             ] => idtac "Let's prove (your current goal) by proving :(Result of unfolded Goal)"
-| [ H:Injective _                |- _                        ] => idtac "Let's apply our hypothesis: (name of your Injective Hypothesis))"
-| [ H: _ \/ _                    |- _                        ] => idtac "By cases on :(name of your hypothesis)"
-| [                              |- _                        ] => idtac "Error: No Help avaible"
-end.
-
-
-(*Version 2 of Hinter 2 *)
 
 
 Ltac folder   anchor := repeat 

@@ -81,7 +81,7 @@ goal_helper goal goal.
 
 Tactic Notation "Help" "with" "hypothesis" constr(hypothesis):=
 hyp_helper_sub_func hypothesis.
-(* 
+
 
 Theorem right_inverse_surjective : ∀ {A B} (f : A -> B),
   (∃ g, Right_Inv f g) -> Surjective f.
@@ -93,14 +93,15 @@ Let's fix  f .
 Assume  H : (∃ g : B → A, Right_Inv f g) .
 Let's prove ( (Surjective f) ) by proving ( (∀ y : B, ∃ x : A, f x = y) ).
 
+
 Help with goal (∀ y : B, ∃ x : A, f x = y).
 Let's fix  y .
 Let's prove ( (∃ x : A, f x = y) ) by proving ( (∃ x : A, f x = y) ).
-Show Existentials.
+
 Help with hypothesis (∃ g : B → A, Right_Inv f g).
 By H we obtain H0 and H1 .
 Let's prove that (H0 y) fits.                                                             (*fits trigger the rest of the Hypothesis*)
-Let's apply H1.
+By H1 it suffices to prove 0.
 Qed.
 
 
@@ -256,4 +257,3 @@ assumption.
 Qed.
 
 
- *)

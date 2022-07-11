@@ -68,9 +68,6 @@ Tactic Notation "By" constr(hyp) "we" "obtain" simple_intropattern(P) "and" simp
 destruct_exist'''' hyp P P1 P2 P3 P4.
 
 
-
-
-
 (*Addding new hypothesis*)
 
 
@@ -98,21 +95,15 @@ Tactic Notation "By" "rewriting" "using" "the" "hypothesis"  constr(H) "we" "obt
 rewrite_goal H new_goal.
 
 
-
-
-
 (*Tactic used for symmety*)
 Ltac sym Hyp R :=
 match goal with 
-|H:Hyp |-_ => symmetry in H;Check_hyp_is H R
+|H:Hyp |-_  => symmetry in H;Check_hyp_is H R
 |H:_   |-?P => symmetry;Check_goal_is P R
 end.
 
 Tactic Notation "By" "symmetry" "," "using" constr(elem) "we" "obtain" constr(Result):=
 sym elem Result.
-
-
-
 
 
 (*Tactic used for Transitivity*)
@@ -128,12 +119,6 @@ Tactic Notation "By" "Transitivity" "using" constr(middle_man) "such" "that" "we
 Trans_verif middle_man result_of_trans_first result_of_trans_second.
 
 
-
-
-
-
-
-
 (* Tactic used for Compute*)
 
 Tactic Notation "We" "Compute":=
@@ -147,8 +132,6 @@ exfalso.
 
 Tactic Notation "This" "is" "a" "contradiction":=
 contradiction.
-
-
 
 
 (*Tactic used to prove trivial cases such as 1=1 or f x = f x*)
@@ -213,16 +196,7 @@ end.
 Ltac assume_contr_tac name stmt := apply NNPP;hnf;assume_tac name stmt.
 
 
-Tactic Notation "Assume" "that" simple_intropattern(I) ":" constr(H) :=
- assume_tac I H.
- 
- 
-Tactic Notation "Assume" "that" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) :=
- assume_tac I H; assume_tac I2 H2.
 
-Tactic Notation "Assume" "that" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) "and" simple_intropattern(I3) ":" constr(H3) :=
- assume_tac I H; assume_tac I2 H2 ;assume_tac I3 H3.
- 
  
 Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) :=
  assume_tac I H.
@@ -279,26 +253,26 @@ end.
 Ltac  Applying_hypothesis_2 hyp stmt  stmt2:=
 match hyp with
 | stmt -> stmt2 -> ?P => match goal with |H:hyp |-_ => apply H end
-| _  => idtac hyp "isn't used correctly" 
+| _                   => idtac hyp "isn't used correctly" 
 end.
 
 Ltac  Applying_hypothesis_3 hyp stmt  stmt2 stmt3 :=
 match hyp with
 | stmt -> stmt2 -> stmt3 -> ?P => match goal with |H:hyp |-_ => apply H end
-| _  => idtac hyp "isn't used correctly" 
+| _                            => idtac hyp "isn't used correctly" 
 end.
 
 Ltac  Applying_hypothesis_4 hyp stmt  stmt2 stmt3 stmt4:=
 match hyp with
 | stmt -> stmt2 ->  stmt3 -> stmt4 -> ?P => match goal with |H:hyp |-_ => apply H end
-| _  => idtac hyp "isn't used correctly" 
+| _                                      => idtac hyp "isn't used correctly" 
 end.
 
 
 Ltac Applying_hyp_on_hyp hyp hyp2 Result  := 
 
 match goal with 
-|H2:hyp2|-_ => tryif (apply hyp in H2) then Check_hyp_is H2 Result else fail 1 "wrong apply"
+|H2:hyp2|-_  => tryif (apply hyp in H2) then Check_hyp_is H2 Result else fail 1 "wrong apply"
 |H2:hyp2|- _ => fail 1 "wrong apply"
 end.
 
@@ -320,23 +294,13 @@ Tactic Notation "By" constr(hyp) "it" "suffices" "to" "prove" constr(stmt) "and"
 Applying_hypothesis_4 hyp stmt stmt2 stmt3 stmt4.
 
 
-
-
-
-
-
 Tactic Notation "By" "applying" constr(hyp) "on" "the" "hypothesis"  constr(hyp2) "we" "obtain" constr(expected) :=
 Applying_hyp_on_hyp hyp hyp2 expected  .
 
 
-
-
-
-
-
 Ltac prove_equi_conj C_full C_left C_right :=
  match goal with
-|  |- ?P /\ ?Q => Check_goal_is (P /\ Q) (C_full);Check_goal_is P ( C_left /\ C_right);Check_goal_is Q (C_left /\ C_right);split 
+|  |- ?P /\ ?Q  => Check_goal_is (P /\ Q) (C_full);Check_goal_is P ( C_left /\ C_right);Check_goal_is Q (C_left /\ C_right);split 
 |  |- ?P <-> ?Q => Check_goal_is (P <-> Q) (C_full);Check_goal_is P ( C_left /\ C_right);Check_goal_is Q (C_left /\ C_right);split 
 
 end.
@@ -351,8 +315,8 @@ prove_equi_conj full_stmt stmt_left stmt_right.
 
 Ltac prove_goal G R :=
 match goal with
- |  |- ?P => hnf;Check_goal_is G R
- |  |- G => idtac
+|  |- ?P => hnf;Check_goal_is G R
+|  |- G  => idtac
 
  end.
 
@@ -361,14 +325,10 @@ match goal with
 
 Ltac hypothesis_unfolder hyp R  :=
 match goal with
-
-| H:hyp |- _ => hnf in H;Check_hyp_is H R
+| H:hyp     |- _ => hnf in H;Check_hyp_is H R
 | H: _ \/ _ |- _ => elim hyp
 
-
-
-
-end.
+  end.
 
 
 

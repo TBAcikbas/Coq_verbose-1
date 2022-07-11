@@ -8,7 +8,7 @@ Require Import CoqVerbose.src.Tactics.Tactics.
 Example test1 : forall n:nat, n >0 -> True.
 Proof.
 Fix n.
-Assume that H : (n>0).
+Assume  H : (n>0).
 Assume for contradiction H2 : (~ True).
 intuition.
 Qed.
@@ -40,7 +40,9 @@ Example test5_fail : forall  Q T:Prop, Q/\T -> T.
 Proof.
 intros Q T.
 assert_fails (Assume HQ:T and HT: Q).
-Admitted.
+tauto.
+Qed.
+
 
 
 Example test6 : forall P Q:Prop, P /\ ~P -> ~Q.
@@ -50,3 +52,30 @@ Assume H:P and H2:(~P).
 Assume HQ:(Q).
 tauto.
 Qed.
+
+
+
+Example test7 : forall P Q:Prop, P ->  ~P -> ~Q.
+Proof.
+Let's fix P, Q.
+Admitted.
+(*
+Assume H:P and H2:(~P).
+Assume HQ:(Q).
+tauto.
+Qed.
+*)
+
+Lemma curry : forall P Q R: Prop, (P -> Q -> R) <-> (P /\ Q -> R).
+tauto.
+Qed.
+
+Example test8 : forall P Q R S:Prop, (P /\ Q) -> (R /\ S) -> R.
+Proof.
+Let's fix P, Q, R, S.
+repeat rewrite <- curry.
+
+Assume H:P and H2:(Q) and H3:R and H4:S.
+
+Qed.
+

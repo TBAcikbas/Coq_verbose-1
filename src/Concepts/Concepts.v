@@ -32,7 +32,7 @@ Notation "A == B" := (Equal A B) (at level 90).
 (* Image of a set by a function *)
 Definition Image {E F: Type} (f: E → F) (A: Ens): Ens :=
   fun (y: F) => ∃ x, x ∈ A ∧ y = f x.
-
+Notation "f '_' A" := (Image f A) (at level 100).
 (* Inverse image of a set by a function *)
 Definition Inverse {E F: Type} (f: E → F) (B: Ens): Ens :=
   fun (x: E) => f x ∈ B.
