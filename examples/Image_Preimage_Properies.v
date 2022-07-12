@@ -56,7 +56,7 @@ Theorem exercise_inj_inter : ∀  {E F: Type} (f: E -> F) (A B:Ens),
 
 Proof.
 Let's fix E,F,f,A,B.
-Assume that H:(Injective f).
+Assume H:(Injective f).
 
 Let's prove (Image f (A ∩ B) == (Image f A ∩ Image f B)) by proving ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
 Let's prove ((Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) ∧ (Image f A ∩ Image f B) ⊆ Image f (A ∩ B)) by proving (Image f (A ∩ B) ⊆ (Image f A ∩ Image f B)) and ((Image f A ∩ Image f B) ⊆ Image f (A ∩ B)).
@@ -109,7 +109,7 @@ It is trivial.
 By H2 we obtain H2 and H4.
 By H1 we obtain H1 and H3.
 By symmetry , using ( x = f x1) we obtain ( f x1 =x).
-Let's rewrite H4 as H3.
+Rewrite H4 by using H3.
 By applying H on the hypothesis (f x1 = f x0) we obtain (x1 =x0).
 By symmetry, using  ( x1 = x0) we obtain ( x0 =x1).
 By rewriting using the hypothesis (x0 = x1) we obtain (x1 ∈ B).
@@ -117,7 +117,7 @@ It is trivial.
 By H2 we obtain H2 and H4.
 By H1 we obtain H1 and H3.
 By symmetry ,using  ( x = f x1) we obtain ( f x1 =x).
-Let's rewrite H4 as H3.
+Rewrite H3 by using H4.
 By symmetry , using (f x1 = f x0) we obtain (f x0 = f x1).
 By rewriting using the hypothesis ( f x0 = f x1) we obtain (x = f x1).
 It is trivial.

@@ -12,6 +12,7 @@ Theorem exercice_27 :
 
 Proof.
 Let's fix A,B,C.
+
 Let's prove ((A ∧ B → C) ↔ (A → B → C)) by proving (((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ B → C)).
 Let's prove (((A ∧ B → C) → A → B → C) ∧ ((A → B → C) → A ∧ B → C)) by proving (((A ∧ B → C) → A → B → C)) and (((A → B → C) → A ∧ B → C)).
 Assume H:((A ∧ B → C)).

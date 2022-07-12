@@ -87,7 +87,7 @@ match goal with
 |H:Hyp |- ?P => fail 1 "Cannot use"H ":" Hyp" to rewrite" P
 end.
 
-Tactic Notation "Let's" "rewrite"   constr(H) "as" constr(H1):=
+Tactic Notation  "Rewrite"   constr(H1) "by" "using" constr(H):=
 tryif (rewrite H in H1)then idtac else tryif (symmetry in H;rewrite H in H1) then idtac else fail 0 "No hypothesis that can't be used to rewrite" H "as" H1.
 
 
@@ -186,8 +186,9 @@ match goal with
   |-?P /\ ?Q -> ?A =>intro r;Check_hyp_is r (stmt_1 /\ stmt_2);destruct r as [name_1 name_2]
  end.
 
+
 Ltac assume_tac name stmt :=
- match goal with
+match goal with
    |- ?P -> ?Q =>  hnf;intro name;Check_hyp_is name stmt
  |  |- ~?P => hnf;intro name;Check_hyp_is name stmt
 end.
@@ -201,8 +202,8 @@ Ltac assume_contr_tac name stmt := apply NNPP;hnf;assume_tac name stmt.
 Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) :=
  assume_tac I H.
 
-Tactic Notation "Assume" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) :=
- assume_tac I H; assume_tac I2 H2.
+Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) "and" simple_intropattern(I2) ":" constr(H2):=
+tryif assume_tac_conj I H I2 H2 then idtac else ( assume_tac I H; assume_tac I2 H2).
 
 Tactic Notation "Assume" simple_intropattern(I) ":" constr(H)  "and" simple_intropattern(I2) ":" constr(H2) "and" simple_intropattern(I3) ":" constr(H3) :=
  assume_tac I H; assume_tac I2 H2 ;assume_tac I3 H3.
@@ -216,8 +217,7 @@ Tactic Notation "Assume" "for" "contradiction" simple_intropattern(I) ":" constr
  
  
 
-Tactic Notation "Assume" simple_intropattern(I) ":" constr(H) "and" simple_intropattern(I2) ":" constr(H2):=
-assume_tac_conj I H I2 H2.
+
 (*Tactics used for disjonction statements *)
 
 Ltac hyp_of_type t :=

@@ -58,24 +58,19 @@ Qed.
 Example test7 : forall P Q:Prop, P ->  ~P -> ~Q.
 Proof.
 Let's fix P, Q.
-Admitted.
-(*
 Assume H:P and H2:(~P).
 Assume HQ:(Q).
 tauto.
 Qed.
-*)
 
-Lemma curry : forall P Q R: Prop, (P -> Q -> R) <-> (P /\ Q -> R).
-tauto.
-Qed.
+
+
 
 Example test8 : forall P Q R S:Prop, (P /\ Q) -> (R /\ S) -> R.
 Proof.
 Let's fix P, Q, R, S.
-repeat rewrite <- curry.
-
-Assume H:P and H2:(Q) and H3:R and H4:S.
-
+Assume H:(P ) and H2:(Q).
+Assume HR:R and HS:S.
+assumption.
 Qed.
 

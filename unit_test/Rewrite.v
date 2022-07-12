@@ -6,14 +6,14 @@ Require Import CoqVerbose.src.Tactics.Tactics.
 Theorem Rewrite_succ_hyp : forall (A B C:nat), A = B -> B = C -> A = C.
 Proof.
 intros.
-Let's rewrite H0 as H.
+Rewrite H0 by using  H.
 assumption.
 Qed.
 
 Theorem Rewrite_fail_hyp : forall (A B C D:nat),A =C -> B =D -> A = B.
 Proof.
 intros.
-assert_fails (Let's rewrite H0 as H).
+assert_fails (Rewrite H0 by using H).
 Admitted.
 
 

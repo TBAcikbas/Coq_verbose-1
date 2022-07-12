@@ -68,17 +68,14 @@ match goal with
 end.
 
 
-Ltac hyp_helper_sub_func anchor:=
+Ltac Helper :=
 match goal with
-|H: _ |- ?P => hyp_helper anchor P
+    
+|H:_ |- ?P =>hyp_helper H P;goal_helper P P
+|    |- ?P => goal_helper P P
 end.
 
-Tactic Notation "Help" "with" "goal" constr(goal):=
-goal_helper goal goal.
-
-
-Tactic Notation "Help" "with" "hypothesis" constr(hypothesis):=
-hyp_helper_sub_func hypothesis.
-
+Tactic Notation "Helper":=
+Helper.
 
 
