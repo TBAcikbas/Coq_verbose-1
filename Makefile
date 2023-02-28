@@ -19,10 +19,10 @@ CIBLE_EXEMPLES  = $(subst src/,, $(patsubst %.v, % ,$(SRC_EXEMPLES)))
 CIBLE_EXEMPLES  += $(subst src/,, $(patsubst %.v, % ,$(SRC_UNITTEST)))
 
 All: $(CIBLE) $(CIBLE_EXEMPLES)
-$(CIBLE)%:
+$(CIBLE):
 	$(CMD) $(SRC)$@.v
 
-$(CIBLE_EXEMPLES)%:
+$(CIBLE_EXEMPLES):
 	$(CMD) $@.v
 
 
