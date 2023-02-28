@@ -26,7 +26,7 @@ Messages given during the aplha phase will be changed according to the requireme
 | [ H:context[_ /\ _ ]           |- _                        ] => induction H 
 | [                              |- ?A ∈ ?B                  ] => unfold In
 | [ H: _ <->  _                  |- _                        ] => split
-| [ H: _  ⊆ _                    |- _                        ] => unfold Inclusion in
+| [ H: _  ⊆ _                    |- _                        ] => unfold Inclusion in H
 | [ H: _ ∩ _                     |- _                        ] => unfold Intersection in H
 | [ H: _ ∪ _                     |- _                        ] => unfold Union in H
 | [ H:context [?P -> ?Q],   T: _ |- _                        ] => induction (H T)
